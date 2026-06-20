@@ -1,6 +1,6 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "112.5";
+const pageVersion = pageRoot.dataset.version || "112.6";
 const pageMount = document.querySelector("[data-content-page]");
 
 const professionOptions = {
@@ -382,6 +382,24 @@ const footerLinks = {
   ],
 };
 
+const cardIconsByRoute = {
+  "cabinet-de-courtage-en-assurances-rueil-malmaison": ["professional", "professional", "personal"],
+  "assurance-de-pret-a-rueil-malmaison": ["loan", "loan", "personal"],
+  "assurance-particuliers-rueil-malmaison": ["loan", "loan", "personal"],
+  "assurance-entreprise-rueil-malmaison": ["professional", "professional", "loan"],
+  "courtier-en-assurances-de-rueil-malmaison": ["personal", "professional", "loan"],
+  "mentions-legales": ["professional", "loan", "personal"],
+  "politique-de-confidentialite": ["personal", "professional", "loan"],
+  "cookies-traceurs": ["professional", "personal", "loan"],
+  "politique-de-cookies-ue": ["professional", "personal", "loan"],
+};
+
+const iconAssets = {
+  loan: "assets/loan.gif",
+  personal: "assets/personal.gif",
+  professional: "assets/professional.gif",
+};
+
 function pageLang() {
   return pageRoot.lang === "en" ? "en" : "fr";
 }
@@ -402,14 +420,22 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;");
 }
 
-function renderCards(copy) {
+function cardIconPath(slug, index) {
+  const fallback = ["loan", "personal", "professional"];
+  const iconKey = cardIconsByRoute[slug]?.[index] || fallback[index % fallback.length];
+  return pageAsset(iconAssets[iconKey] || iconAssets.loan);
+}
+
+function renderCards(slug, copy) {
   return copy.cards
     .map(
       ([title, text], index) => `
-        <article class="content-card glass-panel">
-          <span class="section-number">${String(index + 1).padStart(2, "0")}</span>
-          <h2>${escapeHtml(title)}</h2>
-          <p>${escapeHtml(text)}</p>
+        <article class="content-card content-icon-panel glass-panel">
+          <img src="${cardIconPath(slug, index)}" alt="" />
+          <div>
+            <h2>${escapeHtml(title)}</h2>
+            <p>${escapeHtml(text)}</p>
+          </div>
         </article>
       `
     )
@@ -426,7 +452,7 @@ function renderFooter() {
   `;
 }
 
-function renderStandardPage(data, copy) {
+function renderStandardPage(slug, data, copy) {
   return `
     <section class="content-hero glass-panel">
       <div>
@@ -441,7 +467,7 @@ function renderStandardPage(data, copy) {
       <img src="${pageAsset(data.image)}" alt="" />
     </section>
     <section class="content-card-grid" aria-label="${escapeHtml(copy.title)}">
-      ${renderCards(copy)}
+      ${renderCards(slug, copy)}
     </section>
     ${renderFooter()}
   `;
@@ -583,7 +609,7 @@ function renderPage() {
 
   const copy = data[pageLang()] || data.fr;
   document.title = `${copy.title} - Assurances de Rueil v${pageVersion}`;
-  pageMount.innerHTML = data.type === "quote" ? renderQuotePage(data, copy) : renderStandardPage(data, copy);
+  pageMount.innerHTML = data.type === "quote" ? renderQuotePage(data, copy) : renderStandardPage(slug, data, copy);
   attachPreviewForm(copy);
 }
 
