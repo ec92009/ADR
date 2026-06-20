@@ -2,7 +2,7 @@
 
 Static GitHub Pages preview for the current Assurances de Rueil redesign candidate.
 
-- Current visible version: `v112.1`
+- Current visible version: `v112.2`
 - Main preview: synthesis candidate promoted from option 4
 - Parked chooser: `chooser.html`
 - Converted routes: quote request, cabinet, loan insurance, personal insurance, business insurance, contact, legal, privacy, cookies, and EU cookie policy

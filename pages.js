@@ -1,6 +1,6 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "112.1";
+const pageVersion = pageRoot.dataset.version || "112.2";
 const pageMount = document.querySelector("[data-content-page]");
 
 const professionOptions = {
@@ -229,8 +229,8 @@ const pages = {
       title: "Les Assurances de Rueil",
       lead: "75 avenue Victor Hugo, 92500 Rueil-Malmaison. Le cabinet est ouvert du lundi au vendredi, de 9H00 a 12H30 et de 14H00 a 18H30.",
       cards: [
-        ["Telephone", "01 47 51 06 69"],
-        ["Fax", "01 47 51 00 78"],
+        ["Telephone", "+33 1 47 51 06 69"],
+        ["Fax", "+33 1 47 51 00 78"],
         ["Adresse", "75 avenue Victor Hugo, 92500 Rueil-Malmaison"],
       ],
       cta: "Demander un devis",
@@ -240,8 +240,8 @@ const pages = {
       title: "Les Assurances de Rueil",
       lead: "75 avenue Victor Hugo, 92500 Rueil-Malmaison. The agency is open Monday to Friday, 9:00-12:30 and 14:00-18:30.",
       cards: [
-        ["Phone", "01 47 51 06 69"],
-        ["Fax", "01 47 51 00 78"],
+        ["Phone", "+33 1 47 51 06 69"],
+        ["Fax", "+33 1 47 51 00 78"],
         ["Address", "75 avenue Victor Hugo, 92500 Rueil-Malmaison"],
       ],
       cta: "Request a quote",
