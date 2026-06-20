@@ -1,4 +1,8 @@
-const version = document.documentElement.dataset.version || "112.0";
+const root = document.documentElement;
+const version = root.dataset.version || "112.1";
+const siteRoot = root.dataset.siteRoot || "";
+const quotePath = "demande-de-devis-assurance-a-rueil-malmaison/";
+const quoteHref = `${siteRoot}${quotePath}`;
 
 const translations = {
   fr: {
@@ -129,7 +133,83 @@ const translations = {
   },
 };
 
-const root = document.documentElement;
+function settingsIcon() {
+  return `
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" />
+      <path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1a2.1 2.1 0 0 1-3 3l-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1.1 1.7V21a2.1 2.1 0 0 1-4.2 0v-.2a1.8 1.8 0 0 0-1.1-1.7 1.8 1.8 0 0 0-2 .4l-.1.1a2.1 2.1 0 1 1-3-3l.1-.1a1.8 1.8 0 0 0 .4-2 1.8 1.8 0 0 0-1.7-1.1H2a2.1 2.1 0 0 1 0-4.2h.2a1.8 1.8 0 0 0 1.7-1.1 1.8 1.8 0 0 0-.4-2l-.1-.1a2.1 2.1 0 1 1 3-3l.1.1a1.8 1.8 0 0 0 2 .4 1.8 1.8 0 0 0 1.1-1.7V2a2.1 2.1 0 0 1 4.2 0v.2a1.8 1.8 0 0 0 1.1 1.7 1.8 1.8 0 0 0 2-.4l.1-.1a2.1 2.1 0 1 1 3 3l-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.7 1.1h.2a2.1 2.1 0 0 1 0 4.2h-.2a1.8 1.8 0 0 0-1.8 1.2Z" />
+    </svg>
+  `;
+}
+
+function ensureSharedChrome() {
+  if (!document.querySelector(".candidate-floating-nav")) {
+    document.body.insertAdjacentHTML(
+      "afterbegin",
+      `
+        <header class="candidate-floating-nav glass-panel" aria-label="Navigation principale">
+          <a class="site-brand candidate-brand" href="${siteRoot || "./"}">
+            <img src="${siteRoot}assets/logo.png" alt="" width="58" height="58" />
+            <span>Assurances de Rueil</span>
+          </a>
+          <div class="nav-actions candidate-actions">
+            <a class="button button-primary" href="${quoteHref}" data-i18n="quote">Demander un devis</a>
+            <button class="settings-button" type="button" aria-label="Ouvrir les réglages" aria-expanded="false" data-settings-open>
+              ${settingsIcon()}
+            </button>
+          </div>
+        </header>
+      `
+    );
+  }
+
+  if (!document.querySelector("[data-settings-popover]")) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `
+        <div class="settings-popover" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden data-settings-popover>
+          <div class="settings-panel glass-panel">
+            <button class="settings-close" type="button" aria-label="Fermer les réglages" data-settings-close>x</button>
+            <h2 id="settings-title" data-i18n="settingsTitle">Réglages</h2>
+            <p data-i18n="settingsVersion" data-version-text>Version v${version}</p>
+            <div class="settings-group">
+              <span data-i18n="settingsLanguage">Langue</span>
+              <div class="settings-segment">
+                <button type="button" data-lang-choice="fr">FR</button>
+                <button type="button" data-lang-choice="en">EN</button>
+              </div>
+            </div>
+            <div class="settings-group">
+              <span data-i18n="settingsTheme">Thème</span>
+              <div class="settings-segment">
+                <button type="button" data-theme-choice="day" data-i18n="day">Jour</button>
+                <button type="button" data-theme-choice="night" data-i18n="night">Nuit</button>
+              </div>
+            </div>
+            <label class="settings-range">
+              <span data-i18n="settingsTransparency">Transparence</span>
+              <input type="range" min="58" max="96" value="82" data-glass-alpha />
+            </label>
+            <label class="settings-range">
+              <span data-i18n="settingsTranslucency">Translucidité</span>
+              <input type="range" min="8" max="28" value="18" data-glass-blur />
+            </label>
+          </div>
+        </div>
+      `
+    );
+  }
+
+  if (!document.querySelector("[data-sticky-cta]")) {
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      `<a class="synthesis-sticky-cta" href="${quoteHref}" data-sticky-cta data-i18n="quote">Demander un devis</a>`
+    );
+  }
+}
+
+ensureSharedChrome();
+
 const i18nNodes = Array.from(document.querySelectorAll("[data-i18n]"));
 const settingsOpen = document.querySelector("[data-settings-open]");
 const settingsClose = document.querySelector("[data-settings-close]");
@@ -170,6 +250,8 @@ function setLang(lang) {
   langChoices.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.langChoice === lang);
   });
+
+  window.dispatchEvent(new CustomEvent("adr:languagechange", { detail: { lang } }));
 }
 
 function setGlass(alpha, blur) {
