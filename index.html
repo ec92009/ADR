@@ -1,150 +1,41 @@
 <!doctype html>
-<html lang="fr" data-theme="day" data-look="classic">
+<html lang="fr" data-theme="night" data-version="112.0">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Assurances de Rueil - 4 propositions de refonte</title>
+    <title>Assurances de Rueil - Preview v112.0</title>
     <meta
       name="description"
-      content="Quatre propositions esthétiques pour la refonte du site Assurances de Rueil."
+      content="Preview esthétique du nouveau site Assurances de Rueil, version v112.0."
     />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
     <link rel="icon" href="assets/logo.png" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=112.0" />
   </head>
-  <body>
-    <header class="preview-header" aria-label="Choisir une proposition de refonte">
-      <a class="preview-brand" href="https://assurancesderueil.fr/">
-        <img src="assets/logo.png" alt="" width="42" height="42" />
-        <span>
-          <strong>Assurances de Rueil</strong>
-          <small data-i18n="previewSub">4 propositions de refonte</small>
-        </span>
+  <body class="candidate-page">
+    <header class="candidate-floating-nav glass-panel" aria-label="Navigation principale">
+      <a class="site-brand candidate-brand" href="https://assurancesderueil.fr/">
+        <img src="assets/logo.png" alt="" width="58" height="58" />
+        <span>Assurances de Rueil</span>
       </a>
-
-      <nav class="look-picker" aria-label="Options de design">
-        <button class="look-button is-active" type="button" data-look-target="classic">
-          <span data-i18n="option1">Option 1</span>
-          <small data-i18n="option1Label">Classique confiance</small>
+      <div class="nav-actions candidate-actions">
+        <a class="button button-primary" href="https://assurancesderueil.fr/demande-de-devis/" data-i18n="quote">Demander un devis</a>
+        <button class="settings-button" type="button" aria-label="Ouvrir les réglages" aria-expanded="false" data-settings-open>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" />
+            <path d="M19.4 15a1.8 1.8 0 0 0 .4 2l.1.1a2.1 2.1 0 0 1-3 3l-.1-.1a1.8 1.8 0 0 0-2-.4 1.8 1.8 0 0 0-1.1 1.7V21a2.1 2.1 0 0 1-4.2 0v-.2a1.8 1.8 0 0 0-1.1-1.7 1.8 1.8 0 0 0-2 .4l-.1.1a2.1 2.1 0 1 1-3-3l.1-.1a1.8 1.8 0 0 0 .4-2 1.8 1.8 0 0 0-1.7-1.1H2a2.1 2.1 0 0 1 0-4.2h.2a1.8 1.8 0 0 0 1.7-1.1 1.8 1.8 0 0 0-.4-2l-.1-.1a2.1 2.1 0 1 1 3-3l.1.1a1.8 1.8 0 0 0 2 .4 1.8 1.8 0 0 0 1.1-1.7V2a2.1 2.1 0 0 1 4.2 0v.2a1.8 1.8 0 0 0 1.1 1.7 1.8 1.8 0 0 0 2-.4l.1-.1a2.1 2.1 0 1 1 3 3l-.1.1a1.8 1.8 0 0 0-.4 2 1.8 1.8 0 0 0 1.7 1.1h.2a2.1 2.1 0 0 1 0 4.2h-.2a1.8 1.8 0 0 0-1.8 1.2Z" />
+          </svg>
         </button>
-        <button class="look-button" type="button" data-look-target="editorial">
-          <span data-i18n="option2">Option 2</span>
-          <small data-i18n="option2Label">Local éditorial</small>
-        </button>
-        <button class="look-button" type="button" data-look-target="premium">
-          <span data-i18n="option3">Option 3</span>
-          <small data-i18n="option3Label">Premium digital</small>
-        </button>
-        <button class="look-button" type="button" data-look-target="synthesis">
-          <span data-i18n="option4">Option 4</span>
-          <small data-i18n="option4Label">Synthesis</small>
-        </button>
-      </nav>
-
+      </div>
     </header>
 
-    <main>
-      <section class="site-look look-classic is-active" data-look="classic" aria-label="Option 1">
-        <div class="site-shell">
-          <div class="site-nav">
-            <a class="site-brand" href="https://assurancesderueil.fr/">
-              <img src="assets/logo.png" alt="" />
-              <span>Assurances de Rueil</span>
-            </a>
-            <div class="site-links">
-              <a href="#classic-services" data-i18n="navServices">Services</a>
-              <a href="https://assurancesderueil.fr/notre-cabinet-de-courtage/" data-i18n="discover">Nous découvrir</a>
-              <a href="https://assurancesderueil.fr/contact/" data-i18n="navContact">Contact</a>
-            </div>
-            <div class="nav-actions">
-              <a class="button button-primary" href="https://assurancesderueil.fr/demande-de-devis/" data-i18n="quote">
-                Demander un devis
-              </a>
-              <div class="page-tools" aria-label="Préférences d'affichage">
-                <button class="page-switch" type="button" role="switch" aria-checked="false" data-theme-toggle>
-                  <span data-theme-label>Jour</span>
-                </button>
-                <button class="page-switch" type="button" role="switch" aria-checked="false" data-lang-toggle>
-                  <span data-lang-label>FR</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="classic-hero">
-            <div class="hero-copy">
-              <h1 data-i18n="headline">Courtier en assurances à Rueil-Malmaison</h1>
-              <p data-i18n="lead">
-                Assurances de Rueil vous accompagne : prêt immobilier, auto, habitation, santé et pro.
-              </p>
-              <div class="hero-actions">
-                <a class="button button-primary" href="https://assurancesderueil.fr/demande-de-devis/" data-i18n="quote">
-                  Demander un devis
-                </a>
-                <a class="button button-light" href="https://assurancesderueil.fr/notre-cabinet-de-courtage/" data-i18n="discover">
-                  Nous découvrir
-                </a>
-              </div>
-            </div>
-            <div class="hero-photo framed">
-              <img src="assets/hero-insurance.jpg" alt="Rendez-vous de conseil en assurance" />
-              <div class="phone-card">
-                <span data-i18n="phoneBy">Par téléphone</span>
-                <a href="tel:+33147510669">01 47 51 06 69</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="service-grid" id="classic-services">
-            <article class="service-card">
-              <img src="assets/loan.gif" alt="" />
-              <h2 data-i18n="loanTitle">Assurances de prêts</h2>
-              <p data-i18n="loanText">Vous êtes sur le point de souscrire un crédit ? Découvrez l'assurance de prêt.</p>
-              <a href="https://assurancesderueil.fr/assurance-de-pret/" data-i18n="learnMore">En savoir plus</a>
-            </article>
-            <article class="service-card">
-              <img src="assets/personal.gif" alt="" />
-              <h2 data-i18n="personalTitle">Assurance des particuliers</h2>
-              <p data-i18n="personalText">Santé, retraite, prévoyance, assurance de prêts et véhicule.</p>
-              <a href="https://assurancesderueil.fr/assurance-particuliers/" data-i18n="learnMore">En savoir plus</a>
-            </article>
-            <article class="service-card">
-              <img src="assets/professional.gif" alt="" />
-              <h2 data-i18n="proTitle">Assurances des professionnels</h2>
-              <p data-i18n="proText">Artisan, commerçant, profession libérale et entreprise industrielle.</p>
-              <a href="https://assurancesderueil.fr/entreprises/" data-i18n="learnMore">En savoir plus</a>
-            </article>
-          </div>
-
-          <div class="contact-band">
-            <p data-i18n="formLine">Complétez notre formulaire, nous vous contacterons dans les meilleurs délais.</p>
-            <a class="button button-primary" href="https://assurancesderueil.fr/contact/" data-i18n="thisWay">C'est par ici !</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="site-look look-editorial" data-look="editorial" aria-label="Option 2">
-        <div class="editorial-hero">
+    <main class="candidate-main">
+      <section class="site-look look-synthesis is-active" aria-label="Preview principale">
+        <div class="editorial-hero candidate-hero">
           <div class="editorial-image">
             <img src="assets/family-city.jpg" alt="Vie locale à Rueil-Malmaison" />
           </div>
-          <div class="editorial-copy">
-            <div class="site-nav editorial-nav">
-              <a class="site-brand" href="https://assurancesderueil.fr/">
-                <img src="assets/logo.png" alt="" />
-                <span>Assurances de Rueil</span>
-              </a>
-              <div class="nav-actions">
-                <a class="button button-primary" href="https://assurancesderueil.fr/demande-de-devis/" data-i18n="quote">Demander un devis</a>
-                <div class="page-tools" aria-label="Préférences d'affichage">
-                  <button class="page-switch" type="button" role="switch" aria-checked="false" data-theme-toggle>
-                    <span data-theme-label>Jour</span>
-                  </button>
-                  <button class="page-switch" type="button" role="switch" aria-checked="false" data-lang-toggle>
-                    <span data-lang-label>FR</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+          <div class="editorial-copy candidate-hero-copy">
             <h1 data-i18n="headline">Courtier en assurances à Rueil-Malmaison</h1>
             <p data-i18n="lead">
               Assurances de Rueil vous accompagne : prêt immobilier, auto, habitation, santé et pro.
@@ -156,69 +47,7 @@
           </div>
         </div>
 
-        <div class="editorial-services" aria-label="Services">
-          <article>
-            <span>01</span>
-            <h2 data-i18n="loanTitle">Assurances de prêts</h2>
-            <p data-i18n="loanText">Vous êtes sur le point de souscrire un crédit ? Découvrez l'assurance de prêt.</p>
-          </article>
-          <article>
-            <span>02</span>
-            <h2 data-i18n="personalTitle">Assurance des particuliers</h2>
-            <p data-i18n="personalText">Santé, retraite, prévoyance, assurance de prêts et véhicule.</p>
-          </article>
-          <article>
-            <span>03</span>
-            <h2 data-i18n="proTitle">Assurances des professionnels</h2>
-            <p data-i18n="proText">Artisan, commerçant, profession libérale et entreprise industrielle.</p>
-          </article>
-        </div>
-
-        <div class="editorial-bottom">
-          <img src="assets/partners.jpg" alt="Partenaires assureurs" />
-          <div>
-            <h2 data-i18n="formTitle">Par formulaire</h2>
-            <p data-i18n="formLine">Complétez notre formulaire, nous vous contacterons dans les meilleurs délais.</p>
-            <a class="button button-primary" href="https://assurancesderueil.fr/contact/" data-i18n="thisWay">C'est par ici !</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="site-look look-synthesis" data-look="synthesis" aria-label="Option 4">
-        <div class="editorial-hero">
-          <div class="editorial-image">
-            <img src="assets/family-city.jpg" alt="Vie locale à Rueil-Malmaison" />
-          </div>
-          <div class="editorial-copy">
-            <div class="site-nav editorial-nav">
-              <a class="site-brand" href="https://assurancesderueil.fr/">
-                <img src="assets/logo.png" alt="" />
-                <span>Assurances de Rueil</span>
-              </a>
-              <div class="nav-actions">
-                <a class="button button-primary" href="https://assurancesderueil.fr/demande-de-devis/" data-i18n="quote">Demander un devis</a>
-                <div class="page-tools" aria-label="Préférences d'affichage">
-                  <button class="page-switch" type="button" role="switch" aria-checked="false" data-theme-toggle>
-                    <span data-theme-label>Jour</span>
-                  </button>
-                  <button class="page-switch" type="button" role="switch" aria-checked="false" data-lang-toggle>
-                    <span data-lang-label>FR</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <h1 data-i18n="headline">Courtier en assurances à Rueil-Malmaison</h1>
-            <p data-i18n="lead">
-              Assurances de Rueil vous accompagne : prêt immobilier, auto, habitation, santé et pro.
-            </p>
-            <div class="editorial-contact">
-              <a href="tel:+33147510669">01 47 51 06 69</a>
-              <a href="https://assurancesderueil.fr/notre-cabinet-de-courtage/" data-i18n="discover">Nous découvrir</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="premium-services synthesis-services">
+        <div class="premium-services synthesis-services candidate-services">
           <article>
             <img src="assets/loan.gif" alt="" />
             <div>
@@ -245,6 +74,110 @@
           </article>
         </div>
 
+        <nav class="synthesis-page-nav" aria-label="Pages reprises du site original">
+          <a href="#synth-cabinet" data-i18n="pageCabinet">Cabinet</a>
+          <a href="#synth-loan" data-i18n="pageLoan">Assurance de prêt</a>
+          <a href="#synth-personal" data-i18n="pagePersonal">Particuliers</a>
+          <a href="#synth-pro" data-i18n="pagePro">Professionnels</a>
+          <a href="#synth-contact" data-i18n="pageContact">Contact</a>
+          <a href="#synth-legal" data-i18n="pageLegal">Infos légales</a>
+        </nav>
+
+        <div class="synthesis-pages" aria-label="Pages du site original">
+          <section class="synthesis-page-card glass-panel" id="synth-cabinet">
+            <div>
+              <span class="section-number">01</span>
+              <h2 data-i18n="cabinetPageTitle">Cabinet de courtage en assurances à Rueil-Malmaison</h2>
+            </div>
+            <p data-i18n="cabinetPageText">
+              Implanté dans les Hauts-de-Seine depuis quatre générations, le cabinet accompagne particuliers, entreprises, artisans, commerçants, professions libérales et PME avec une équipe à taille humaine.
+            </p>
+            <ul>
+              <li data-i18n="cabinetPoint1">Courtier indépendant au service des intérêts de l'assuré.</li>
+              <li data-i18n="cabinetPoint2">Sélection de contrats auprès de partenaires reconnus comme Axa, April ou Generali.</li>
+              <li data-i18n="cabinetPoint3">Suivi complet, y compris lors de la gestion d'un sinistre.</li>
+            </ul>
+          </section>
+
+          <section class="synthesis-page-card glass-panel" id="synth-loan">
+            <div>
+              <span class="section-number">02</span>
+              <h2 data-i18n="loanPageTitle">Assurance de prêt à Rueil-Malmaison</h2>
+            </div>
+            <p data-i18n="loanPageText">
+              L'assurance de prêt prend le relais de l'emprunteur en cas de défaillance et peut couvrir PTIA, ITT, IPT, IPP, décès ou perte d'emploi selon les garanties.
+            </p>
+            <div class="tag-row">
+              <span>PTIA</span>
+              <span>ITT</span>
+              <span>IPT / IPP</span>
+              <span data-i18n="loanTag">Décès</span>
+            </div>
+          </section>
+
+          <section class="synthesis-page-card glass-panel" id="synth-personal">
+            <div>
+              <span class="section-number">03</span>
+              <h2 data-i18n="personalPageTitle">Assurance particuliers à Rueil-Malmaison</h2>
+            </div>
+            <p data-i18n="personalPageText">
+              Protection des biens, de la personne et des proches avec des contrats habitation, santé, retraite, prévoyance, véhicule, loyers impayés et assurance emprunteur.
+            </p>
+            <ul>
+              <li data-i18n="personalPoint1">Garanties incendie, dégâts des eaux, vol, tempête et catastrophes naturelles.</li>
+              <li data-i18n="personalPoint2">Solutions pour propriétaires occupants, non occupants et résidences secondaires.</li>
+              <li data-i18n="personalPoint3">Assistance famille en France et à l'étranger.</li>
+            </ul>
+          </section>
+
+          <section class="synthesis-page-card glass-panel" id="synth-pro">
+            <div>
+              <span class="section-number">04</span>
+              <h2 data-i18n="proPageTitle">Assurance entreprise à Rueil-Malmaison</h2>
+            </div>
+            <p data-i18n="proPageText">
+              Contrats multirisques adaptés à l'activité, aux locaux, aux machines, marchandises, stocks, matériel informatique et responsabilités professionnelles.
+            </p>
+            <div class="tag-row">
+              <span data-i18n="proTag1">Artisan</span>
+              <span data-i18n="proTag2">Commerçant</span>
+              <span data-i18n="proTag3">Profession libérale</span>
+              <span data-i18n="proTag4">Entreprise industrielle</span>
+            </div>
+          </section>
+
+          <section class="synthesis-page-card glass-panel" id="synth-contact">
+            <div>
+              <span class="section-number">05</span>
+              <h2 data-i18n="contactPageTitle">Nous contacter</h2>
+            </div>
+            <p data-i18n="contactPageText">
+              Les Assurances de Rueil, 75 avenue Victor Hugo, 92500 Rueil-Malmaison. Ouvert du lundi au vendredi, de 9H00 à 12H30 et de 14H00 à 18H30.
+            </p>
+            <div class="contact-mini-grid">
+              <a href="tel:+33147510669">01 47 51 06 69</a>
+              <span>01 47 51 00 78</span>
+              <a href="mailto:contact@assurancesderueil.fr">contact@assurancesderueil.fr</a>
+            </div>
+          </section>
+
+          <section class="synthesis-page-card glass-panel" id="synth-legal">
+            <div>
+              <span class="section-number">06</span>
+              <h2 data-i18n="legalPageTitle">Mentions, confidentialité et cookies</h2>
+            </div>
+            <p data-i18n="legalPageText">
+              Le site original publie ses mentions légales, sa politique de confidentialité RGPD, sa politique de cookies et ses informations de traceurs.
+            </p>
+            <div class="legal-links">
+              <a href="https://assurancesderueil.fr/mentions-legales/" data-i18n="legalMentions">Mentions légales</a>
+              <a href="https://assurancesderueil.fr/politique-de-confidentialite/" data-i18n="legalPrivacy">Politique de confidentialité</a>
+              <a href="https://assurancesderueil.fr/cookies-traceurs/" data-i18n="legalCookies">Cookies & traceurs</a>
+              <a href="https://assurancesderueil.fr/politique-de-cookies-ue/" data-i18n="legalCookieEu">Politique de cookies (UE)</a>
+            </div>
+          </section>
+        </div>
+
         <div class="editorial-bottom synthesis-bottom">
           <img src="assets/partners.jpg" alt="Partenaires assureurs" />
           <div>
@@ -254,79 +187,40 @@
           </div>
         </div>
       </section>
-
-      <section class="site-look look-premium" data-look="premium" aria-label="Option 3">
-        <div class="premium-shell">
-          <div class="premium-nav">
-            <a class="site-brand" href="https://assurancesderueil.fr/">
-              <img src="assets/logo.png" alt="" />
-              <span>Assurances de Rueil</span>
-            </a>
-            <div class="site-links">
-              <a href="https://assurancesderueil.fr/notre-cabinet-de-courtage/" data-i18n="discover">Nous découvrir</a>
-              <a href="https://assurancesderueil.fr/contact/" data-i18n="navContact">Contact</a>
-            </div>
-            <div class="page-tools page-tools-dark" aria-label="Préférences d'affichage">
-              <button class="page-switch" type="button" role="switch" aria-checked="false" data-theme-toggle>
-                <span data-theme-label>Jour</span>
-              </button>
-              <button class="page-switch" type="button" role="switch" aria-checked="false" data-lang-toggle>
-                <span data-lang-label>FR</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="premium-hero">
-            <div>
-              <h1 data-i18n="headline">Courtier en assurances à Rueil-Malmaison</h1>
-              <p data-i18n="lead">
-                Assurances de Rueil vous accompagne : prêt immobilier, auto, habitation, santé et pro.
-              </p>
-              <div class="hero-actions">
-                <a class="button button-teal" href="https://assurancesderueil.fr/demande-de-devis/" data-i18n="quote">
-                  Demander un devis
-                </a>
-                <a class="button button-dark" href="tel:+33147510669">01 47 51 06 69</a>
-              </div>
-            </div>
-            <img src="assets/business.jpg" alt="Conseil en assurance professionnelle" />
-          </div>
-
-          <div class="premium-services">
-            <article>
-              <img src="assets/loan.gif" alt="" />
-              <div>
-                <h2 data-i18n="loanTitle">Assurances de prêts</h2>
-                <p data-i18n="loanText">Vous êtes sur le point de souscrire un crédit ? Découvrez l'assurance de prêt.</p>
-              </div>
-              <a href="https://assurancesderueil.fr/assurance-de-pret/" data-i18n="learnMore">En savoir plus</a>
-            </article>
-            <article>
-              <img src="assets/personal.gif" alt="" />
-              <div>
-                <h2 data-i18n="personalTitle">Assurance des particuliers</h2>
-                <p data-i18n="personalText">Santé, retraite, prévoyance, assurance de prêts et véhicule.</p>
-              </div>
-              <a href="https://assurancesderueil.fr/assurance-particuliers/" data-i18n="learnMore">En savoir plus</a>
-            </article>
-            <article>
-              <img src="assets/professional.gif" alt="" />
-              <div>
-                <h2 data-i18n="proTitle">Assurances des professionnels</h2>
-                <p data-i18n="proText">Artisan, commerçant, profession libérale et entreprise industrielle.</p>
-              </div>
-              <a href="https://assurancesderueil.fr/entreprises/" data-i18n="learnMore">En savoir plus</a>
-            </article>
-          </div>
-
-          <div class="premium-contact">
-            <p data-i18n="formLine">Complétez notre formulaire, nous vous contacterons dans les meilleurs délais.</p>
-            <a href="https://assurancesderueil.fr/contact/" data-i18n="thisWay">C'est par ici !</a>
-          </div>
-        </div>
-      </section>
     </main>
 
-    <script src="script.js"></script>
+    <div class="settings-popover" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden data-settings-popover>
+      <div class="settings-panel glass-panel">
+        <button class="settings-close" type="button" aria-label="Fermer les réglages" data-settings-close>×</button>
+        <h2 id="settings-title" data-i18n="settingsTitle">Réglages</h2>
+        <p data-i18n="settingsVersion" data-version-text>Version v112.0</p>
+        <div class="settings-group">
+          <span data-i18n="settingsLanguage">Langue</span>
+          <div class="settings-segment">
+            <button type="button" data-lang-choice="fr">FR</button>
+            <button type="button" data-lang-choice="en">EN</button>
+          </div>
+        </div>
+        <div class="settings-group">
+          <span data-i18n="settingsTheme">Thème</span>
+          <div class="settings-segment">
+            <button type="button" data-theme-choice="day" data-i18n="day">Jour</button>
+            <button type="button" data-theme-choice="night" data-i18n="night">Nuit</button>
+          </div>
+        </div>
+        <label class="settings-range">
+          <span data-i18n="settingsTransparency">Transparence</span>
+          <input type="range" min="58" max="96" value="82" data-glass-alpha />
+        </label>
+        <label class="settings-range">
+          <span data-i18n="settingsTranslucency">Translucidité</span>
+          <input type="range" min="8" max="28" value="18" data-glass-blur />
+        </label>
+      </div>
+    </div>
+
+    <a class="synthesis-sticky-cta" href="https://assurancesderueil.fr/contact/" data-sticky-cta data-i18n="quote">Demander un devis</a>
+
+    <script src="script.js?v=112.0"></script>
   </body>
 </html>
