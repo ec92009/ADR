@@ -1497,6 +1497,8 @@ html {
 
 .quote-field input:not([type="radio"]):not([type="checkbox"]),
 .quote-field select {
+  appearance: none;
+  -webkit-appearance: none;
   width: 100%;
   min-height: 3rem;
   border: 1px solid var(--line);
@@ -1505,6 +1507,16 @@ html {
   background: color-mix(in srgb, var(--paper) 82%, transparent);
   color: var(--ink);
   outline: none;
+}
+
+.quote-field input::placeholder {
+  color: color-mix(in srgb, var(--muted) 78%, transparent);
+  opacity: 1;
+}
+
+.quote-date-field input {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
 }
 
 .quote-field input:not([type="radio"]):not([type="checkbox"]):focus,

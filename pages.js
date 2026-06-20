@@ -1,6 +1,6 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "112.4";
+const pageVersion = pageRoot.dataset.version || "112.5";
 const pageMount = document.querySelector("[data-content-page]");
 
 const professionOptions = {
@@ -55,6 +55,7 @@ const pages = {
       madame: "Madame",
       monsieur: "Monsieur",
       birthDate: "Votre date de naissance",
+      birthDatePlaceholder: "JJ/MM/AAAA",
       smoker: "Êtes-vous fumeur ?",
       yes: "Oui",
       no: "Non",
@@ -92,6 +93,7 @@ const pages = {
       madame: "Ms",
       monsieur: "Mr",
       birthDate: "Date of birth",
+      birthDatePlaceholder: "DD/MM/YYYY",
       smoker: "Do you smoke?",
       yes: "Yes",
       no: "No",
@@ -454,6 +456,23 @@ function renderInput(label, name, type = "text") {
   `;
 }
 
+function renderBirthDate(copy) {
+  return `
+    <label class="quote-field quote-date-field">
+      <span>${escapeHtml(copy.birthDate)}</span>
+      <input
+        type="text"
+        name="date-naissance"
+        inputmode="numeric"
+        autocomplete="bday"
+        placeholder="${escapeHtml(copy.birthDatePlaceholder)}"
+        pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
+        required
+      />
+    </label>
+  `;
+}
+
 function renderQuotePage(data, copy) {
   const options = professionOptions[pageLang()]
     .map((option) => `<option>${escapeHtml(option)}</option>`)
@@ -490,7 +509,7 @@ function renderQuotePage(data, copy) {
               <label><input type="radio" name="civilite" value="monsieur" /> ${escapeHtml(copy.monsieur)}</label>
             </div>
           </div>
-          ${renderInput(copy.birthDate, "date-naissance", "date")}
+          ${renderBirthDate(copy)}
           <div class="quote-field">
             <span>${escapeHtml(copy.smoker)}</span>
             <div class="choice-row">
