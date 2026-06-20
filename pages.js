@@ -1,22 +1,22 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "112.3";
+const pageVersion = pageRoot.dataset.version || "112.4";
 const pageMount = document.querySelector("[data-content-page]");
 
 const professionOptions = {
   fr: [
     "Cadres",
-    "Employes, A. de maitrise",
+    "Employés, A. de maîtrise",
     "Ouvriers",
-    "Professions medicales",
-    "Professions paramedicales",
-    "Professions liberales",
-    "Commercants et leurs salaries",
-    "Artisans hors BTP et leurs salaries",
+    "Professions médicales",
+    "Professions paramédicales",
+    "Professions libérales",
+    "Commerçants et leurs salariés",
+    "Artisans hors BTP et leurs salariés",
     "Artisans du BTP",
-    "Professions agricoles et peri-agricoles",
+    "Professions agricoles et péri-agricoles",
     "Professions du transport",
-    "Retraites",
+    "Retraités",
     "Sans profession",
   ],
   en: [
@@ -42,29 +42,29 @@ const pages = {
     type: "quote",
     fr: {
       eyebrow: "Demande de devis",
-      title: "Demande de devis assurance a Rueil-Malmaison",
+      title: "Demande de devis assurance à Rueil-Malmaison",
       lead:
-        "Obtenez une simulation personnalisee pour votre assurance de pret. Le formulaire reprend les informations demandees sur le site original afin de preparer une reponse rapide du cabinet.",
+        "Obtenez une simulation personnalisée pour votre assurance de prêt. Le formulaire reprend les informations demandées sur le site original afin de préparer une réponse rapide du cabinet.",
       introTitle: "Votre demande",
       introText:
-        "Les champs portent sur votre profil emprunteur, votre banque et vos coordonnees. Les informations sont utiles au courtier pour comparer les garanties et revenir vers vous avec une proposition adaptee.",
+        "Les champs portent sur votre profil emprunteur, votre banque et vos coordonnées. Les informations sont utiles au courtier pour comparer les garanties et revenir vers vous avec une proposition adaptée.",
       step1: "Profil emprunteur",
-      step2: "Coordonnees",
+      step2: "Coordonnées",
       step3: "Consentement RGPD",
-      civility: "Civilite",
+      civility: "Civilité",
       madame: "Madame",
       monsieur: "Monsieur",
       birthDate: "Votre date de naissance",
-      smoker: "Etes-vous fumeur ?",
+      smoker: "Êtes-vous fumeur ?",
       yes: "Oui",
       no: "Non",
       smokerHelp:
-        "Est non-fumeur toute personne n'ayant pas fume ni consomme de produit contenant de la nicotine au cours des 24 derniers mois.",
+        "Est non-fumeur toute personne n'ayant pas fumé ni consommé de produit contenant de la nicotine au cours des 24 derniers mois.",
       profession: "Votre profession",
-      select: "Selectionner",
+      select: "Sélectionner",
       bank: "Votre banque",
       lastName: "Nom",
-      firstName: "Prenom",
+      firstName: "Prénom",
       email: "E-mail",
       address: "Adresse",
       postalCode: "Code postal",
@@ -72,10 +72,10 @@ const pages = {
       consentCall:
         "En cliquant sur Envoyer, j'accepte qu'un conseiller Assurances de Rueil m'appelle pour m'accompagner dans le choix de mon assurance.",
       consentRgpd:
-        "J'accepte le traitement de mes donnees personnelles conformement au RGPD.",
+        "J'accepte le traitement de mes données personnelles conformément au RGPD.",
       submit: "Envoyer",
       previewMessage:
-        "Preview uniquement : la version finale devra reconnecter ce formulaire au systeme de reception du cabinet.",
+        "Preview uniquement : la version finale devra reconnecter ce formulaire au système de réception du cabinet.",
     },
     en: {
       eyebrow: "Quote request",
@@ -118,13 +118,13 @@ const pages = {
     image: "assets/partners.jpg",
     fr: {
       eyebrow: "Cabinet",
-      title: "Cabinet de courtage en assurances a Rueil-Malmaison",
+      title: "Cabinet de courtage en assurances à Rueil-Malmaison",
       lead:
-        "Implante dans les Hauts-de-Seine depuis quatre generations, le cabinet accompagne particuliers, entreprises, artisans, commercants, professions liberales et PME.",
+        "Implanté dans les Hauts-de-Seine depuis quatre générations, le cabinet accompagne particuliers, entreprises, artisans, commerçants, professions libérales et PME.",
       cards: [
-        ["Independance", "Le statut de courtier permet de selectionner les contrats en fonction des interets de l'assure."],
-        ["Partenaires reconnus", "Le cabinet compare des solutions proposees par des partenaires comme Axa, April ou Generali."],
-        ["Suivi complet", "L'equipe accompagne la negociation des garanties, les prix et le bon deroulement des sinistres."],
+        ["Indépendance", "Le statut de courtier permet de sélectionner les contrats en fonction des intérêts de l'assuré."],
+        ["Partenaires reconnus", "Le cabinet compare des solutions proposées par des partenaires comme Axa, April ou Generali."],
+        ["Suivi complet", "L'équipe accompagne la négociation des garanties, les prix et le bon déroulement des sinistres."],
       ],
       cta: "Demander un devis",
     },
@@ -144,14 +144,14 @@ const pages = {
   "assurance-de-pret-a-rueil-malmaison": {
     image: "assets/hero-insurance.jpg",
     fr: {
-      eyebrow: "Assurance de pret",
-      title: "Assurance de pret a Rueil-Malmaison",
+      eyebrow: "Assurance de prêt",
+      title: "Assurance de prêt à Rueil-Malmaison",
       lead:
-        "L'assurance emprunteur prend le relais en cas de defaillance et peut couvrir PTIA, ITT, IPT, IPP, deces ou perte d'emploi selon les garanties.",
+        "L'assurance emprunteur prend le relais en cas de défaillance et peut couvrir PTIA, ITT, IPT, IPP, décès ou perte d'emploi selon les garanties.",
       cards: [
-        ["Garanties", "Protection contre la perte totale et irreversible d'autonomie, l'incapacite de travail, l'invalidite, le deces et parfois la perte d'emploi."],
-        ["Liberte de choix", "L'emprunteur peut comparer son contrat bancaire avec une assurance externe repondant aux exigences de la fiche standardisee."],
-        ["Accompagnement", "Assurances de Rueil adapte les garanties et options au profil de l'emprunteur pour proposer une offre personnalisee."],
+        ["Garanties", "Protection contre la perte totale et irréversible d'autonomie, l'incapacité de travail, l'invalidité, le décès et parfois la perte d'emploi."],
+        ["Liberté de choix", "L'emprunteur peut comparer son contrat bancaire avec une assurance externe répondant aux exigences de la fiche standardisée."],
+        ["Accompagnement", "Assurances de Rueil adapte les garanties et options au profil de l'emprunteur pour proposer une offre personnalisée."],
       ],
       cta: "Simuler mon assurance",
     },
@@ -172,15 +172,15 @@ const pages = {
     image: "assets/family-city.jpg",
     fr: {
       eyebrow: "Particuliers",
-      title: "Assurance particuliers a Rueil-Malmaison",
+      title: "Assurance particuliers à Rueil-Malmaison",
       lead:
-        "Protection des biens, de la personne et des proches avec des contrats habitation, sante, retraite, prevoyance, vehicule, loyers impayes et emprunteur.",
+        "Protection des biens, de la personne et des proches avec des contrats habitation, santé, retraite, prévoyance, véhicule, loyers impayés et emprunteur.",
       cards: [
-        ["Habitation", "Garanties incendie, degats des eaux, vol, tempete, catastrophes naturelles et adaptation aux particularites du bien."],
-        ["Loyers impayes", "Couverture des loyers impayes, frais de contentieux et deteriorations immobilieres selon le dossier."],
-        ["Famille et mobilite", "Solutions de responsabilite civile, assistance famille en France et a l'etranger, sante, retraite, prevoyance et vehicule."],
+        ["Habitation", "Garanties incendie, dégâts des eaux, vol, tempête, catastrophes naturelles et adaptation aux particularités du bien."],
+        ["Loyers impayés", "Couverture des loyers impayés, frais de contentieux et détériorations immobilières selon le dossier."],
+        ["Famille et mobilité", "Solutions de responsabilité civile, assistance famille en France et à l'étranger, santé, retraite, prévoyance et véhicule."],
       ],
-      cta: "Proteger mon foyer",
+      cta: "Protéger mon foyer",
     },
     en: {
       eyebrow: "Individuals",
@@ -199,15 +199,15 @@ const pages = {
     image: "assets/business.jpg",
     fr: {
       eyebrow: "Professionnels",
-      title: "Assurance entreprise a Rueil-Malmaison",
+      title: "Assurance entreprise à Rueil-Malmaison",
       lead:
-        "Contrats multirisques adaptes a l'activite, aux locaux, aux machines, marchandises, stocks, informatique et responsabilites professionnelles.",
+        "Contrats multirisques adaptés à l'activité, aux locaux, aux machines, marchandises, stocks, informatique et responsabilités professionnelles.",
       cards: [
-        ["Multirisques", "Couverture contre incendie, evenements climatiques, degats des eaux, vol, vandalisme, bris de glace et bris de machine."],
-        ["Profils", "Solutions pour artisans, commercants, professions liberales et entreprises industrielles."],
-        ["Investissements", "Assurance emprunteur pour les prets professionnels et investissements, selon le profil et le contrat retenu."],
+        ["Multirisques", "Couverture contre incendie, événements climatiques, dégâts des eaux, vol, vandalisme, bris de glace et bris de machine."],
+        ["Profils", "Solutions pour artisans, commerçants, professions libérales et entreprises industrielles."],
+        ["Investissements", "Assurance emprunteur pour les prêts professionnels et investissements, selon le profil et le contrat retenu."],
       ],
-      cta: "Assurer mon activite",
+      cta: "Assurer mon activité",
     },
     en: {
       eyebrow: "Professionals",
@@ -227,9 +227,9 @@ const pages = {
     fr: {
       eyebrow: "Contact",
       title: "Les Assurances de Rueil",
-      lead: "75 avenue Victor Hugo, 92500 Rueil-Malmaison. Le cabinet est ouvert du lundi au vendredi, de 9H00 a 12H30 et de 14H00 a 18H30.",
+      lead: "75 avenue Victor Hugo, 92500 Rueil-Malmaison. Le cabinet est ouvert du lundi au vendredi, de 9H00 à 12H30 et de 14H00 à 18H30.",
       cards: [
-        ["Telephone", "+33 1 47 51 06 69"],
+        ["Téléphone", "+33 1 47 51 06 69"],
         ["Fax", "+33 1 47 51 00 78"],
         ["Adresse", "75 avenue Victor Hugo, 92500 Rueil-Malmaison"],
       ],
@@ -250,14 +250,14 @@ const pages = {
   "mentions-legales": {
     image: "assets/partners.jpg",
     fr: {
-      eyebrow: "Informations legales",
-      title: "Mentions legales",
+      eyebrow: "Informations légales",
+      title: "Mentions légales",
       lead:
-        "ASSURANCES DE RUEIL, 75 avenue Victor Hugo, 92500 Rueil-Malmaison. Societe de courtage en assurances, SARL au capital de 16 007 euros, RCS Nanterre 689 801 769, ORIAS n° 07 001948.",
+        "ASSURANCES DE RUEIL, 75 avenue Victor Hugo, 92500 Rueil-Malmaison. Société de courtage en assurances, SARL au capital de 16 007 euros, RCS Nanterre 689 801 769, ORIAS n° 07 001948.",
       cards: [
-        ["Controle", "Courtier soumis a l'autorite de controle prudentiel et de resolution, 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09."],
-        ["Hebergement", "Le site original est heberge par Infomaniak."],
-        ["Donnees", "Les donnees personnelles peuvent faire l'objet de demandes d'acces, rectification ou suppression aupres du cabinet."],
+        ["Contrôle", "Courtier soumis à l'autorité de contrôle prudentiel et de résolution, 4 Place de Budapest, CS 92459, 75436 Paris Cedex 09."],
+        ["Hébergement", "Le site original est hébergé par Infomaniak."],
+        ["Données", "Les données personnelles peuvent faire l'objet de demandes d'accès, rectification ou suppression auprès du cabinet."],
       ],
       cta: "Contacter le cabinet",
     },
@@ -277,14 +277,14 @@ const pages = {
   "politique-de-confidentialite": {
     image: "assets/hero-insurance.jpg",
     fr: {
-      eyebrow: "Confidentialite",
-      title: "Politique de confidentialite",
+      eyebrow: "Confidentialité",
+      title: "Politique de confidentialité",
       lead:
-        "La politique RGPD du site explique comment les informations transmises via formulaires ou cookies sont protegees et utilisees pour la mission de courtier.",
+        "La politique RGPD du site explique comment les informations transmises via formulaires ou cookies sont protégées et utilisées pour la mission de courtier.",
       cards: [
-        ["Donnees collectees", "Nom, prenom, date et lieu de naissance, coordonnees, informations de dossier et donnees utiles a la demande d'assurance."],
-        ["Finalite", "Repondre aux demandes, accompagner la souscription et transmettre les elements necessaires aux partenaires concernes avec accord."],
-        ["Droits", "Acces, rectification, suppression et opposition peuvent etre demandes au cabinet selon les conditions RGPD."],
+        ["Données collectées", "Nom, prénom, date et lieu de naissance, coordonnées, informations de dossier et données utiles à la demande d'assurance."],
+        ["Finalité", "Répondre aux demandes, accompagner la souscription et transmettre les éléments nécessaires aux partenaires concernés avec accord."],
+        ["Droits", "Accès, rectification, suppression et opposition peuvent être demandés au cabinet selon les conditions RGPD."],
       ],
       cta: "Demander un devis",
     },
@@ -307,11 +307,11 @@ const pages = {
       eyebrow: "Cookies",
       title: "Cookies & traceurs",
       lead:
-        "Le site original utilise des cookies pour le fonctionnement, les preferences, la navigation, la mesure d'audience, la publicite ciblee et certaines interactions.",
+        "Le site original utilise des cookies pour le fonctionnement, les préférences, la navigation, la mesure d'audience, la publicité ciblée et certaines interactions.",
       cards: [
-        ["Techniques", "Cookies necessaires au fonctionnement, a la navigation et aux mesures de securite du site."],
-        ["Preferences", "Cookies pouvant memoriser des choix comme la langue ou certaines informations de session."],
-        ["Mesure et tiers", "Cookies d'audience, publicite ou reseaux sociaux pouvant etre deposes par des services tiers."],
+        ["Techniques", "Cookies nécessaires au fonctionnement, à la navigation et aux mesures de sécurité du site."],
+        ["Préférences", "Cookies pouvant mémoriser des choix comme la langue ou certaines informations de session."],
+        ["Mesure et tiers", "Cookies d'audience, publicité ou réseaux sociaux pouvant être déposés par des services tiers."],
       ],
       cta: "Retour au devis",
     },
@@ -334,11 +334,11 @@ const pages = {
       eyebrow: "Cookies UE",
       title: "Politique de cookies (UE)",
       lead:
-        "La page d'origine est le document de declaration cookies genere par l'outil de consentement du site pour la region UE.",
+        "La page d'origine est le document de déclaration cookies généré par l'outil de consentement du site pour la région UE.",
       cards: [
-        ["Necessaires", "Cookies indispensables au fonctionnement et a la securite du site."],
-        ["Fonctionnels", "Cookies utiles aux fonctionnalites additionnelles et preferences."],
-        ["Performance et analyse", "Cookies pouvant aider a comprendre l'utilisation du site et ameliorer l'experience."],
+        ["Nécessaires", "Cookies indispensables au fonctionnement et à la sécurité du site."],
+        ["Fonctionnels", "Cookies utiles aux fonctionnalités additionnelles et préférences."],
+        ["Performance et analyse", "Cookies pouvant aider à comprendre l'utilisation du site et améliorer l'expérience."],
       ],
       cta: "Demander un devis",
     },
@@ -360,12 +360,12 @@ const pages = {
 const footerLinks = {
   fr: [
     ["Cabinet", "cabinet-de-courtage-en-assurances-rueil-malmaison"],
-    ["Assurance de pret", "assurance-de-pret-a-rueil-malmaison"],
+    ["Assurance de prêt", "assurance-de-pret-a-rueil-malmaison"],
     ["Particuliers", "assurance-particuliers-rueil-malmaison"],
     ["Professionnels", "assurance-entreprise-rueil-malmaison"],
     ["Contact", "courtier-en-assurances-de-rueil-malmaison"],
-    ["Mentions legales", "mentions-legales"],
-    ["Confidentialite", "politique-de-confidentialite"],
+    ["Mentions légales", "mentions-legales"],
+    ["Confidentialité", "politique-de-confidentialite"],
     ["Cookies", "cookies-traceurs"],
   ],
   en: [
