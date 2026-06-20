@@ -1453,6 +1453,34 @@ html {
   padding: 1rem;
 }
 
+.content-card:not(.content-icon-panel) {
+  grid-template-columns: 3rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  min-height: 0;
+  padding: 1rem;
+}
+
+.content-card:not(.content-icon-panel)::before {
+  content: "";
+  grid-row: 1 / span 2;
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 50%;
+  background:
+    color-mix(in srgb, var(--blue) 7%, white)
+    url("assets/professional.gif") center / 1.8rem 1.8rem no-repeat;
+}
+
+.content-card:not(.content-icon-panel) .section-number {
+  display: none;
+}
+
+.content-card:not(.content-icon-panel) h2,
+.content-card:not(.content-icon-panel) p {
+  grid-column: 2;
+}
+
 .content-card:nth-child(2) {
   animation-delay: 80ms;
 }

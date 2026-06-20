@@ -1,6 +1,6 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "112.6";
+const pageVersion = pageRoot.dataset.version || "112.7";
 const pageMount = document.querySelector("[data-content-page]");
 
 const professionOptions = {
