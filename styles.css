@@ -1495,7 +1495,7 @@ html {
   font-weight: 900;
 }
 
-.quote-field input,
+.quote-field input:not([type="radio"]):not([type="checkbox"]),
 .quote-field select {
   width: 100%;
   min-height: 3rem;
@@ -1507,7 +1507,7 @@ html {
   outline: none;
 }
 
-.quote-field input:focus,
+.quote-field input:not([type="radio"]):not([type="checkbox"]):focus,
 .quote-field select:focus {
   border-color: var(--blue);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 18%, transparent);
@@ -1532,8 +1532,22 @@ html {
 
 .choice-row label {
   align-items: center;
-  min-width: 8rem;
+  min-width: 9.4rem;
   color: var(--blue);
+}
+
+.choice-row input[type="radio"],
+.consent-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1.05rem;
+  height: 1.05rem;
+  min-height: 0;
+  margin: 0.15rem 0 0;
+  accent-color: var(--blue);
+}
+
+.choice-row input[type="radio"] {
+  margin-top: 0;
 }
 
 .quote-two {
