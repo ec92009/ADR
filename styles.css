@@ -60,7 +60,7 @@ svg {
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: minmax(13rem, 1fr) minmax(22rem, auto) minmax(13rem, 1fr);
+  grid-template-columns: minmax(13rem, 1fr) minmax(30rem, auto);
   align-items: center;
   gap: 1rem;
   padding: 0.75rem clamp(1rem, 4vw, 3rem);
@@ -101,7 +101,7 @@ svg {
 
 .look-picker {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -136,32 +136,6 @@ svg {
 }
 
 .look-button.is-active {
-  background: var(--blue);
-  color: white;
-}
-
-.preview-tools {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.55rem;
-}
-
-.mini-contact,
-.mini-switch {
-  min-height: 2.25rem;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 0.48rem 0.75rem;
-  background: var(--paper);
-  color: var(--blue);
-  font-size: 0.82rem;
-  font-weight: 900;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.mini-switch[aria-checked="true"] {
   background: var(--blue);
   color: white;
 }
@@ -229,6 +203,52 @@ svg {
   justify-content: space-between;
   gap: 1rem;
   margin-bottom: 1.6rem;
+}
+
+.nav-actions,
+.page-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.nav-actions {
+  justify-content: flex-end;
+}
+
+.page-tools {
+  flex-wrap: wrap;
+}
+
+.page-switch {
+  min-height: 2.6rem;
+  min-width: 3.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.54rem 0.82rem;
+  background: var(--paper);
+  color: var(--blue);
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.page-switch[aria-checked="true"] {
+  background: var(--blue);
+  color: white;
+}
+
+.page-tools-dark .page-switch,
+.premium-nav .page-switch {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.page-tools-dark .page-switch[aria-checked="true"],
+.premium-nav .page-switch[aria-checked="true"] {
+  background: #75adff;
+  color: #06111d;
 }
 
 .site-links {
@@ -387,12 +407,14 @@ svg {
   font-weight: 800;
 }
 
-.look-editorial {
+.look-editorial,
+.look-synthesis {
   background: #fbfdff;
   color: #08203d;
 }
 
-:root[data-theme="night"] .look-editorial {
+:root[data-theme="night"] .look-editorial,
+:root[data-theme="night"] .look-synthesis {
   background: #081726;
   color: #edf6ff;
 }
@@ -520,6 +542,35 @@ svg {
   padding-left: 1.4rem;
 }
 
+.synthesis-services {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 2rem, 1180px);
+  margin: -5rem auto 0;
+}
+
+.synthesis-services article {
+  border-color: var(--line);
+  background: var(--paper);
+  box-shadow: var(--soft-shadow);
+}
+
+.synthesis-services h2 {
+  color: var(--blue);
+}
+
+.synthesis-services p {
+  color: var(--muted);
+}
+
+.synthesis-services a {
+  color: var(--blue);
+}
+
+.synthesis-services img {
+  background: color-mix(in srgb, var(--blue) 7%, white);
+}
+
 .look-premium {
   background:
     radial-gradient(circle at 86% 12%, rgba(36, 187, 181, 0.18), transparent 28rem),
@@ -640,20 +691,27 @@ svg {
   font-weight: 800;
 }
 
+.look-synthesis .premium-services article {
+  border-color: var(--line);
+  background: var(--paper);
+  box-shadow: var(--soft-shadow);
+}
+
+.look-synthesis .premium-services h2 {
+  color: var(--blue);
+}
+
+.look-synthesis .premium-services p {
+  color: var(--muted);
+}
+
+.look-synthesis .premium-services a {
+  color: var(--blue);
+}
+
 @media (max-width: 980px) {
   .preview-header {
     grid-template-columns: 1fr;
-  }
-
-  .preview-tools {
-    justify-content: stretch;
-    flex-wrap: wrap;
-  }
-
-  .mini-contact,
-  .mini-switch {
-    flex: 1;
-    text-align: center;
   }
 
   .classic-hero,
@@ -668,6 +726,10 @@ svg {
   }
 
   .editorial-services {
+    margin-top: 1rem;
+  }
+
+  .synthesis-services {
     margin-top: 1rem;
   }
 
@@ -700,10 +762,16 @@ svg {
 
   .site-nav,
   .premium-nav,
+  .nav-actions,
   .contact-band,
   .premium-contact {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .page-tools,
+  .page-switch {
+    width: 100%;
   }
 
   .site-links {

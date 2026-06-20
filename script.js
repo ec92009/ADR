@@ -1,12 +1,14 @@
 const translations = {
   fr: {
-    previewSub: "3 propositions de refonte",
+    previewSub: "4 propositions de refonte",
     option1: "Option 1",
     option1Label: "Classique confiance",
     option2: "Option 2",
     option2Label: "Local éditorial",
     option3: "Option 3",
     option3Label: "Premium digital",
+    option4: "Option 4",
+    option4Label: "Synthesis",
     navServices: "Services",
     navContact: "Contact",
     headline: "Courtier en assurances à Rueil-Malmaison",
@@ -29,13 +31,15 @@ const translations = {
     lang: "FR",
   },
   en: {
-    previewSub: "3 redesign proposals",
+    previewSub: "4 redesign proposals",
     option1: "Option 1",
     option1Label: "Classic trust",
     option2: "Option 2",
     option2Label: "Local editorial",
     option3: "Option 3",
     option3Label: "Premium digital",
+    option4: "Option 4",
+    option4Label: "Synthesis",
     navServices: "Services",
     navContact: "Contact",
     headline: "Insurance broker in Rueil-Malmaison",
@@ -63,10 +67,10 @@ const root = document.documentElement;
 const lookButtons = Array.from(document.querySelectorAll("[data-look-target]"));
 const looks = Array.from(document.querySelectorAll(".site-look"));
 const i18nNodes = Array.from(document.querySelectorAll("[data-i18n]"));
-const themeToggle = document.querySelector("[data-theme-toggle]");
-const langToggle = document.querySelector("[data-lang-toggle]");
-const themeLabel = document.querySelector("[data-theme-label]");
-const langLabel = document.querySelector("[data-lang-label]");
+const themeToggles = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+const langToggles = Array.from(document.querySelectorAll("[data-lang-toggle]"));
+const themeLabels = Array.from(document.querySelectorAll("[data-theme-label]"));
+const langLabels = Array.from(document.querySelectorAll("[data-lang-label]"));
 
 const state = {
   look: localStorage.getItem("adr-redesign-look") || "classic",
@@ -95,8 +99,10 @@ function setTheme(theme) {
   root.dataset.theme = theme;
   localStorage.setItem("adr-redesign-theme", theme);
   const isNight = theme === "night";
-  themeToggle.setAttribute("aria-checked", String(isNight));
-  themeLabel.textContent = isNight ? translations[state.lang].night : translations[state.lang].day;
+  themeToggles.forEach((toggle) => toggle.setAttribute("aria-checked", String(isNight)));
+  themeLabels.forEach((label) => {
+    label.textContent = isNight ? translations[state.lang].night : translations[state.lang].day;
+  });
 }
 
 function setLang(lang) {
@@ -107,8 +113,10 @@ function setLang(lang) {
     const value = translations[lang][node.dataset.i18n];
     if (value) node.textContent = value;
   });
-  langToggle.setAttribute("aria-checked", String(lang === "en"));
-  langLabel.textContent = translations[lang].lang;
+  langToggles.forEach((toggle) => toggle.setAttribute("aria-checked", String(lang === "en")));
+  langLabels.forEach((label) => {
+    label.textContent = translations[lang].lang;
+  });
   setTheme(state.theme);
 }
 
@@ -116,12 +124,16 @@ lookButtons.forEach((button) => {
   button.addEventListener("click", () => setLook(button.dataset.lookTarget));
 });
 
-themeToggle.addEventListener("click", () => {
-  setTheme(state.theme === "day" ? "night" : "day");
+themeToggles.forEach((toggle) => {
+  toggle.addEventListener("click", () => {
+    setTheme(state.theme === "day" ? "night" : "day");
+  });
 });
 
-langToggle.addEventListener("click", () => {
-  setLang(state.lang === "fr" ? "en" : "fr");
+langToggles.forEach((toggle) => {
+  toggle.addEventListener("click", () => {
+    setLang(state.lang === "fr" ? "en" : "fr");
+  });
 });
 
 setLook(state.look);
