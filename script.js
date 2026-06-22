@@ -1,5 +1,5 @@
 const root = document.documentElement;
-const version = root.dataset.version || "112.7";
+const version = root.dataset.version || "114.0";
 const siteRoot = root.dataset.siteRoot || "";
 const quotePath = "demande-de-devis-assurance-a-rueil-malmaison/";
 const quoteHref = `${siteRoot}${quotePath}`;
@@ -59,6 +59,19 @@ const translations = {
     legalPrivacy: "Politique de confidentialité",
     legalCookies: "Cookies & traceurs",
     legalCookieEu: "Politique de cookies (UE)",
+    faqTitle: "Questions fréquentes",
+    faqBrokerQuestion: "Quel est le rôle d'un courtier en assurances à Rueil-Malmaison ?",
+    faqBrokerAnswer:
+      "Un courtier compare les contrats disponibles, conseille l'assuré et l'accompagne dans le choix de garanties adaptées à sa situation.",
+    faqServicesQuestion: "Quels contrats Assurances de Rueil peut-il accompagner ?",
+    faqServicesAnswer:
+      "Le cabinet intervient sur l'assurance de prêt, l'habitation, l'auto, la santé, la prévoyance et les besoins des professionnels.",
+    faqLocalQuestion: "Le cabinet est-il situé à Rueil-Malmaison ?",
+    faqLocalAnswer:
+      "Oui. Assurances de Rueil est situé au 75 avenue Victor Hugo, 92500 Rueil-Malmaison, dans les Hauts-de-Seine.",
+    faqQuoteQuestion: "Comment demander une simulation ou un devis ?",
+    faqQuoteAnswer:
+      "Le formulaire de demande de devis permet de transmettre les informations utiles afin qu'un conseiller prépare une réponse personnalisée.",
     settingsTitle: "Réglages",
     settingsVersion: `Version v${version}`,
     settingsLanguage: "Langue",
@@ -122,6 +135,19 @@ const translations = {
     legalPrivacy: "Privacy policy",
     legalCookies: "Cookies & tracking",
     legalCookieEu: "Cookie policy (EU)",
+    faqTitle: "Frequently asked questions",
+    faqBrokerQuestion: "What does an insurance broker in Rueil-Malmaison do?",
+    faqBrokerAnswer:
+      "A broker compares available policies, advises the insured client and helps choose guarantees adapted to the client's situation.",
+    faqServicesQuestion: "Which policies can Assurances de Rueil support?",
+    faqServicesAnswer:
+      "The agency supports borrower insurance, home, car, health, income protection and professional insurance needs.",
+    faqLocalQuestion: "Is the agency located in Rueil-Malmaison?",
+    faqLocalAnswer:
+      "Yes. Assurances de Rueil is located at 75 avenue Victor Hugo, 92500 Rueil-Malmaison, in Hauts-de-Seine.",
+    faqQuoteQuestion: "How can I request a simulation or quote?",
+    faqQuoteAnswer:
+      "The quote request form lets you share the useful information so an adviser can prepare a personalized response.",
     settingsTitle: "Settings",
     settingsVersion: `Version v${version}`,
     settingsLanguage: "Language",

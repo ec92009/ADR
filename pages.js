@@ -1,6 +1,6 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "112.7";
+const pageVersion = pageRoot.dataset.version || "114.0";
 const pageMount = document.querySelector("[data-content-page]");
 
 const professionOptions = {
@@ -400,6 +400,189 @@ const iconAssets = {
   professional: "assets/professional.gif",
 };
 
+const pageFaqs = {
+  "demande-de-devis-assurance-a-rueil-malmaison": {
+    fr: [
+      [
+        "Comment demander un devis d'assurance à Rueil-Malmaison ?",
+        "Vous pouvez transmettre vos coordonnées, votre profil et les informations utiles à votre dossier afin qu'un conseiller Assurances de Rueil vous rappelle avec une proposition adaptée.",
+      ],
+      [
+        "Quelles informations préparer pour une assurance de prêt ?",
+        "Il est utile de préparer votre date de naissance, votre profession, votre banque, le montant du prêt et les garanties attendues par l'établissement prêteur.",
+      ],
+      [
+        "Le devis engage-t-il automatiquement le client ?",
+        "Non. La demande sert à préparer une simulation et un échange avec le cabinet avant toute souscription.",
+      ],
+    ],
+    en: [
+      [
+        "How can I request an insurance quote in Rueil-Malmaison?",
+        "You can share your contact details, profile and file information so an Assurances de Rueil adviser can call back with a tailored proposal.",
+      ],
+      [
+        "What should I prepare for borrower insurance?",
+        "Prepare your date of birth, profession, bank, loan amount and the guarantees required by the lender.",
+      ],
+      [
+        "Does requesting a quote commit the client?",
+        "No. The request prepares a simulation and a discussion with the agency before any subscription.",
+      ],
+    ],
+  },
+  "cabinet-de-courtage-en-assurances-rueil-malmaison": {
+    fr: [
+      [
+        "Pourquoi passer par un courtier en assurances à Rueil-Malmaison ?",
+        "Un courtier compare plusieurs solutions et défend les intérêts de l'assuré, avec un accompagnement local pour choisir les garanties et suivre les sinistres.",
+      ],
+      [
+        "Le cabinet accompagne-t-il particuliers et professionnels ?",
+        "Oui. Assurances de Rueil accompagne les particuliers, artisans, commerçants, professions libérales, PME et entreprises industrielles.",
+      ],
+      [
+        "Où se trouve Assurances de Rueil ?",
+        "Le cabinet est situé au 75 avenue Victor Hugo, 92500 Rueil-Malmaison.",
+      ],
+    ],
+    en: [
+      [
+        "Why use an insurance broker in Rueil-Malmaison?",
+        "A broker compares several solutions and works in the insured client's interest, with local guidance for guarantees and claims follow-up.",
+      ],
+      [
+        "Does the agency support individuals and professionals?",
+        "Yes. Assurances de Rueil supports individuals, tradespeople, retailers, liberal professions, SMEs and industrial companies.",
+      ],
+      [
+        "Where is Assurances de Rueil located?",
+        "The agency is located at 75 avenue Victor Hugo, 92500 Rueil-Malmaison.",
+      ],
+    ],
+  },
+  "assurance-de-pret-a-rueil-malmaison": {
+    fr: [
+      [
+        "À quoi sert une assurance de prêt immobilier ?",
+        "Elle peut prendre le relais du remboursement en cas de décès, perte totale et irréversible d'autonomie, incapacité, invalidité ou perte d'emploi selon le contrat.",
+      ],
+      [
+        "Peut-on choisir une assurance emprunteur différente de celle de la banque ?",
+        "Oui. L'emprunteur peut comparer une assurance externe si les garanties répondent aux exigences de la banque.",
+      ],
+      [
+        "Assurances de Rueil peut-il comparer les garanties ?",
+        "Oui. Le cabinet aide à adapter les garanties au profil de l'emprunteur et aux demandes de l'établissement prêteur.",
+      ],
+    ],
+    en: [
+      [
+        "What is borrower insurance used for?",
+        "It can take over repayment after death, total loss of autonomy, incapacity, disability or job loss depending on the policy.",
+      ],
+      [
+        "Can borrowers choose insurance outside the bank?",
+        "Yes. Borrowers can compare an external insurance policy when its guarantees meet the bank's requirements.",
+      ],
+      [
+        "Can Assurances de Rueil compare guarantees?",
+        "Yes. The agency helps adapt guarantees to the borrower's profile and the lender's requirements.",
+      ],
+    ],
+  },
+  "assurance-particuliers-rueil-malmaison": {
+    fr: [
+      [
+        "Quelles assurances pour les particuliers sont proposées ?",
+        "Le cabinet accompagne les contrats habitation, santé, retraite, prévoyance, véhicule, loyers impayés et assurance emprunteur.",
+      ],
+      [
+        "L'assurance habitation peut-elle être adaptée au logement ?",
+        "Oui. Les garanties peuvent tenir compte du bien, de son usage, de sa localisation et du profil du propriétaire ou occupant.",
+      ],
+      [
+        "Le cabinet accompagne-t-il les familles expatriées ou en déplacement ?",
+        "Des solutions d'assistance famille en France et à l'étranger peuvent être étudiées selon les besoins.",
+      ],
+    ],
+    en: [
+      [
+        "Which personal insurance policies are available?",
+        "The agency supports home, health, retirement, income protection, vehicle, unpaid rent and borrower insurance policies.",
+      ],
+      [
+        "Can home insurance be adapted to the property?",
+        "Yes. Guarantees can account for the property, its use, its location and the owner or occupant profile.",
+      ],
+      [
+        "Can the agency support families travelling or living abroad?",
+        "Family assistance solutions in France and abroad can be reviewed according to the need.",
+      ],
+    ],
+  },
+  "assurance-entreprise-rueil-malmaison": {
+    fr: [
+      [
+        "Quelles entreprises peuvent être assurées ?",
+        "Assurances de Rueil accompagne artisans, commerçants, professions libérales, PME et entreprises industrielles.",
+      ],
+      [
+        "Que couvre une assurance multirisque professionnelle ?",
+        "Elle peut couvrir les locaux, machines, marchandises, stocks, matériel informatique, bris, incendie, dégâts des eaux et responsabilités professionnelles.",
+      ],
+      [
+        "Le cabinet peut-il accompagner un prêt professionnel ?",
+        "Oui. Une assurance emprunteur peut être étudiée pour des prêts professionnels ou investissements selon le profil et le contrat.",
+      ],
+    ],
+    en: [
+      [
+        "Which businesses can be insured?",
+        "Assurances de Rueil supports tradespeople, retailers, liberal professions, SMEs and industrial companies.",
+      ],
+      [
+        "What can business multi-risk insurance cover?",
+        "It can cover premises, machinery, goods, stock, IT equipment, breakage, fire, water damage and professional liabilities.",
+      ],
+      [
+        "Can the agency support a professional loan?",
+        "Yes. Borrower insurance can be reviewed for professional loans or investments depending on the profile and contract.",
+      ],
+    ],
+  },
+  "courtier-en-assurances-de-rueil-malmaison": {
+    fr: [
+      [
+        "Comment contacter Assurances de Rueil ?",
+        "Le cabinet peut être joint au +33 1 47 51 06 69 ou par e-mail à contact@assurancesderueil.fr.",
+      ],
+      [
+        "Quels sont les horaires d'ouverture ?",
+        "Le cabinet est ouvert du lundi au vendredi, de 9H00 à 12H30 et de 14H00 à 18H30.",
+      ],
+      [
+        "Quelle est l'adresse du cabinet ?",
+        "Assurances de Rueil se trouve au 75 avenue Victor Hugo, 92500 Rueil-Malmaison.",
+      ],
+    ],
+    en: [
+      [
+        "How can I contact Assurances de Rueil?",
+        "The agency can be reached at +33 1 47 51 06 69 or by email at contact@assurancesderueil.fr.",
+      ],
+      [
+        "What are the opening hours?",
+        "The agency is open Monday to Friday, 9:00-12:30 and 14:00-18:30.",
+      ],
+      [
+        "What is the agency address?",
+        "Assurances de Rueil is located at 75 avenue Victor Hugo, 92500 Rueil-Malmaison.",
+      ],
+    ],
+  },
+};
+
 function pageLang() {
   return pageRoot.lang === "en" ? "en" : "fr";
 }
@@ -442,6 +625,30 @@ function renderCards(slug, copy) {
     .join("");
 }
 
+function renderFaq(slug) {
+  const items = pageFaqs[slug]?.[pageLang()] || [];
+  if (!items.length) return "";
+
+  const title = pageLang() === "fr" ? "Questions fréquentes" : "Frequently asked questions";
+  return `
+    <section class="content-faq glass-panel" aria-label="${escapeHtml(title)}">
+      <h2>${escapeHtml(title)}</h2>
+      <div class="content-faq-list">
+        ${items
+          .map(
+            ([question, answer]) => `
+              <details>
+                <summary>${escapeHtml(question)}</summary>
+                <p>${escapeHtml(answer)}</p>
+              </details>
+            `
+          )
+          .join("")}
+      </div>
+    </section>
+  `;
+}
+
 function renderFooter() {
   return `
     <footer class="site-footer glass-panel">
@@ -469,6 +676,7 @@ function renderStandardPage(slug, data, copy) {
     <section class="content-card-grid" aria-label="${escapeHtml(copy.title)}">
       ${renderCards(slug, copy)}
     </section>
+    ${renderFaq(slug)}
     ${renderFooter()}
   `;
 }
@@ -584,6 +792,7 @@ function renderQuotePage(data, copy) {
         <p class="form-status" hidden data-form-status>${escapeHtml(copy.previewMessage)}</p>
       </form>
     </section>
+    ${renderFaq("demande-de-devis-assurance-a-rueil-malmaison")}
     ${renderFooter()}
   `;
 }
@@ -608,7 +817,6 @@ function renderPage() {
   if (!data) return;
 
   const copy = data[pageLang()] || data.fr;
-  document.title = `${copy.title} - Assurances de Rueil v${pageVersion}`;
   pageMount.innerHTML = data.type === "quote" ? renderQuotePage(data, copy) : renderStandardPage(slug, data, copy);
   attachPreviewForm(copy);
 }
