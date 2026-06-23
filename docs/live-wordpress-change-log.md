@@ -47,3 +47,41 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - The form content backup above contains the pre-intervention MetForm content from form `2073`.
 - WordPress revisions for form `2073` should also be available in the admin editor.
 - If the quote form render becomes incomplete again, restore form `2073` from the WordPress revision before the classic-editor captcha-removal attempt, then remove the reCAPTCHA widget only through Elementor.
+
+## 2026-06-24
+
+### Original detail restoration
+
+- Goal: keep the refreshed visual design while restoring the fuller original business/service detail for Manuel's review.
+- Captured `before` and `after` HTML backups for the live WordPress pages:
+  - `wp-backups/page-7754-assurance-de-pret-a-rueil-malmaison-before-original-detail-2026-06-24.html`
+  - `wp-backups/page-7754-assurance-de-pret-a-rueil-malmaison-after-original-detail-2026-06-24.html`
+  - `wp-backups/page-7331-assurance-particuliers-rueil-malmaison-before-original-detail-2026-06-24.html`
+  - `wp-backups/page-7331-assurance-particuliers-rueil-malmaison-after-original-detail-2026-06-24.html`
+  - `wp-backups/page-2180-assurance-entreprise-rueil-malmaison-before-original-detail-2026-06-24.html`
+  - `wp-backups/page-2180-assurance-entreprise-rueil-malmaison-after-original-detail-2026-06-24.html`
+  - `wp-backups/page-7358-cabinet-de-courtage-en-assurances-rueil-malmaison-before-original-detail-2026-06-24.html`
+  - `wp-backups/page-7358-cabinet-de-courtage-en-assurances-rueil-malmaison-after-original-detail-2026-06-24.html`
+- Added restored-detail sections marked `adr-original-detail-v1` to:
+  - Assurance de prêt: operation, subscription inputs, comparison points, exclusions, and broker guidance.
+  - Particuliers: habitation, loyers impayés, santé/GAV, automobile/mobility, prévoyance, and borrower-insurance profile examples.
+  - Professionnels: multirisques, loyers impayés, borrower insurance, responsabilité civile/professionnelle, prévoyance collective, fleet insurance, and executive unemployment insurance.
+  - Cabinet: four-generation Rueil-Malmaison presence, client types, custom insurance objective, availability, and opening hours.
+
+### Legacy contact URL
+
+- Installed/configured the WordPress Redirection plugin enough to create a reversible admin-managed compatibility rule.
+- Left optional permalink monitoring, redirect/404 logging, and IP collection off during Redirection setup.
+- Added a 301 redirect:
+  - source: `/contact/`
+  - target: `/courtier-en-assurances-de-rueil-malmaison/`
+- Public verification:
+  - `/contact/` returns `301` with `x-redirect-by: redirection`;
+  - following the redirect reaches `/courtier-en-assurances-de-rueil-malmaison/` with HTTP `200`;
+  - the live contact page includes the original address, phone, fax, email, and opening hours.
+
+### Verification
+
+- Public checks confirmed the restored detail headings on Assurance de prêt, Particuliers, Professionnels, and Cabinet.
+- Public checks confirmed the refreshed contact form still exposes the expected visible fields.
+- Detailed audit recorded in `docs/audits/original-detail-restoration-2026-06-24.md`.

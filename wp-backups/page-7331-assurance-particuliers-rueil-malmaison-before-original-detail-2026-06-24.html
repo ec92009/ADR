@@ -1,0 +1,204 @@
+<!-- wp:html -->
+<div class="adr-page-stage adr-personal-stage">
+  <style>
+    body.page-id-7331 .ekit-template-content-header,
+    body.page-id-7331 .site-footer,
+    body.page-id-7331 footer.footer,
+    body.page-id-7331 .ekit-template-content-footer,
+    body.page-id-7331 .page-banner-area,
+    body.page-id-7331 .breadcrumb { display: none !important; }
+    .adr-page-stage, .adr-page-stage * { box-sizing: border-box; }
+    .adr-page-stage {
+      --adr-blue: #003478;
+      --adr-blue-soft: #6da9ff;
+      --adr-ink: #07192f;
+      --adr-muted: #657386;
+      --adr-line: rgba(0, 52, 120, 0.18);
+      --adr-paper: rgba(255, 255, 255, 0.88);
+      --adr-solid: #ffffff;
+      --adr-wash: #eef5fb;
+      --adr-gold: #d7a53c;
+      --adr-shadow: 0 24px 70px rgba(0, 28, 64, 0.16);
+      --adr-soft-shadow: 0 14px 36px rgba(0, 28, 64, 0.1);
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      margin-top: -1px;
+      padding: clamp(14px, 2vw, 24px) clamp(14px, 2vw, 24px) 64px;
+      background: radial-gradient(circle at 10% 0%, rgba(109,169,255,.2), transparent 30%), var(--adr-wash);
+      color: var(--adr-ink);
+      font-family: Rubik, "Open Sans", Arial, sans-serif;
+      overflow: clip;
+    }
+    .adr-page-stage:has(#adr-theme-toggle:checked) {
+      --adr-blue: #83b7ff;
+      --adr-blue-soft: #74a9f7;
+      --adr-ink: #edf6ff;
+      --adr-muted: #a8b8c8;
+      --adr-line: rgba(169, 201, 234, 0.24);
+      --adr-paper: rgba(12, 29, 49, 0.84);
+      --adr-solid: #0e2135;
+      --adr-wash: #06111d;
+      --adr-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      --adr-soft-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
+    }
+    .adr-page-stage a { color: inherit; }
+    .adr-page-stage img { display: block; max-width: 100%; }
+    .adr-en { display: none; }
+    .adr-page-stage:has(#adr-lang-toggle:checked) .adr-fr { display: none; }
+    .adr-page-stage:has(#adr-lang-toggle:checked) .adr-en { display: inline; }
+    .adr-page-stage:has(#adr-lang-toggle:checked) .adr-en.adr-block { display: block; }
+    .adr-switch-input { position: absolute; opacity: 0; pointer-events: none; }
+    .adr-floating-panel {
+      position: sticky;
+      top: clamp(12px, 2vw, 24px);
+      z-index: 9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: min(100%, 1288px);
+      margin: 0 auto 18px;
+      border: 1px solid var(--adr-line);
+      border-radius: 8px;
+      padding: 7px 8px 7px 12px;
+      background: var(--adr-paper);
+      box-shadow: 0 18px 54px rgba(0, 0, 0, 0.18);
+      backdrop-filter: blur(18px);
+    }
+    body.admin-bar .adr-floating-panel { top: calc(32px + clamp(12px, 2vw, 24px)); }
+    .adr-brand { display: inline-flex; align-items: center; gap: 13px; min-width: 0; color: var(--adr-blue); text-decoration: none; }
+    .adr-brand img { width: clamp(48px, 5vw, 78px); height: clamp(48px, 5vw, 78px); border-radius: 50%; }
+    .adr-brand strong { font-size: clamp(24px, 3vw, 42px); line-height: 1; letter-spacing: 0; white-space: nowrap; }
+    .adr-panel-actions { display: flex; align-items: stretch; justify-content: flex-end; gap: 8px; }
+    .adr-button, .adr-switch-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      height: clamp(44px, 4.6vw, 64px);
+      border-radius: 8px;
+      padding: 12px 18px;
+      border: 1px solid var(--adr-line);
+      font-weight: 900;
+      line-height: 1.05;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      margin: 0 !important;
+    }
+    .adr-button-primary, .adr-button-primary:visited, .adr-button-primary:hover, .adr-button-primary:focus {
+      border-color: transparent;
+      background: var(--adr-blue);
+      color: #fff !important;
+      box-shadow: 0 16px 34px rgba(0, 52, 120, 0.22);
+    }
+    .adr-page-stage:has(#adr-theme-toggle:checked) .adr-button-primary { color: #06111d !important; }
+    .adr-switch-label { min-width: 58px; background: color-mix(in srgb, var(--adr-blue) 7%, var(--adr-solid)); color: var(--adr-blue); font-size: 13px; }
+    .adr-page-stage:has(#adr-theme-toggle:checked) label[for="adr-theme-toggle"],
+    .adr-page-stage:has(#adr-lang-toggle:checked) label[for="adr-lang-toggle"] { background: var(--adr-blue); color: #06111d; }
+    .adr-hero, .adr-form-section, .adr-next-steps, .adr-mini-nav { width: min(100%, 1180px); margin-left: auto; margin-right: auto; }
+    .adr-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, .75fr);
+      min-height: 430px;
+      overflow: hidden;
+      border: 1px solid var(--adr-line);
+      border-radius: 8px;
+      background: var(--adr-solid);
+      box-shadow: var(--adr-shadow);
+    }
+    .adr-hero-copy { display: grid; align-content: center; gap: 18px; padding: clamp(28px, 5vw, 70px); }
+    .adr-kicker { margin: 0; color: var(--adr-gold); font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+    .adr-hero h1 { margin: 0; color: var(--adr-blue); font-size: clamp(40px, 5.4vw, 74px); line-height: 1; letter-spacing: 0; }
+    .adr-hero p { max-width: 680px; margin: 0; color: var(--adr-muted); font-size: clamp(18px, 2vw, 23px); line-height: 1.55; }
+    .adr-hero-media { min-height: 340px; background: #d9e7f2; }
+    .adr-hero-media img { width: 100%; height: 100%; object-fit: cover; }
+    .adr-mini-nav { position: sticky; top: 116px; z-index: 8; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 18px; margin-bottom: 18px; border: 1px solid var(--adr-line); border-radius: 8px; padding: 8px; background: var(--adr-paper); backdrop-filter: blur(18px); }
+    .adr-mini-nav a { border-radius: 999px; padding: 9px 12px; color: var(--adr-blue); font-size: 13px; font-weight: 900; text-decoration: none; }
+    .adr-form-section { display: grid; grid-template-columns: minmax(270px, .52fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+    .adr-side-card, .adr-form-card, .adr-step-card { border: 1px solid var(--adr-line); border-radius: 8px; background: var(--adr-paper); box-shadow: var(--adr-soft-shadow); backdrop-filter: blur(18px); }
+    .adr-side-card { position: sticky; top: 178px; display: grid; gap: 14px; padding: clamp(22px, 3vw, 34px); }
+    .adr-side-card h2, .adr-form-card h2, .adr-step-card h2 { margin: 0; color: var(--adr-blue); line-height: 1.12; letter-spacing: 0; }
+    .adr-side-card p, .adr-form-card p, .adr-step-card p, .adr-side-card li { margin: 0; color: var(--adr-muted); line-height: 1.58; }
+    .adr-side-card ol { display: grid; gap: 12px; margin: 6px 0 0; padding-left: 22px; font-weight: 900; color: var(--adr-muted); }
+    .adr-form-card { padding: clamp(18px, 3vw, 28px); }
+    .adr-form-intro { display: grid; gap: 8px; margin-bottom: 16px; }
+    .adr-form-card .mf-form-wrapper,
+    .adr-form-card .metform-form-content,
+    .adr-form-card .elementor,
+    .adr-form-card .elementor-section,
+    .adr-form-card .elementor-container { max-width: none !important; width: 100% !important; }
+    .adr-form-card input:not([type="checkbox"]):not([type="radio"]),
+    .adr-form-card select,
+    .adr-form-card textarea {
+      min-height: 46px !important;
+      border: 1px solid var(--adr-line) !important;
+      border-radius: 8px !important;
+      background: color-mix(in srgb, var(--adr-solid) 88%, transparent) !important;
+      color: var(--adr-ink) !important;
+      box-shadow: none !important;
+    }
+    .adr-form-card label,
+    .adr-form-card .mf-input-label { color: var(--adr-ink) !important; font-weight: 800 !important; }
+    .adr-form-card .metform-btn,
+    .adr-form-card .metform-submit-btn { min-height: 50px !important; border-radius: 8px !important; background: var(--adr-blue) !important; color: #fff !important; font-weight: 900 !important; }
+    .adr-next-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+    .adr-step-card { display: grid; gap: 8px; padding: 20px; }
+    .adr-step-card img { width: 48px; height: 48px; border-radius: 50%; padding: 8px; background: color-mix(in srgb, var(--adr-blue) 8%, white); }
+    @media (max-width: 980px) { .adr-form-section, .adr-hero { grid-template-columns: 1fr; } .adr-side-card, .adr-mini-nav { position: static; } .adr-hero-media { order: -1; min-height: 240px; } }
+    @media (max-width: 760px) { .adr-floating-panel, .adr-panel-actions { align-items: stretch; flex-direction: column; } .adr-brand strong { white-space: normal; } .adr-panel-actions, .adr-button, .adr-switch-label { width: 100%; } }
+    @media (max-width: 640px) { .adr-page-stage { padding-left: 10px; padding-right: 10px; } .adr-hero h1 { font-size: 34px; } .adr-hero-copy { padding: 22px 18px; } .adr-next-steps { grid-template-columns: 1fr; } }
+    .adr-info-grid { width: min(100%, 1180px); margin: 18px auto 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .adr-info-card { display: grid; gap: 10px; min-height: 250px; border: 1px solid var(--adr-line); border-radius: 8px; background: var(--adr-paper); box-shadow: var(--adr-soft-shadow); backdrop-filter: blur(18px); padding: clamp(20px, 3vw, 30px); }
+    .adr-info-card img { width: 52px; height: 52px; border-radius: 50%; padding: 8px; background: color-mix(in srgb, var(--adr-blue) 8%, white); }
+    .adr-info-card h2, .adr-cta-strip h2 { margin: 0; color: var(--adr-blue); line-height: 1.12; letter-spacing: 0; }
+    .adr-info-card p, .adr-cta-strip p { margin: 0; color: var(--adr-muted); line-height: 1.58; }
+    .adr-cta-strip { width: min(100%, 1180px); margin: 18px auto 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px; align-items: center; border: 1px solid var(--adr-line); border-radius: 8px; background: var(--adr-paper); box-shadow: var(--adr-soft-shadow); backdrop-filter: blur(18px); padding: clamp(22px, 4vw, 38px); }
+    @media (max-width: 900px) { .adr-info-grid { grid-template-columns: 1fr; } .adr-cta-strip { grid-template-columns: 1fr; } }
+  
+  
+    /* adr-hero-media-patch-v1: keep stacked hero images compact on tablet and narrow desktop. */
+    @media (max-width: 980px) {
+      .adr-page-stage .adr-hero-media { height: clamp(210px, 32vw, 300px) !important; min-height: 0 !important; }
+      .adr-page-stage .adr-hero-media img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
+    }
+</style>
+  <input class="adr-switch-input" id="adr-theme-toggle" type="checkbox" aria-label="Basculer le thème jour/nuit">
+  <input class="adr-switch-input" id="adr-lang-toggle" type="checkbox" aria-label="Basculer français/anglais">
+  <header class="adr-floating-panel" aria-label="Navigation principale">
+    <a class="adr-brand" href="https://assurancesderueil.fr/"><img src="https://assurancesderueil.fr/wp-content/uploads/2022/08/cropped-flaticon2.png" alt=""><strong>Assurances de Rueil</strong></a>
+    <div class="adr-panel-actions">
+      <a class="adr-button adr-button-primary" href="https://assurancesderueil.fr/demande-de-devis-assurance-a-rueil-malmaison/"><span class="adr-fr">Demander un devis</span><span class="adr-en">Request a quote</span></a>
+      <label class="adr-switch-label" for="adr-theme-toggle"><span class="adr-fr">Jour/Nuit</span><span class="adr-en">Day/Night</span></label>
+      <label class="adr-switch-label" for="adr-lang-toggle">FR/EN</label>
+    </div>
+  </header>
+  <section class="adr-hero" aria-label="Particuliers">
+    <div class="adr-hero-copy">
+      <p class="adr-kicker"><span class="adr-fr">Particuliers</span><span class="adr-en">Individuals</span></p>
+      <h1><span class="adr-fr">Assurance particuliers à Rueil-Malmaison</span><span class="adr-en adr-block">Personal insurance in Rueil-Malmaison</span></h1>
+      <p><span class="adr-fr">Protection des biens, de la personne et des proches avec des contrats habitation, santé, retraite, prévoyance, véhicule, loyers impayés et emprunteur.</span><span class="adr-en adr-block">Protection for property, people and loved ones through home, health, retirement, income protection, vehicle, unpaid rent and borrower insurance.</span></p>
+      <a class="adr-button adr-button-primary" href="https://assurancesderueil.fr/demande-de-devis-assurance-a-rueil-malmaison/"><span class="adr-fr">Protéger mon foyer</span><span class="adr-en">Protect my household</span></a>
+    </div>
+    <div class="adr-hero-media"><img src="https://assurancesderueil.fr/wp-content/uploads/2019/09/offer_image3.jpg" alt="Assurance particuliers à Rueil-Malmaison"></div>
+  </section>
+  <nav class="adr-mini-nav" aria-label="Pages principales">
+    <a href="https://assurancesderueil.fr/"><span class="adr-fr">Accueil</span><span class="adr-en">Home</span></a>
+    <a href="https://assurancesderueil.fr/cabinet-de-courtage-en-assurances-rueil-malmaison/"><span class="adr-fr">Cabinet</span><span class="adr-en">Agency</span></a>
+    <a href="https://assurancesderueil.fr/assurance-de-pret-a-rueil-malmaison/"><span class="adr-fr">Assurance de prêt</span><span class="adr-en">Loan insurance</span></a>
+    <a href="https://assurancesderueil.fr/assurance-particuliers-rueil-malmaison/"><span class="adr-fr">Particuliers</span><span class="adr-en">Personal</span></a>
+    <a href="https://assurancesderueil.fr/assurance-entreprise-rueil-malmaison/"><span class="adr-fr">Professionnels</span><span class="adr-en">Business</span></a>
+    <a href="https://assurancesderueil.fr/courtier-en-assurances-de-rueil-malmaison/">Contact</a>
+  </nav>
+  <section class="adr-info-grid" aria-label="Assurance particuliers à Rueil-Malmaison">
+    <article class="adr-info-card"><img src="https://assurancesderueil.fr/wp-content/uploads/2022/08/assurance-biens.gif" alt=""><h2><span class="adr-fr">Habitation</span><span class="adr-en">Home</span></h2><p><span class="adr-fr">Garanties incendie, dégâts des eaux, vol, tempête, catastrophes naturelles et adaptation aux particularités du bien.</span><span class="adr-en adr-block">Fire, water damage, theft, storm and natural disaster cover, adapted to each property.</span></p></article>
+    <article class="adr-info-card"><img src="https://assurancesderueil.fr/wp-content/uploads/2022/08/assurance-personnelle.gif" alt=""><h2><span class="adr-fr">Loyers impayés</span><span class="adr-en">Unpaid rent</span></h2><p><span class="adr-fr">Couverture des loyers impayés, frais de contentieux et détériorations immobilières selon le dossier.</span><span class="adr-en adr-block">Cover for unpaid rent, legal costs and property damage depending on the file.</span></p></article>
+    <article class="adr-info-card"><img src="https://assurancesderueil.fr/wp-content/uploads/2022/08/assurance-professionnelle.gif" alt=""><h2><span class="adr-fr">Famille et mobilité</span><span class="adr-en">Family and mobility</span></h2><p><span class="adr-fr">Solutions de responsabilité civile, assistance famille en France et à l'étranger, santé, retraite, prévoyance et véhicule.</span><span class="adr-en adr-block">Civil liability, family assistance in France and abroad, health, retirement, income protection and vehicle cover.</span></p></article>
+  </section>
+  <section class="adr-cta-strip" aria-label="Demande de devis">
+    <div><h2><span class="adr-fr">Un échange pour choisir les bonnes garanties</span><span class="adr-en">A conversation to choose the right guarantees</span></h2><p><span class="adr-fr">Assurances de Rueil compare les solutions disponibles et adapte les options à votre situation.</span><span class="adr-en adr-block">Assurances de Rueil compares available solutions and adapts options to your situation.</span></p></div>
+    <a class="adr-button adr-button-primary" href="https://assurancesderueil.fr/demande-de-devis-assurance-a-rueil-malmaison/"><span class="adr-fr">Demander un devis</span><span class="adr-en">Request a quote</span></a>
+  </section>
+</div>
+<!-- /wp:html -->
