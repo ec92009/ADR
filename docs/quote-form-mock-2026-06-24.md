@@ -28,31 +28,34 @@ Always-visible optional gate:
 
 Fields revealed only after selecting `Type de devis désiré`:
 
-1. Téléphone
-2. Contact préféré: E-mail, Téléphone, WhatsApp
-3. Banque
-4. Profession
-5. Date de naissance
-6. Êtes-vous fumeur ?
+1. Contact préféré: E-mail par défaut, Téléphone, WhatsApp
+2. Téléphone
+3. Êtes-vous fumeur ?
+4. Banque
+5. Profession
+6. Date de naissance
 7. Adresse, Code postal, Ville
+
+Desktop layout note: Contact préféré, Téléphone, and Êtes-vous fumeur are grouped in one row, with Fumeur on the right. The phone helper note was removed as redundant. Date de naissance sits in its own full-width row below that group.
 
 ## Original Copy Preserved
 
-The mock uses the exact pre-refresh French copy for:
+The mock preserves exact pre-refresh French copy for:
 
-- callback consent:
-  `En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.`
 - RGPD consent:
   `J'accepte le traitement de mes données personnelles conformément au RGPD. EN SAVOIR PLUS`
 - non-smoker definition:
   `Est non-fumeur toute personne certifiant qu’elle n’a fumé ni cigarette, ni cigarette électronique, ni pipe, ni cigare, ni consommé de produits contenant de la nicotine (patch, gomme…) au cours des 24 derniers mois, et qu’elle n’a pas arrêté de fumer à la demande expresse du corps médical.`
 
-The original form included callback consent text but did not include a phone field. The mock resolves this mismatch by adding an optional phone number once a quote type is selected.
+The original form included callback consent text but did not include a phone field. The mock resolves this mismatch by adding an optional phone number once a quote type is selected, then simplifying the contact consent into a dynamic sentence keyed to the selected contact preference:
+
+`En cliquant sur « Envoyer », j’accepte qu’Assurances de Rueil me contacte par [contact préféré].`
 
 ## Consent Behavior
 
-- Callback/call consent is optional.
-- Permission to contact by e-mail is required.
+- Contact permission is required.
+- E-mail is the default preferred contact method, because it is the only contact detail guaranteed by the required fields.
+- Contact consent text updates dynamically to `par e-mail`, `par téléphone`, or `par WhatsApp`.
 - RGPD consent is required.
 - The mock `Envoyer` button is disabled until both required consent boxes are checked.
 
@@ -61,6 +64,9 @@ The original form included callback consent text but did not include a phone fie
 - Local HTML parse check passed.
 - Browser check confirmed the gated extra section is hidden before selecting a quote type.
 - Browser check confirmed the gated extra section appears after selecting a quote type.
+- Browser check confirmed e-mail is the default contact preference.
+- Browser check confirmed the contact-consent sentence updates when Téléphone or WhatsApp is selected.
+- Browser check confirmed the latest desktop row order: Contact préféré, Téléphone, Êtes-vous fumeur.
 - Browser check confirmed `Envoyer` remains disabled until both required consent boxes are checked.
 - Mobile viewport check showed no horizontal overflow during the earlier mock pass.
 

@@ -286,6 +286,10 @@
         grid-template-columns: 1.2fr 0.7fr 1fr;
       }
 
+      .birthdate-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
       .field {
         display: grid;
         gap: 0.45rem;
@@ -384,19 +388,15 @@
         line-height: 1.45;
       }
 
-      .phone-field[hidden] {
-        display: none;
-      }
-
-      .phone-contact {
+      .contact-smoker-row {
         display: grid;
-        grid-template-columns: minmax(0, 0.8fr) minmax(13rem, 1.2fr);
-        gap: 0.65rem;
+        grid-template-columns: minmax(13rem, 0.85fr) minmax(13rem, 0.85fr) minmax(18rem, 1.3fr);
+        gap: 0.9rem;
         align-items: start;
       }
 
-      .phone-contact[hidden] {
-        display: none;
+      .smoker-field {
+        align-content: start;
       }
 
       .checks {
@@ -470,7 +470,7 @@
         .hero,
         .form-row,
         .form-row.three,
-        .phone-contact,
+        .contact-smoker-row,
         .segmented.contact-options {
           grid-template-columns: 1fr;
         }
@@ -579,22 +579,27 @@
                 </div>
 
                 <div class="quote-extra" data-quote-extra hidden>
-                  <div class="form-row">
-                    <div class="phone-contact phone-field">
-                      <label class="field">
-                        <span><span class="fr">Téléphone</span><span class="en">Phone</span></span>
-                        <input type="tel" name="telephone" autocomplete="tel" placeholder="+33" />
-                        <p class="field-note fr">Utile si le client souhaite être rappelé.</p>
-                        <p class="field-note en">Useful if the client wants a callback.</p>
-                      </label>
-                      <div class="field">
-                        <span class="field-label"><span class="fr">Contact préféré</span><span class="en">Preferred contact</span></span>
-                        <div class="segmented contact-options" role="radiogroup" aria-label="Contact préféré">
-                          <label class="choice"><input type="radio" name="contact-prefere" value="email" /> E-mail</label>
-                          <label class="choice"><input type="radio" name="contact-prefere" value="telephone" /> <span class="fr">Téléphone</span><span class="en">Phone</span></label>
-                          <label class="choice"><input type="radio" name="contact-prefere" value="whatsapp" /> WhatsApp</label>
-                        </div>
+                  <div class="contact-smoker-row">
+                    <div class="field">
+                      <span class="field-label"><span class="fr">Contact préféré</span><span class="en">Preferred contact</span></span>
+                      <div class="segmented contact-options" role="radiogroup" aria-label="Contact préféré">
+                        <label class="choice"><input type="radio" name="contact-prefere" value="email" checked /> E-mail</label>
+                        <label class="choice"><input type="radio" name="contact-prefere" value="telephone" /> <span class="fr">Téléphone</span><span class="en">Phone</span></label>
+                        <label class="choice"><input type="radio" name="contact-prefere" value="whatsapp" /> WhatsApp</label>
                       </div>
+                    </div>
+                    <label class="field">
+                      <span><span class="fr">Téléphone</span><span class="en">Phone</span></span>
+                      <input type="tel" name="telephone" autocomplete="tel" placeholder="+33" />
+                    </label>
+                    <div class="field smoker-field">
+                      <span class="field-label"><span class="fr">Êtes-vous fumeur ?</span><span class="en">Do you smoke?</span></span>
+                      <div class="segmented" role="radiogroup" aria-label="Statut fumeur">
+                        <label class="choice"><input type="radio" name="fumeur" value="Oui" /> <span class="fr">Oui</span><span class="en">Yes</span></label>
+                        <label class="choice"><input type="radio" name="fumeur" value="Non" /> <span class="fr">Non</span><span class="en">No</span></label>
+                      </div>
+                      <p class="field-note fr">Est non-fumeur toute personne certifiant qu’elle n’a fumé ni cigarette, ni cigarette électronique, ni pipe, ni cigare, ni consommé de produits contenant de la nicotine (patch, gomme…) au cours des 24 derniers mois, et qu’elle n’a pas arrêté de fumer à la demande expresse du corps médical.</p>
+                      <p class="field-note en">A non-smoker is any person certifying that they have not smoked cigarettes, electronic cigarettes, a pipe or cigars, nor consumed products containing nicotine (patch, gum, etc.) in the last 24 months, and that they did not stop smoking at the express request of the medical profession.</p>
                     </div>
                   </div>
 
@@ -624,7 +629,7 @@
                     </label>
                   </div>
 
-                  <div class="form-row">
+                  <div class="form-row birthdate-row">
                     <div class="field">
                       <span class="field-label"><span class="fr">Date de naissance</span><span class="en">Date of birth</span></span>
                       <div class="form-row three">
@@ -654,16 +659,6 @@
                         </select>
                       </div>
                     </div>
-
-                    <div class="field">
-                      <span class="field-label"><span class="fr">Êtes-vous fumeur ?</span><span class="en">Do you smoke?</span></span>
-                      <div class="segmented" role="radiogroup" aria-label="Statut fumeur">
-                        <label class="choice"><input type="radio" name="fumeur" value="Oui" /> <span class="fr">Oui</span><span class="en">Yes</span></label>
-                        <label class="choice"><input type="radio" name="fumeur" value="Non" /> <span class="fr">Non</span><span class="en">No</span></label>
-                      </div>
-                      <p class="field-note fr">Est non-fumeur toute personne certifiant qu’elle n’a fumé ni cigarette, ni cigarette électronique, ni pipe, ni cigare, ni consommé de produits contenant de la nicotine (patch, gomme…) au cours des 24 derniers mois, et qu’elle n’a pas arrêté de fumer à la demande expresse du corps médical.</p>
-                      <p class="field-note en">A non-smoker is any person certifying that they have not smoked cigarettes, electronic cigarettes, a pipe or cigars, nor consumed products containing nicotine (patch, gum, etc.) in the last 24 months, and that they did not stop smoking at the express request of the medical profession.</p>
-                    </div>
                   </div>
 
                   <div class="form-row three">
@@ -686,14 +681,9 @@
 
             <div class="checks" aria-label="Consentements">
               <label class="check">
-                <input type="checkbox" name="callback-consent" />
-                <span class="fr">En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.</span>
-                <span class="en">By clicking “Submit”, I agree that an Assurances de Rueil advisor may call me to help me choose my insurance.</span>
-              </label>
-              <label class="check">
-                <input type="checkbox" name="email-contact-consent" data-email-consent required />
-                <span class="fr">J'accepte qu'Assurances de Rueil me contacte par e-mail au sujet de ma demande de devis. <span class="required">*</span></span>
-                <span class="en">I agree that Assurances de Rueil may contact me by email about my quote request. <span class="required">*</span></span>
+                <input type="checkbox" name="contact-consent" data-contact-consent required />
+                <span class="fr">En cliquant sur « Envoyer », j’accepte qu’Assurances de Rueil me contacte par <span data-contact-channel-fr>e-mail</span>. <span class="required">*</span></span>
+                <span class="en">By clicking “Submit”, I agree that Assurances de Rueil may contact me by <span data-contact-channel-en>email</span>. <span class="required">*</span></span>
               </label>
               <label class="check">
                 <input type="checkbox" name="rgpd-consent" data-rgpd-consent required />
@@ -716,10 +706,18 @@
       const quoteType = document.querySelector("[data-quote-type]");
       const quoteExtra = document.querySelector("[data-quote-extra]");
       const yearSelect = document.querySelector("[data-year-select]");
-      const emailConsent = document.querySelector("[data-email-consent]");
+      const contactPreferences = Array.from(document.querySelectorAll('input[name="contact-prefere"]'));
+      const contactChannelFr = document.querySelector("[data-contact-channel-fr]");
+      const contactChannelEn = document.querySelector("[data-contact-channel-en]");
+      const contactConsent = document.querySelector("[data-contact-consent]");
       const rgpdConsent = document.querySelector("[data-rgpd-consent]");
       const submitButton = document.querySelector("[data-submit]");
       const currentYear = new Date().getFullYear();
+      const contactLabels = {
+        email: { fr: "e-mail", en: "email" },
+        telephone: { fr: "téléphone", en: "phone" },
+        whatsapp: { fr: "WhatsApp", en: "WhatsApp" }
+      };
 
       for (let year = currentYear - 16; year >= currentYear - 100; year -= 1) {
         const option = document.createElement("option");
@@ -740,12 +738,21 @@
         quoteExtra.hidden = quoteType.value === "";
       });
 
-      function updateSubmitState() {
-        submitButton.disabled = !(emailConsent.checked && rgpdConsent.checked);
+      function updateContactConsentText() {
+        const selected = contactPreferences.find((input) => input.checked)?.value || "email";
+        const label = contactLabels[selected] || contactLabels.email;
+        contactChannelFr.textContent = label.fr;
+        contactChannelEn.textContent = label.en;
       }
 
-      emailConsent.addEventListener("change", updateSubmitState);
+      function updateSubmitState() {
+        submitButton.disabled = !(contactConsent.checked && rgpdConsent.checked);
+      }
+
+      contactPreferences.forEach((input) => input.addEventListener("change", updateContactConsentText));
+      contactConsent.addEventListener("change", updateSubmitState);
       rgpdConsent.addEventListener("change", updateSubmitState);
+      updateContactConsentText();
       updateSubmitState();
     </script>
   </body>

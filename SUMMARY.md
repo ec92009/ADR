@@ -43,25 +43,27 @@ python3 -m http.server 8124
 - `Type de devis désiré` is full-width and acts as the gate.
 - Extra fields remain hidden until a quote type is selected.
 - Revealed fields include:
-  1. Téléphone
-  2. Contact préféré: E-mail, Téléphone, WhatsApp
-  3. Banque
-  4. Profession
-  5. Date de naissance
-  6. Êtes-vous fumeur ?
+  1. Contact préféré: E-mail par défaut, Téléphone, WhatsApp
+  2. Téléphone
+  3. Êtes-vous fumeur ?
+  4. Banque
+  5. Profession
+  6. Date de naissance
   7. Adresse, Code postal, Ville
 - The date of birth year dropdown runs from current year minus 16 through current year minus 100.
 - The original technical definition of non-smoker is included under fumeur.
+- Contact préféré, Téléphone, and Êtes-vous fumeur now sit in one desktop row; the phone helper note was removed as unnecessary.
+- Date de naissance sits in its own full-width row below that group.
 
 ## Consent Decisions
 
 - The original pre-refresh form text said a counselor may call the user, but the original form did not ask for a phone number.
 - The mock fixes that by asking for an optional phone number after a quote type is selected.
-- Callback/call consent is optional.
-- E-mail contact permission is required.
+- Contact permission is required, using one simplified contact-consent checkbox that says the user accepts contact by the selected preferred channel.
+- E-mail is the default preferred contact method because it is the only guaranteed contact detail.
 - RGPD consent is required.
-- The `Envoyer` button stays disabled until e-mail contact permission and RGPD consent are both checked.
-- The original pre-refresh French callback and RGPD wording has been preserved in the mock for traceability.
+- The `Envoyer` button stays disabled until contact permission and RGPD consent are both checked.
+- The original pre-refresh RGPD wording and fumeur definition are preserved in the mock for traceability.
 
 ## Validation Already Done
 
@@ -70,6 +72,9 @@ python3 -m http.server 8124
 - Mock browser checks confirmed:
   - extra fields are hidden before quote type selection;
   - extra fields are visible after quote type selection;
+  - e-mail is selected by default as Contact préféré;
+  - the contact-consent copy updates to e-mail, téléphone, or WhatsApp when the preference changes;
+  - the latest desktop layout places Contact préféré, Téléphone, and Êtes-vous fumeur in one row;
   - required consent gating enables `Envoyer` only after both required boxes are checked;
   - earlier mobile check showed no horizontal overflow.
 

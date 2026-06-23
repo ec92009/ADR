@@ -1,8 +1,8 @@
 # Backlog
 
 1. Share the GitHub Pages quote-form mock with Manuel and collect feedback/sign-off.
-2. Confirm the final legal/consent wording, especially the new required e-mail contact permission.
-3. Decide whether the callback consent should be shown only when a phone number is provided or always shown as currently mocked.
+2. Confirm the final legal/consent wording, especially the simplified required contact permission.
+3. Confirm with Manuel whether e-mail should remain the default contact preference, with phone/WhatsApp as optional overrides.
 4. Back up live WordPress MetForm form `2073` immediately before making form changes.
 5. Implement the approved form structure in Elementor/MetForm, avoiding classic-editor textarea edits.
 6. Verify the live quote form render publicly on desktop and mobile without submitting a real customer lead.
