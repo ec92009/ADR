@@ -1,0 +1,144 @@
+<label for="mf-input-checkbox-773e1b4">
+${ parent.decodeEntities(`Civilité `) } *
+</label>
+parent.handleCheckbox(el, 'onLoad')}
+class="mf-checkbox multi-option-input-type"
+id="mf-input-checkbox-773e1b4"&gt;
+<label>
+<input class="mf-input mf-checkbox-input " name="mf-checkbox" type="checkbox" value="Madame" /> parent.handleCheckbox(el.target, 'onClick') }
+aria-invalid=${validation.errors['mf-checkbox'] ? 'true' : 'false'}
+ref=${el =&gt; {
+parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+}
+/&gt;
+${ parent.decodeEntities(`Madame`) }
+</label>
+<label>
+<input class="mf-input mf-checkbox-input " name="mf-checkbox" type="checkbox" value="Monsieur" /> parent.handleCheckbox(el.target, 'onClick') }
+aria-invalid=${validation.errors['mf-checkbox'] ? 'true' : 'false'}
+ref=${el =&gt; {
+parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+}
+/&gt;
+${ parent.decodeEntities(`Monsieur`) }
+</label>
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-checkbox" as=${html``} /&gt;
+<label>
+${ parent.decodeEntities(`Votre date de naissance`) } *
+</label>
+&lt;${props.Flatpickr} name="mf-date" className="mf-input mf-date-input mf-left-parent " placeholder="${ parent.decodeEntities(`Date`) } " options=${{"minDate":"","maxDate":"","dateFormat":"m-d-Y","enableTime":"","disable":[],"mode":"single","static":true,"disableMobile":true,"time_24hr":false}} value=${parent.getValue('mf-date')} onInput=${parent.handleDateTime} aria-invalid=${validation.errors['mf-date'] ? 'true' : 'false'} ref=${el =&gt; props.DateWidget(
+el,
+'',
+{"message":"Ce champ est nu00e9cessaire.","required":true},
+register,
+parent
+)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-date" as=${html``} /&gt;
+<label for="mf-input-checkbox-3eab9f5">
+${ parent.decodeEntities(`Etes-vous fumeur ?`) } *
+</label>
+parent.handleCheckbox(el, 'onLoad')}
+class="mf-checkbox multi-option-input-type"
+id="mf-input-checkbox-3eab9f5"&gt;
+<label>
+<input class="mf-input mf-checkbox-input " name="fumeur" type="checkbox" value="Oui" /> parent.handleCheckbox(el.target, 'onClick') }
+aria-invalid=${validation.errors['fumeur'] ? 'true' : 'false'}
+ref=${el =&gt; {
+parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+}
+/&gt;
+${ parent.decodeEntities(`Oui`) }
+</label>
+<label>
+<input class="mf-input mf-checkbox-input " name="fumeur" type="checkbox" value="Non" /> parent.handleCheckbox(el.target, 'onClick') }
+aria-invalid=${validation.errors['fumeur'] ? 'true' : 'false'}
+ref=${el =&gt; {
+parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+}
+/&gt;
+${ parent.decodeEntities(`Non`) }
+</label>
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="fumeur" as=${html``} /&gt;
+${ parent.decodeEntities(`Est non-fumeur toute personne certifiant qu’elle n’a fumé ni cigarette,
+ni cigarette électronique, ni pipe, ni cigare, ni consommé de produits contenant de la nicotine (patch, gomme…) au cours des 24 derniers mois, et qu’elle n’a pas arrêté de fumer à la demande
+expresse du corps médical.`) }
+<label>
+${ parent.decodeEntities(`Votre profession`) } *
+</label>
+&lt;${props.Select} className=${"mf-input mf-input-select " + ( validation.errors['mf-select'] ? 'mf-invalid' : '' )} classNamePrefix="mf_select" name="mf-select" placeholder="${ parent.decodeEntities(`Sélectionner`) } " isSearchable=${false} options=${[{"label":"Cadres","value":"Cadres","isDisabled":false},{"label":"Employu00e9s, A. de mau00eetrise","value":"Employu00e9s, A. de mau00eetrise","isDisabled":false},{"label":"Ouvriers","value":"Ouvriers","isDisabled":false},{"label":"Professions mu00e9dicales","value":"Professions mu00e9dicales","isDisabled":false},{"label":"Professions paramu00e9dicales","value":"Professions paramu00e9dicales","isDisabled":false},{"label":"Professions libu00e9rales","value":"Professions libu00e9rales","isDisabled":false},{"label":"Commeru00e7ants et leurs salariu00e9s","value":"Commeru00e7ants et leurs salariu00e9s","isDisabled":false},{"label":"Artisans hors BTP et leurs salariu00e9s","value":"Artisans hors BTP et leurs salariu00e9s","isDisabled":false},{"label":"Artisans du BTP","value":"Artisans du BTP","isDisabled":false},{"label":"Professions agricoles et pu00e9ri-agricoles","value":"Professions agricoles et pu00e9ri-agricoles","isDisabled":false},{"label":"Professions du transport","value":"Professions du transport","isDisabled":false},{"label":"Retraitu00e9s","value":"Retraitu00e9s","isDisabled":false},{"label":"Sans profession","value":"Sans profession","isDisabled":false}]} value=${parent.getValue("mf-select") ? [{"label":"Cadres","value":"Cadres","isDisabled":false},{"label":"Employu00e9s, A. de mau00eetrise","value":"Employu00e9s, A. de mau00eetrise","isDisabled":false},{"label":"Ouvriers","value":"Ouvriers","isDisabled":false},{"label":"Professions mu00e9dicales","value":"Professions mu00e9dicales","isDisabled":false},{"label":"Professions paramu00e9dicales","value":"Professions paramu00e9dicales","isDisabled":false},{"label":"Professions libu00e9rales","value":"Professions libu00e9rales","isDisabled":false},{"label":"Commeru00e7ants et leurs salariu00e9s","value":"Commeru00e7ants et leurs salariu00e9s","isDisabled":false},{"label":"Artisans hors BTP et leurs salariu00e9s","value":"Artisans hors BTP et leurs salariu00e9s","isDisabled":false},{"label":"Artisans du BTP","value":"Artisans du BTP","isDisabled":false},{"label":"Professions agricoles et pu00e9ri-agricoles","value":"Professions agricoles et pu00e9ri-agricoles","isDisabled":false},{"label":"Professions du transport","value":"Professions du transport","isDisabled":false},{"label":"Retraitu00e9s","value":"Retraitu00e9s","isDisabled":false},{"label":"Sans profession","value":"Sans profession","isDisabled":false}].filter(item =&gt; item.value === parent.getValue("mf-select"))[0] : []}
+onChange=${parent.handleSelect}
+ref=${() =&gt; {
+register({ name: "mf-select" }, parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true}));
+if ( parent.getValue("mf-select") === '' &amp;&amp; false ) {
+parent.setValue( 'mf-select', '', true );
+parent.handleChange({
+target: {
+name: 'mf-select',
+value: ''
+}
+});
+}
+}}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-select" as=${html``} /&gt;
+<label for="mf-input-text-12a0ac9">
+${ parent.decodeEntities(`Votre banque`) } *
+</label>
+<input id="mf-input-text-12a0ac9" class="mf-input " name="banque" type="text" placeholder="${ parent.decodeEntities(&#96;Votre banque&#96;) } " aria-invalid="${validation.errors['banque']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="banque" as=${html``} /&gt;
+<label for="mf-input-text-a7d326f">
+${ parent.decodeEntities(`Nom`) } *
+</label>
+<input id="mf-input-text-a7d326f" class="mf-input " name="nom" type="text" placeholder="${ parent.decodeEntities(&#96;Nom&#96;) } " aria-invalid="${validation.errors['nom']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="nom" as=${html``} /&gt;
+<label for="mf-input-text-8bc3d3f">
+${ parent.decodeEntities(`Prénom`) } *
+</label>
+<input id="mf-input-text-8bc3d3f" class="mf-input " name="prenom" type="text" placeholder="${ parent.decodeEntities(&#96;Prénom&#96;) } " aria-invalid="${validation.errors['prenom']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="prenom" as=${html``} /&gt;
+<label for="mf-input-email-f3516ab">
+${ parent.decodeEntities(`E-mail`) } *
+</label>
+<input id="mf-input-email-f3516ab" class="mf-input " name="mf-email" type="email" placeholder="${ parent.decodeEntities(&#96;E-mail&#96;) } " aria-invalid="${validation.errors['mf-email']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","emailMessage":"Veuillez saisir une adresse de messagerie valide","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-email" as=${html``} /&gt;
+<label for="mf-input-text-61eb343">
+${ parent.decodeEntities(`Adresse`) } *
+</label>
+<input id="mf-input-text-61eb343" class="mf-input " name="adresse" type="text" placeholder="${ parent.decodeEntities(&#96;Adresse&#96;) } " aria-invalid="${validation.errors['adresse']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="adresse" as=${html``} /&gt;
+<label for="mf-input-text-63dcd8c">
+${ parent.decodeEntities(`Code postal`) } *
+</label>
+<input id="mf-input-text-63dcd8c" class="mf-input " name="code-postal" type="text" placeholder="${ parent.decodeEntities(&#96;Code postal&#96;) } " aria-invalid="${validation.errors['code-postal']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="code-postal" as=${html``} /&gt;
+<label for="mf-input-text-6a07518">
+${ parent.decodeEntities(`Ville`) } *
+</label>
+<input id="mf-input-text-6a07518" class="mf-input " name="mf-text" type="text" placeholder="${ parent.decodeEntities(&#96;Ville&#96;) } " aria-invalid="${validation.errors['mf-text']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-text" as=${html``} /&gt;
+<label>
+<input class="mf-input mf-checkbox-input " name="mf-gdpr-consent" type="checkbox" aria-invalid="${validation.errors['mf-gdpr-consent']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":false,"expression":"null"}, el) }
+/&gt;
+En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.
+</label>
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-gdpr-consent" as=${html``} /&gt;
+<label>
+<input class="mf-input mf-checkbox-input " name="mf-gdpr-consent" type="checkbox" aria-invalid="${validation.errors['mf-gdpr-consent']" /> parent.activateValidation({"message":"Ce champ est nu00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
+/&gt;
+J'accepte le traitement de mes données personnelles conformément au RGPD. <a href="https://5s1e9attsc.preview.infomaniak.website/politique-de-confidentialite/">EN SAVOIR PLUS</a>
+</label>
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="mf-gdpr-consent" as=${html``} /&gt;
+<input name="g-recaptcha-response" type="hidden" value="${parent.getValue('g-recaptcha-response')}" /> parent.activateValidation({"message":"reCAPTCHA est nu00e9cessaire.","required":true}, el)}
+/&gt;
+&lt;${validation.ErrorMessage} errors=${validation.errors} name="g-recaptcha-response" as=${html``} /&gt;
+<button id="" type="submit">
+${ parent.decodeEntities(`Envoyer`) }
+</button>
