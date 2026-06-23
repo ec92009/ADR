@@ -29,8 +29,21 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - WordPress confirmed `Publication mise à jour`, but the public render then showed the MetForm wrapper without the form fields. This means the classic editor save interfered with Elementor/MetForm rendering.
 - Current recovery direction: restore/preserve the Elementor form structure and remove the reCAPTCHA widget from the Elementor form builder instead of editing the classic textarea directly.
 
+### Quote form captcha resolution
+
+- Opened MetForm form `2073` in Elementor.
+- Confirmed the full form structure was still present in the Elementor preview.
+- Selected the `reCAPTCHA` widget in Elementor's structure panel and removed it with Elementor's own `Supprimer` command.
+- Saved the form through Elementor, restoring the public MetForm render without reintroducing captcha.
+- Public verification URL:
+  - `https://assurancesderueil.fr/demande-de-devis-assurance-a-rueil-malmaison/?nocache=captcha-disabled-verify-2`
+- Verification result:
+  - all expected quote-form fields render publicly;
+  - one visible `Envoyer` submit button is present;
+  - no `g-recaptcha-response`, `.g-recaptcha`, `mf-recaptcha`, or visible captcha text remains on the public page.
+
 ### Rollback notes
 
 - The form content backup above contains the pre-intervention MetForm content from form `2073`.
 - WordPress revisions for form `2073` should also be available in the admin editor.
-- If the quote form render is incomplete, restore form `2073` from the WordPress revision before the captcha-removal attempt, then remove the reCAPTCHA widget through Elementor.
+- If the quote form render becomes incomplete again, restore form `2073` from the WordPress revision before the classic-editor captcha-removal attempt, then remove the reCAPTCHA widget only through Elementor.
