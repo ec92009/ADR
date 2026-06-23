@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="fr" data-theme="night">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mock formulaire sécurisé | Assurances de Rueil</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="../assets/logo.png" />
+    <style>
+      :root {
+        --blue: #003478;
+        --blue-soft: #75adff;
+        --ink: #07192f;
+        --muted: #647287;
+        --paper: #ffffff;
+        --wash: #eef5fb;
+        --line: rgba(0, 52, 120, 0.16);
+        --gold: #d7a53c;
+        --field: #ffffff;
+        --shadow: 0 24px 70px rgba(0, 28, 64, 0.14);
+        --soft-shadow: 0 14px 36px rgba(0, 28, 64, 0.1);
+        font-family: Rubik, "Open Sans", Arial, sans-serif;
+      }
+
+      :root[data-theme="night"] {
+        --blue: #83b7ff;
+        --blue-soft: #75adff;
+        --ink: #eef6ff;
+        --muted: #aebdce;
+        --paper: #0e2135;
+        --wash: #06111d;
+        --line: rgba(169, 201, 234, 0.22);
+        --field: #0b1d31;
+        --shadow: 0 24px 70px rgba(0, 0, 0, 0.32);
+        --soft-shadow: 0 14px 36px rgba(0, 0, 0, 0.24);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: var(--wash);
+        color: var(--ink);
+      }
+      body, button, input, select { font: inherit; }
+      a { color: inherit; }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 1rem auto 0;
+        width: min(100% - 2rem, 1220px);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0.7rem;
+        background: color-mix(in srgb, var(--paper) 84%, transparent);
+        box-shadow: var(--soft-shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        color: var(--blue);
+        font-size: 1.22rem;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .brand img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .button,
+      .switch {
+        min-height: 2.9rem;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        padding: 0.78rem 1rem;
+        background: var(--paper);
+        color: var(--blue);
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .button {
+        border-color: transparent;
+        background: var(--blue-soft);
+        color: #06111d;
+      }
+
+      .shell {
+        width: min(100% - 2rem, 1180px);
+        margin: 1.8rem auto 4rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(20rem, 1fr);
+        align-items: stretch;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-copy {
+        display: grid;
+        align-content: center;
+        gap: 1rem;
+        padding: clamp(1.2rem, 4vw, 3rem);
+      }
+
+      .eyebrow {
+        color: var(--gold);
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--blue);
+        font-size: clamp(2.4rem, 5vw, 5rem);
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      .hero-copy p {
+        max-width: 42rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+
+      .hero img {
+        width: 100%;
+        height: 100%;
+        min-height: 24rem;
+        object-fit: cover;
+      }
+
+      .mock-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+        margin-top: 1rem;
+      }
+
+      .side,
+      .form-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        box-shadow: var(--soft-shadow);
+      }
+
+      .side {
+        position: sticky;
+        top: 6.2rem;
+        display: grid;
+        gap: 1rem;
+        padding: 1.25rem;
+      }
+
+      .side h2,
+      .form-card h2 {
+        margin: 0;
+        color: var(--blue);
+        font-size: 1.7rem;
+        line-height: 1.12;
+      }
+
+      .side p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .order-list {
+        display: grid;
+        gap: 0.6rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .order-list li {
+        display: grid;
+        grid-template-columns: 2rem 1fr;
+        gap: 0.65rem;
+        align-items: center;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .order-list span {
+        display: grid;
+        place-items: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--blue) 12%, var(--paper));
+        color: var(--blue);
+        font-size: 0.8rem;
+      }
+
+      .form-card {
+        padding: clamp(1rem, 3vw, 2rem);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-head p {
+        max-width: 32rem;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .status-pill {
+        border-radius: 999px;
+        padding: 0.45rem 0.7rem;
+        background: color-mix(in srgb, var(--gold) 18%, var(--paper));
+        color: var(--ink);
+        font-size: 0.78rem;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      form {
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      fieldset {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+        border: 0;
+        padding: 0;
+      }
+
+      legend {
+        margin-bottom: 0.2rem;
+        color: var(--blue);
+        font-size: 1.18rem;
+        font-weight: 900;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9rem;
+      }
+
+      .form-row.three {
+        grid-template-columns: 1.2fr 0.7fr 1fr;
+      }
+
+      .field {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      label,
+      .field-label {
+        color: var(--ink);
+        font-size: 0.93rem;
+        font-weight: 900;
+      }
+
+      .required {
+        color: #ff5a44;
+      }
+
+      input,
+      select {
+        width: 100%;
+        min-height: 3.15rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0.78rem 0.9rem;
+        background: var(--field);
+        color: var(--ink);
+        outline: none;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 18%, transparent);
+      }
+
+      .segmented {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+      }
+
+      .segmented.contact-options {
+        grid-template-columns: 1fr;
+        gap: 0.45rem;
+      }
+
+      .segmented.contact-options .choice {
+        min-height: 2.65rem;
+      }
+
+      .choice {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        min-height: 3.15rem;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0.75rem 0.85rem;
+        background: color-mix(in srgb, var(--blue) 4%, var(--paper));
+        cursor: pointer;
+      }
+
+      .choice input {
+        width: 1rem;
+        height: 1rem;
+        min-height: 0;
+        accent-color: var(--blue);
+      }
+
+      .optional-block {
+        display: grid;
+        gap: 1rem;
+        border-top: 1px solid var(--line);
+        padding-top: 1.2rem;
+      }
+
+      .quote-extra {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .quote-extra[hidden] {
+        display: none;
+      }
+
+      .quote-type-row {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .optional-note,
+      .field-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.45;
+      }
+
+      .phone-field[hidden] {
+        display: none;
+      }
+
+      .phone-contact {
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(13rem, 1.2fr);
+        gap: 0.65rem;
+        align-items: start;
+      }
+
+      .phone-contact[hidden] {
+        display: none;
+      }
+
+      .checks {
+        display: grid;
+        gap: 0.75rem;
+        border-top: 1px solid var(--line);
+        padding-top: 1.2rem;
+      }
+
+      .check {
+        display: grid;
+        grid-template-columns: 1.2rem 1fr;
+        gap: 0.7rem;
+        align-items: start;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0.85rem;
+        background: color-mix(in srgb, var(--blue) 3%, var(--paper));
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .check input {
+        width: 1rem;
+        height: 1rem;
+        min-height: 0;
+        margin-top: 0.2rem;
+        accent-color: var(--blue);
+      }
+
+      .submit-row {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .submit-row button {
+        min-height: 3.2rem;
+        border: 0;
+        border-radius: 8px;
+        padding: 0.8rem 1.4rem;
+        background: var(--blue-soft);
+        color: #06111d;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .submit-row button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .mock-only {
+        border: 1px dashed color-mix(in srgb, var(--gold) 70%, var(--line));
+        border-radius: 8px;
+        padding: 0.85rem;
+        background: color-mix(in srgb, var(--gold) 10%, var(--paper));
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      [data-lang="en"] .fr,
+      [data-lang="fr"] .en {
+        display: none;
+      }
+
+      @media (max-width: 880px) {
+        .topbar,
+        .mock-grid,
+        .hero,
+        .form-row,
+        .form-row.three,
+        .phone-contact,
+        .segmented.contact-options {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          display: grid;
+        }
+
+        .actions {
+          justify-content: stretch;
+        }
+
+        .actions > * {
+          flex: 1;
+        }
+
+        .side {
+          position: static;
+        }
+      }
+    </style>
+  </head>
+  <body data-lang="fr">
+    <header class="topbar" aria-label="Mock navigation">
+      <a class="brand" href="../">
+        <img src="../assets/logo.png" alt="" />
+        <span>Assurances de Rueil</span>
+      </a>
+      <div class="actions">
+        <a class="button" href="../demande-de-devis-assurance-a-rueil-malmaison/"><span class="fr">Page actuelle</span><span class="en">Current page</span></a>
+        <button class="switch" type="button" data-theme-toggle>Jour/Nuit</button>
+        <button class="switch" type="button" data-lang-toggle>FR/EN</button>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero" aria-label="Mock formulaire sécurisé">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="fr">Maquette non publiée</span><span class="en">Unpublished mock</span></div>
+          <h1><span class="fr">Formulaire sécurisé simplifié</span><span class="en">Simplified secure form</span></h1>
+          <p class="fr">Cette proposition teste le nouvel ordre des champs avant toute modification du formulaire WordPress.</p>
+          <p class="en">This proposal tests the new field order before any WordPress form change.</p>
+        </div>
+        <img src="../assets/devis-simulation.jpg" alt="Simulation d'assurance avec Assurances de Rueil" />
+      </section>
+
+      <div class="mock-grid">
+        <section class="form-card" aria-label="Formulaire mock">
+          <div class="section-head">
+            <div>
+              <h2><span class="fr">Formulaire sécurisé</span><span class="en">Secure form</span></h2>
+              <p class="fr">Les champs marqués d'un astérisque restent obligatoires dans cette maquette.</p>
+              <p class="en">Fields marked with an asterisk remain required in this mock.</p>
+            </div>
+            <span class="status-pill"><span class="fr">Maquette</span><span class="en">Mock</span></span>
+          </div>
+
+          <form action="#" method="post" onsubmit="return false">
+            <fieldset>
+              <legend><span class="fr">Informations obligatoires</span><span class="en">Required information</span></legend>
+              <div class="field">
+                <span class="field-label"><span class="fr">Civilité</span><span class="en">Title</span> <span class="required">*</span></span>
+                <div class="segmented" role="radiogroup" aria-label="Civilité">
+                  <label class="choice"><input type="radio" name="civilite" value="Madame" required /> <span class="fr">Madame</span><span class="en">Ms</span></label>
+                  <label class="choice"><input type="radio" name="civilite" value="Monsieur" /> <span class="fr">Monsieur</span><span class="en">Mr</span></label>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <label class="field">
+                  <span><span class="fr">Nom</span><span class="en">Last name</span> <span class="required">*</span></span>
+                  <input type="text" name="nom" autocomplete="family-name" required />
+                </label>
+                <label class="field">
+                  <span><span class="fr">Prénom</span><span class="en">First name</span> <span class="required">*</span></span>
+                  <input type="text" name="prenom" autocomplete="given-name" required />
+                </label>
+              </div>
+
+              <label class="field">
+                <span><span class="fr">Adresse e-mail</span><span class="en">Email address</span> <span class="required">*</span></span>
+                <input type="email" name="email" autocomplete="email" required />
+              </label>
+            </fieldset>
+
+            <div class="optional-block">
+              <fieldset>
+                <legend><span class="fr">Informations optionnelles</span><span class="en">Optional information</span></legend>
+                <p class="optional-note fr">Sélectionnez un type de devis pour afficher les informations complémentaires utiles à la demande.</p>
+                <p class="optional-note en">Select a quote type to show the additional information useful for the request.</p>
+
+                <div class="quote-type-row">
+                  <label class="field">
+                    <span><span class="fr">Type de devis désiré</span><span class="en">Desired quote type</span></span>
+                    <select name="type-devis" data-quote-type>
+                      <option value="">Sélectionner</option>
+                      <option value="pret">Assurance de prêt</option>
+                      <option value="habitation">Assurance habitation</option>
+                      <option value="auto">Assurance automobile</option>
+                      <option value="sante">Santé / prévoyance</option>
+                      <option value="professionnel">Assurance professionnelle</option>
+                      <option value="loyers">Loyers impayés</option>
+                      <option value="autre">Autre demande</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="quote-extra" data-quote-extra hidden>
+                  <div class="form-row">
+                    <div class="phone-contact phone-field">
+                      <label class="field">
+                        <span><span class="fr">Téléphone</span><span class="en">Phone</span></span>
+                        <input type="tel" name="telephone" autocomplete="tel" placeholder="+33" />
+                        <p class="field-note fr">Utile si le client souhaite être rappelé.</p>
+                        <p class="field-note en">Useful if the client wants a callback.</p>
+                      </label>
+                      <div class="field">
+                        <span class="field-label"><span class="fr">Contact préféré</span><span class="en">Preferred contact</span></span>
+                        <div class="segmented contact-options" role="radiogroup" aria-label="Contact préféré">
+                          <label class="choice"><input type="radio" name="contact-prefere" value="email" /> E-mail</label>
+                          <label class="choice"><input type="radio" name="contact-prefere" value="telephone" /> <span class="fr">Téléphone</span><span class="en">Phone</span></label>
+                          <label class="choice"><input type="radio" name="contact-prefere" value="whatsapp" /> WhatsApp</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <label class="field">
+                      <span><span class="fr">Banque</span><span class="en">Bank</span></span>
+                      <input type="text" name="banque" autocomplete="organization" />
+                    </label>
+                    <label class="field">
+                      <span><span class="fr">Profession</span><span class="en">Profession</span></span>
+                      <select name="profession">
+                        <option value="">Sélectionner</option>
+                        <option>Cadres</option>
+                        <option>Employés, agents de maîtrise</option>
+                        <option>Ouvriers</option>
+                        <option>Professions médicales</option>
+                        <option>Professions paramédicales</option>
+                        <option>Professions libérales</option>
+                        <option>Commerçants et leurs salariés</option>
+                        <option>Artisans hors BTP et leurs salariés</option>
+                        <option>Artisans du BTP</option>
+                        <option>Professions agricoles et péri-agricoles</option>
+                        <option>Professions du transport</option>
+                        <option>Retraités</option>
+                        <option>Sans profession</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <span class="field-label"><span class="fr">Date de naissance</span><span class="en">Date of birth</span></span>
+                      <div class="form-row three">
+                        <select name="jour-naissance" aria-label="Jour de naissance">
+                          <option value="">Jour</option>
+                          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                          <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
+                          <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option><option>29</option><option>30</option><option>31</option>
+                        </select>
+                        <select name="mois-naissance" aria-label="Mois de naissance">
+                          <option value="">Mois</option>
+                          <option value="01">Janvier</option>
+                          <option value="02">Février</option>
+                          <option value="03">Mars</option>
+                          <option value="04">Avril</option>
+                          <option value="05">Mai</option>
+                          <option value="06">Juin</option>
+                          <option value="07">Juillet</option>
+                          <option value="08">Août</option>
+                          <option value="09">Septembre</option>
+                          <option value="10">Octobre</option>
+                          <option value="11">Novembre</option>
+                          <option value="12">Décembre</option>
+                        </select>
+                        <select name="annee-naissance" aria-label="Année de naissance" data-year-select>
+                          <option value="">Année</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <span class="field-label"><span class="fr">Êtes-vous fumeur ?</span><span class="en">Do you smoke?</span></span>
+                      <div class="segmented" role="radiogroup" aria-label="Statut fumeur">
+                        <label class="choice"><input type="radio" name="fumeur" value="Oui" /> <span class="fr">Oui</span><span class="en">Yes</span></label>
+                        <label class="choice"><input type="radio" name="fumeur" value="Non" /> <span class="fr">Non</span><span class="en">No</span></label>
+                      </div>
+                      <p class="field-note fr">Est non-fumeur toute personne certifiant qu’elle n’a fumé ni cigarette, ni cigarette électronique, ni pipe, ni cigare, ni consommé de produits contenant de la nicotine (patch, gomme…) au cours des 24 derniers mois, et qu’elle n’a pas arrêté de fumer à la demande expresse du corps médical.</p>
+                      <p class="field-note en">A non-smoker is any person certifying that they have not smoked cigarettes, electronic cigarettes, a pipe or cigars, nor consumed products containing nicotine (patch, gum, etc.) in the last 24 months, and that they did not stop smoking at the express request of the medical profession.</p>
+                    </div>
+                  </div>
+
+                  <div class="form-row three">
+                    <label class="field">
+                      <span><span class="fr">Adresse</span><span class="en">Address</span></span>
+                      <input type="text" name="adresse" autocomplete="street-address" />
+                    </label>
+                    <label class="field">
+                      <span><span class="fr">Code postal</span><span class="en">Postal code</span></span>
+                      <input type="text" name="code-postal" autocomplete="postal-code" />
+                    </label>
+                    <label class="field">
+                      <span><span class="fr">Ville</span><span class="en">City</span></span>
+                      <input type="text" name="ville" autocomplete="address-level2" />
+                    </label>
+                  </div>
+                </div>
+	              </fieldset>
+            </div>
+
+            <div class="checks" aria-label="Consentements">
+              <label class="check">
+                <input type="checkbox" name="callback-consent" />
+                <span class="fr">En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.</span>
+                <span class="en">By clicking “Submit”, I agree that an Assurances de Rueil advisor may call me to help me choose my insurance.</span>
+              </label>
+              <label class="check">
+                <input type="checkbox" name="email-contact-consent" data-email-consent required />
+                <span class="fr">J'accepte qu'Assurances de Rueil me contacte par e-mail au sujet de ma demande de devis. <span class="required">*</span></span>
+                <span class="en">I agree that Assurances de Rueil may contact me by email about my quote request. <span class="required">*</span></span>
+              </label>
+              <label class="check">
+                <input type="checkbox" name="rgpd-consent" data-rgpd-consent required />
+                <span class="fr">J'accepte le traitement de mes données personnelles conformément au RGPD. <a href="https://5s1e9attsc.preview.infomaniak.website/politique-de-confidentialite/">EN SAVOIR PLUS</a> <span class="required">*</span></span>
+                <span class="en">I agree to the processing of my personal data under GDPR. <a href="https://5s1e9attsc.preview.infomaniak.website/politique-de-confidentialite/">LEARN MORE</a> <span class="required">*</span></span>
+              </label>
+            </div>
+
+            <div class="submit-row">
+              <button type="submit" data-submit disabled><span class="fr">Envoyer</span><span class="en">Submit</span></button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      const root = document.documentElement;
+      const body = document.body;
+      const quoteType = document.querySelector("[data-quote-type]");
+      const quoteExtra = document.querySelector("[data-quote-extra]");
+      const yearSelect = document.querySelector("[data-year-select]");
+      const emailConsent = document.querySelector("[data-email-consent]");
+      const rgpdConsent = document.querySelector("[data-rgpd-consent]");
+      const submitButton = document.querySelector("[data-submit]");
+      const currentYear = new Date().getFullYear();
+
+      for (let year = currentYear - 16; year >= currentYear - 100; year -= 1) {
+        const option = document.createElement("option");
+        option.value = String(year);
+        option.textContent = String(year);
+        yearSelect.appendChild(option);
+      }
+
+      document.querySelector("[data-theme-toggle]").addEventListener("click", () => {
+        root.dataset.theme = root.dataset.theme === "night" ? "day" : "night";
+      });
+
+      document.querySelector("[data-lang-toggle]").addEventListener("click", () => {
+        body.dataset.lang = body.dataset.lang === "fr" ? "en" : "fr";
+      });
+
+      quoteType.addEventListener("change", () => {
+        quoteExtra.hidden = quoteType.value === "";
+      });
+
+      function updateSubmitState() {
+        submitButton.disabled = !(emailConsent.checked && rgpdConsent.checked);
+      }
+
+      emailConsent.addEventListener("change", updateSubmitState);
+      rgpdConsent.addEventListener("change", updateSubmitState);
+      updateSubmitState();
+    </script>
+  </body>
+</html>
