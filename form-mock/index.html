@@ -17,6 +17,7 @@
         --line: rgba(0, 52, 120, 0.16);
         --gold: #d7a53c;
         --field: #ffffff;
+        --control-height: 3.15rem;
         --shadow: 0 24px 70px rgba(0, 28, 64, 0.14);
         --soft-shadow: 0 14px 36px rgba(0, 28, 64, 0.1);
         font-family: Rubik, "Open Sans", Arial, sans-serif;
@@ -309,12 +310,14 @@
       input,
       select {
         width: 100%;
-        min-height: 3.15rem;
+        height: var(--control-height);
+        min-height: var(--control-height);
         border: 1px solid var(--line);
         border-radius: 8px;
         padding: 0.78rem 0.9rem;
         background: var(--field);
         color: var(--ink);
+        line-height: 1.2;
         outline: none;
       }
 
@@ -322,6 +325,21 @@
       select:focus {
         border-color: var(--blue);
         box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 18%, transparent);
+      }
+
+      select {
+        -webkit-appearance: none;
+        appearance: none;
+        padding-right: 2.5rem;
+        background-color: var(--field);
+        background-image:
+          linear-gradient(45deg, transparent 50%, currentColor 50%),
+          linear-gradient(135deg, currentColor 50%, transparent 50%);
+        background-position:
+          calc(100% - 1.15rem) 50%,
+          calc(100% - 0.9rem) 50%;
+        background-repeat: no-repeat;
+        background-size: 0.36rem 0.36rem;
       }
 
       .segmented {
