@@ -1,5 +1,5 @@
 const root = document.documentElement;
-const version = root.dataset.version || "116.0";
+const version = root.dataset.version || "117.0";
 const siteRoot = root.dataset.siteRoot || "";
 const quotePath = "demande-de-devis-assurance-a-rueil-malmaison/";
 const quoteHref = `${siteRoot}${quotePath}`;

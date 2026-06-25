@@ -5,7 +5,8 @@
 - Repository: `ec92009/ADR`.
 - Main static preview: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- Current GitHub Pages version marker: `v116.0`.
+- Current GitHub Pages version marker: `v117.0`.
+- Static route pages now include pre-rendered body content in the initial HTML for crawlers and AI/search agents; JavaScript still enhances/re-renders the same content for visitor interactivity.
 - Refreshed WordPress homepage and major pages are live.
 - Quote form captcha issue was resolved by removing the broken reCAPTCHA widget through Elementor/MetForm.
 - Legacy `/contact/` now redirects with a WordPress Redirection 301 to `/courtier-en-assurances-de-rueil-malmaison/`.
@@ -96,6 +97,7 @@ python3 -m http.server 8124
   - legacy MetForm fields and hidden alias fields sync correctly after representative dummy input;
   - submit wiring points to `https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073` with form nonce `f95577a433`;
   - mobile viewport check showed no horizontal overflow.
+- SEO/AIO pass on 2026-06-25 pre-rendered dynamic route bodies into the HTML, refreshed sitemap `lastmod` dates to `2026-06-25`, and bumped the visible version to `v117.0`.
 
 ## Next Working Principle
 

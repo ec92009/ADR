@@ -1,6 +1,6 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "116.0";
+const pageVersion = pageRoot.dataset.version || "117.0";
 const pageMount = document.querySelector("[data-content-page]");
 const quoteSubmitEndpoint = "https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073";
 const quoteFormNonce = "f95577a433";
