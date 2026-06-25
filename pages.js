@@ -1,7 +1,9 @@
 const pageRoot = document.documentElement;
 const pageSiteRoot = pageRoot.dataset.siteRoot || "";
-const pageVersion = pageRoot.dataset.version || "114.0";
+const pageVersion = pageRoot.dataset.version || "116.0";
 const pageMount = document.querySelector("[data-content-page]");
+const quoteSubmitEndpoint = "https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073";
+const quoteFormNonce = "f95577a433";
 
 const professionOptions = {
   fr: [
@@ -44,23 +46,32 @@ const pages = {
       eyebrow: "Demande de devis",
       title: "Demande de devis assurance à Rueil-Malmaison",
       lead:
-        "Obtenez une simulation personnalisée pour votre assurance de prêt. Le formulaire reprend les informations demandées sur le site original afin de préparer une réponse rapide du cabinet.",
-      introTitle: "Votre demande",
+        "Transmettez les informations utiles à votre demande de devis. Le cabinet reçoit les éléments que vous choisissez de partager afin de préparer une réponse adaptée.",
+      introTitle: "Votre demande en trois temps",
       introText:
-        "Les champs portent sur votre profil emprunteur, votre banque et vos coordonnées. Les informations sont utiles au courtier pour comparer les garanties et revenir vers vous avec une proposition adaptée.",
-      step1: "Profil emprunteur",
-      step2: "Coordonnées",
-      step3: "Consentement RGPD",
+        "Le formulaire commence par les coordonnées indispensables. Les informations complémentaires apparaissent ensuite selon le type de devis souhaité.",
+      step1: "Informations obligatoires",
+      step2: "Informations utiles",
+      step3: "Consentements",
       civility: "Civilité",
       madame: "Madame",
       monsieur: "Monsieur",
-      birthDate: "Votre date de naissance",
-      birthDatePlaceholder: "JJ/MM/AAAA",
+      quoteType: "Type de devis désiré",
+      optionalNote: "Sélectionnez un type de devis pour afficher les informations complémentaires utiles à la demande.",
+      contactPreference: "Contact préféré",
+      contactEmail: "E-mail",
+      contactPhone: "Téléphone",
+      contactWhatsapp: "WhatsApp",
+      phone: "Téléphone",
+      birthDate: "Date de naissance",
+      day: "Jour",
+      month: "Mois",
+      year: "Année",
       smoker: "Êtes-vous fumeur ?",
       yes: "Oui",
       no: "Non",
       smokerHelp:
-        "Est non-fumeur toute personne n'ayant pas fumé ni consommé de produit contenant de la nicotine au cours des 24 derniers mois.",
+        "Est non-fumeur toute personne certifiant qu'elle n'a fumé ni cigarette, ni cigarette électronique, ni pipe, ni cigare, ni consommé de produits contenant de la nicotine au cours des 24 derniers mois, et qu'elle n'a pas arrêté de fumer à la demande expresse du corps médical.",
       profession: "Votre profession",
       select: "Sélectionner",
       bank: "Votre banque",
@@ -71,34 +82,46 @@ const pages = {
       postalCode: "Code postal",
       city: "Ville",
       consentCall:
-        "En cliquant sur Envoyer, j'accepte qu'un conseiller Assurances de Rueil m'appelle pour m'accompagner dans le choix de mon assurance.",
+        "En cliquant sur « Envoyer », j'accepte qu'Assurances de Rueil me contacte par",
       consentRgpd:
-        "J'accepte le traitement de mes données personnelles conformément au RGPD.",
+        "J'accepte le traitement de mes données personnelles conformément au RGPD. EN SAVOIR PLUS",
       submit: "Envoyer",
+      sending: "Envoi en cours...",
+      successFallback: "Merci pour votre message.",
+      errorFallback: "L'envoi n'a pas abouti. Vous pouvez aussi écrire à contact@assurancesderueil.fr.",
       previewMessage:
-        "Preview uniquement : la version finale devra reconnecter ce formulaire au système de réception du cabinet.",
+        "Votre demande a bien été transmise au cabinet.",
     },
     en: {
       eyebrow: "Quote request",
       title: "Insurance quote request in Rueil-Malmaison",
       lead:
-        "Get a personalized simulation for borrower insurance. This preview keeps the original form's requested information so the agency can prepare a fast answer.",
-      introTitle: "Your request",
+        "Share the information useful for your quote request. The agency receives the details you choose to provide so it can prepare a tailored answer.",
+      introTitle: "Your request in three steps",
       introText:
-        "The fields cover your borrower profile, bank and contact details. They help the broker compare guarantees and come back with a tailored proposal.",
-      step1: "Borrower profile",
-      step2: "Contact details",
-      step3: "GDPR consent",
+        "The form starts with essential contact details. Additional fields appear after you select the desired quote type.",
+      step1: "Required information",
+      step2: "Useful information",
+      step3: "Consents",
       civility: "Title",
       madame: "Ms",
       monsieur: "Mr",
+      quoteType: "Desired quote type",
+      optionalNote: "Select a quote type to show the additional information useful for the request.",
+      contactPreference: "Preferred contact",
+      contactEmail: "Email",
+      contactPhone: "Phone",
+      contactWhatsapp: "WhatsApp",
+      phone: "Phone",
       birthDate: "Date of birth",
-      birthDatePlaceholder: "DD/MM/YYYY",
+      day: "Day",
+      month: "Month",
+      year: "Year",
       smoker: "Do you smoke?",
       yes: "Yes",
       no: "No",
       smokerHelp:
-        "A non-smoker is someone who has not smoked or used nicotine products during the previous 24 months.",
+        "A non-smoker is any person certifying that they have not smoked cigarettes, electronic cigarettes, a pipe or cigars, nor consumed products containing nicotine in the last 24 months, and that they did not stop smoking at the express request of the medical profession.",
       profession: "Profession",
       select: "Select",
       bank: "Your bank",
@@ -109,11 +132,14 @@ const pages = {
       postalCode: "Postcode",
       city: "City",
       consentCall:
-        "By clicking Send, I agree that an Assurances de Rueil adviser may call me to help me choose my insurance.",
-      consentRgpd: "I accept the processing of my personal data in accordance with GDPR.",
+        "By clicking Submit, I agree that Assurances de Rueil may contact me by",
+      consentRgpd: "I agree to the processing of my personal data under GDPR. LEARN MORE",
       submit: "Send",
+      sending: "Sending...",
+      successFallback: "Thank you for your message.",
+      errorFallback: "The request could not be sent. You can also email contact@assurancesderueil.fr.",
       previewMessage:
-        "Preview only: the final version will need to reconnect this form to the agency's intake system.",
+        "Your request has been sent to the agency.",
     },
   },
   "cabinet-de-courtage-en-assurances-rueil-malmaison": {
@@ -681,29 +707,128 @@ function renderStandardPage(slug, data, copy) {
   `;
 }
 
-function renderInput(label, name, type = "text") {
+function renderQuoteInput(label, name, type = "text", attrs = "") {
   return `
     <label class="quote-field">
       <span>${escapeHtml(label)}</span>
-      <input type="${type}" name="${escapeHtml(name)}" required />
+      <input type="${type}" name="${escapeHtml(name)}" ${attrs} />
     </label>
   `;
 }
 
-function renderBirthDate(copy) {
+function renderRequiredQuoteInput(label, name, type = "text", attrs = "") {
+  return renderQuoteInput(`${label} *`, name, type, `${attrs} required`);
+}
+
+function renderHiddenQuoteFields() {
   return `
-    <label class="quote-field quote-date-field">
+    <input type="hidden" name="form_nonce" value="${quoteFormNonce}" />
+    <input type="hidden" name="schema_version" value="adr_quote_v2" />
+    <input type="hidden" name="source_url" value="" />
+    <input type="hidden" name="consent_version" value="adr_quote_consent_2026-06-24" />
+    <input type="hidden" name="civilite" value="" />
+    <input type="hidden" name="email" value="" />
+    <input type="hidden" name="profession" value="" />
+    <input type="hidden" name="ville" value="" />
+    <input type="hidden" name="code_postal" value="" />
+    <input type="hidden" name="date_naissance" value="" />
+    <input type="hidden" name="mf-date" value="" />
+    <input type="hidden" name="mf-gdpr-consent" value="" />
+  `;
+}
+
+function quoteTypeOptions() {
+  const labels =
+    pageLang() === "fr"
+      ? [
+          ["pret", "Assurance de prêt"],
+          ["habitation", "Assurance habitation"],
+          ["auto", "Assurance automobile"],
+          ["sante", "Santé / prévoyance"],
+          ["professionnel", "Assurance professionnelle"],
+          ["loyers", "Loyers impayés"],
+          ["autre", "Autre demande"],
+        ]
+      : [
+          ["pret", "Loan insurance"],
+          ["habitation", "Home insurance"],
+          ["auto", "Car insurance"],
+          ["sante", "Health / income protection"],
+          ["professionnel", "Business insurance"],
+          ["loyers", "Unpaid rent"],
+          ["autre", "Other request"],
+        ];
+
+  return labels.map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`).join("");
+}
+
+function monthOptions(copy) {
+  const months =
+    pageLang() === "fr"
+      ? [
+          ["01", "Janvier"],
+          ["02", "Février"],
+          ["03", "Mars"],
+          ["04", "Avril"],
+          ["05", "Mai"],
+          ["06", "Juin"],
+          ["07", "Juillet"],
+          ["08", "Août"],
+          ["09", "Septembre"],
+          ["10", "Octobre"],
+          ["11", "Novembre"],
+          ["12", "Décembre"],
+        ]
+      : [
+          ["01", "January"],
+          ["02", "February"],
+          ["03", "March"],
+          ["04", "April"],
+          ["05", "May"],
+          ["06", "June"],
+          ["07", "July"],
+          ["08", "August"],
+          ["09", "September"],
+          ["10", "October"],
+          ["11", "November"],
+          ["12", "December"],
+        ];
+
+  return `<option value="">${escapeHtml(copy.month)}</option>${months
+    .map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`)
+    .join("")}`;
+}
+
+function yearOptions(copy) {
+  const currentYear = new Date().getFullYear();
+  const years = [`<option value="">${escapeHtml(copy.year)}</option>`];
+  for (let year = currentYear - 16; year >= currentYear - 100; year -= 1) {
+    years.push(`<option value="${year}">${year}</option>`);
+  }
+  return years.join("");
+}
+
+function renderBirthDateSelects(copy) {
+  const days = [`<option value="">${escapeHtml(copy.day)}</option>`];
+  for (let day = 1; day <= 31; day += 1) {
+    days.push(`<option value="${day}">${day}</option>`);
+  }
+
+  return `
+    <div class="quote-field quote-date-field">
       <span>${escapeHtml(copy.birthDate)}</span>
-      <input
-        type="text"
-        name="date-naissance"
-        inputmode="numeric"
-        autocomplete="bday"
-        placeholder="${escapeHtml(copy.birthDatePlaceholder)}"
-        pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
-        required
-      />
-    </label>
+      <div class="quote-date-selects">
+        <select name="jour_naissance" aria-label="${escapeHtml(copy.day)}">
+          ${days.join("")}
+        </select>
+        <select name="mois_naissance" aria-label="${escapeHtml(copy.month)}">
+          ${monthOptions(copy)}
+        </select>
+        <select name="annee_naissance" aria-label="${escapeHtml(copy.year)}">
+          ${yearOptions(copy)}
+        </select>
+      </div>
+    </div>
   `;
 }
 
@@ -733,62 +858,84 @@ function renderQuotePage(data, copy) {
         </ol>
       </aside>
 
-      <form class="quote-form glass-panel" data-preview-form>
+      <form class="quote-form glass-panel" data-preview-form data-submit-endpoint="${quoteSubmitEndpoint}">
+        ${renderHiddenQuoteFields()}
         <fieldset>
           <legend>${escapeHtml(copy.step1)}</legend>
           <div class="quote-field">
-            <span>${escapeHtml(copy.civility)}</span>
+            <span>${escapeHtml(copy.civility)} *</span>
             <div class="choice-row">
-              <label><input type="radio" name="civilite" value="madame" required /> ${escapeHtml(copy.madame)}</label>
-              <label><input type="radio" name="civilite" value="monsieur" /> ${escapeHtml(copy.monsieur)}</label>
+              <label><input type="radio" name="mf-checkbox" value="Madame" required /> ${escapeHtml(copy.madame)}</label>
+              <label><input type="radio" name="mf-checkbox" value="Monsieur" /> ${escapeHtml(copy.monsieur)}</label>
             </div>
           </div>
-          ${renderBirthDate(copy)}
-          <div class="quote-field">
-            <span>${escapeHtml(copy.smoker)}</span>
-            <div class="choice-row">
-              <label><input type="radio" name="fumeur" value="oui" required /> ${escapeHtml(copy.yes)}</label>
-              <label><input type="radio" name="fumeur" value="non" /> ${escapeHtml(copy.no)}</label>
-            </div>
-            <small>${escapeHtml(copy.smokerHelp)}</small>
+          <div class="quote-two">
+            ${renderRequiredQuoteInput(copy.lastName, "nom", "text", 'autocomplete="family-name"')}
+            ${renderRequiredQuoteInput(copy.firstName, "prenom", "text", 'autocomplete="given-name"')}
           </div>
+          ${renderRequiredQuoteInput(copy.email, "mf-email", "email", 'autocomplete="email"')}
           <label class="quote-field">
-            <span>${escapeHtml(copy.profession)}</span>
-            <select name="profession" required>
+            <span>${escapeHtml(copy.quoteType)}</span>
+            <select name="type_devis" data-quote-type>
               <option value="">${escapeHtml(copy.select)}</option>
-              ${options}
+              ${quoteTypeOptions()}
             </select>
           </label>
-          ${renderInput(copy.bank, "banque")}
         </fieldset>
 
-        <fieldset>
+        <fieldset class="quote-extra" data-quote-extra hidden>
           <legend>${escapeHtml(copy.step2)}</legend>
-          <div class="quote-two">
-            ${renderInput(copy.lastName, "nom")}
-            ${renderInput(copy.firstName, "prenom")}
+          <p class="quote-note">${escapeHtml(copy.optionalNote)}</p>
+          <div class="quote-contact-row">
+            <div class="quote-field">
+              <span>${escapeHtml(copy.contactPreference)}</span>
+              <div class="choice-row">
+                <label><input type="radio" name="contact_preference" value="email" checked /> ${escapeHtml(copy.contactEmail)}</label>
+                <label><input type="radio" name="contact_preference" value="telephone" /> ${escapeHtml(copy.contactPhone)}</label>
+                <label><input type="radio" name="contact_preference" value="whatsapp" /> ${escapeHtml(copy.contactWhatsapp)}</label>
+              </div>
+            </div>
+            ${renderQuoteInput(copy.phone, "telephone", "tel", 'autocomplete="tel" placeholder="+33"')}
+            <div class="quote-field">
+              <span>${escapeHtml(copy.smoker)}</span>
+              <div class="choice-row">
+                <label><input type="radio" name="fumeur" value="Oui" /> ${escapeHtml(copy.yes)}</label>
+                <label><input type="radio" name="fumeur" value="Non" /> ${escapeHtml(copy.no)}</label>
+              </div>
+              <small>${escapeHtml(copy.smokerHelp)}</small>
+            </div>
           </div>
-          ${renderInput(copy.email, "email", "email")}
-          ${renderInput(copy.address, "adresse")}
           <div class="quote-two">
-            ${renderInput(copy.postalCode, "code-postal")}
-            ${renderInput(copy.city, "ville")}
+            ${renderQuoteInput(copy.bank, "banque", "text", 'autocomplete="organization"')}
+            <label class="quote-field">
+              <span>${escapeHtml(copy.profession)}</span>
+              <select name="mf-select">
+                <option value="">${escapeHtml(copy.select)}</option>
+                ${options}
+              </select>
+            </label>
+          </div>
+          ${renderBirthDateSelects(copy)}
+          ${renderQuoteInput(copy.address, "adresse", "text", 'autocomplete="street-address"')}
+          <div class="quote-two">
+            ${renderQuoteInput(copy.postalCode, "code-postal", "text", 'autocomplete="postal-code"')}
+            ${renderQuoteInput(copy.city, "mf-text", "text", 'autocomplete="address-level2"')}
           </div>
         </fieldset>
 
         <fieldset>
           <legend>${escapeHtml(copy.step3)}</legend>
           <label class="consent-row">
-            <input type="checkbox" required />
-            <span>${escapeHtml(copy.consentCall)}</span>
+            <input type="checkbox" name="contact_consent" value="Oui" data-contact-consent required />
+            <span>${escapeHtml(copy.consentCall)} <strong data-contact-channel>${escapeHtml(copy.contactEmail)}</strong>. *</span>
           </label>
           <label class="consent-row">
-            <input type="checkbox" required />
-            <span>${escapeHtml(copy.consentRgpd)}</span>
+            <input type="checkbox" name="rgpd_consent" value="Oui" data-rgpd-consent required />
+            <span>${escapeHtml(copy.consentRgpd)} *</span>
           </label>
         </fieldset>
 
-        <button class="button button-primary" type="submit">${escapeHtml(copy.submit)}</button>
+        <button class="button button-primary" type="submit" data-submit disabled>${escapeHtml(copy.submit)}</button>
         <p class="form-status" hidden data-form-status>${escapeHtml(copy.previewMessage)}</p>
       </form>
     </section>
@@ -800,14 +947,142 @@ function renderQuotePage(data, copy) {
 function attachPreviewForm(copy) {
   const form = pageMount.querySelector("[data-preview-form]");
   if (!form) return;
-  form.addEventListener("submit", (event) => {
+  const quoteType = form.querySelector("[data-quote-type]");
+  const quoteExtra = form.querySelector("[data-quote-extra]");
+  const contactPreferences = Array.from(form.querySelectorAll('input[name="contact_preference"]'));
+  const contactChannel = form.querySelector("[data-contact-channel]");
+  const contactConsent = form.querySelector("[data-contact-consent]");
+  const rgpdConsent = form.querySelector("[data-rgpd-consent]");
+  const submitButton = form.querySelector("[data-submit]");
+  const submitLabel = submitButton?.textContent || copy.submit;
+
+  function formValue(name) {
+    const field = form.elements.namedItem(name);
+    if (!field) {
+      return "";
+    }
+    if (typeof RadioNodeList !== "undefined" && field instanceof RadioNodeList) {
+      return field.value || "";
+    }
+    return field.value || "";
+  }
+
+  function setFormValue(name, value) {
+    const field = form.elements.namedItem(name);
+    if (!field || (typeof RadioNodeList !== "undefined" && field instanceof RadioNodeList)) {
+      return;
+    }
+    field.value = value;
+  }
+
+  function birthdateParts() {
+    const day = formValue("jour_naissance").padStart(2, "0");
+    const month = formValue("mois_naissance");
+    const year = formValue("annee_naissance");
+    if (!day || !month || !year || day === "00") {
+      return { legacy: "", canonical: "" };
+    }
+    return {
+      legacy: `${month}-${day}-${year}`,
+      canonical: `${year}-${month}-${day}`,
+    };
+  }
+
+  function contactLabel(value) {
+    const labels = {
+      email: copy.contactEmail,
+      telephone: copy.contactPhone,
+      whatsapp: copy.contactWhatsapp,
+    };
+    return labels[value] || labels.email;
+  }
+
+  function syncPayloadFields() {
+    const birthdate = birthdateParts();
+    setFormValue("source_url", window.location.href);
+    setFormValue("civilite", formValue("mf-checkbox"));
+    setFormValue("email", formValue("mf-email"));
+    setFormValue("profession", formValue("mf-select"));
+    setFormValue("ville", formValue("mf-text"));
+    setFormValue("code_postal", formValue("code-postal"));
+    setFormValue("mf-date", birthdate.legacy);
+    setFormValue("date_naissance", birthdate.canonical);
+    setFormValue("mf-gdpr-consent", rgpdConsent?.checked ? "Oui" : "");
+  }
+
+  function updateContactConsentText() {
+    const selected = contactPreferences.find((input) => input.checked)?.value || "email";
+    if (contactChannel) {
+      contactChannel.textContent = contactLabel(selected);
+    }
+    syncPayloadFields();
+  }
+
+  function updateSubmitState() {
+    if (submitButton) {
+      submitButton.disabled = !(contactConsent?.checked && rgpdConsent?.checked);
+    }
+    syncPayloadFields();
+  }
+
+  quoteType?.addEventListener("change", () => {
+    if (quoteExtra) {
+      quoteExtra.hidden = quoteType.value === "";
+    }
+    syncPayloadFields();
+  });
+  contactPreferences.forEach((input) => input.addEventListener("change", updateContactConsentText));
+  contactConsent?.addEventListener("change", updateSubmitState);
+  rgpdConsent?.addEventListener("change", updateSubmitState);
+  form.addEventListener("input", syncPayloadFields);
+  form.addEventListener("change", syncPayloadFields);
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    syncPayloadFields();
+    if (!form.reportValidity()) {
+      return;
+    }
     const status = form.querySelector("[data-form-status]");
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = copy.sending;
+    }
     if (status) {
       status.hidden = false;
-      status.textContent = copy.previewMessage;
+      status.textContent = copy.sending;
+    }
+    try {
+      const response = await fetch(form.dataset.submitEndpoint, {
+        method: "POST",
+        body: new FormData(form),
+      });
+      const result = await response.json();
+      if (!response.ok || !result.status) {
+        const errors = Array.isArray(result.error) ? result.error.join(" ") : "";
+        throw new Error(errors || copy.errorFallback);
+      }
+      if (status) {
+        status.textContent = result.data?.message || copy.successFallback;
+      }
+      form.reset();
+      if (quoteExtra) {
+        quoteExtra.hidden = true;
+      }
+      updateContactConsentText();
+    } catch (error) {
+      if (status) {
+        status.textContent = error.message || copy.errorFallback;
+      }
+    } finally {
+      if (submitButton) {
+        submitButton.textContent = submitLabel;
+      }
+      updateSubmitState();
     }
   });
+  updateContactConsentText();
+  updateSubmitState();
+  syncPayloadFields();
 }
 
 function renderPage() {

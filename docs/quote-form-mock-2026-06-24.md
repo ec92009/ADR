@@ -4,8 +4,9 @@ This document records the proposed secure-form redesign before any live WordPres
 
 ## Status
 
-- Scope: mock only.
+- Scope: standalone mock plus static quote-route implementation.
 - File: `form-mock/index.html`.
+- Static quote route: `demande-de-devis-assurance-a-rueil-malmaison/index.html` renders the same flow through `pages.js`.
 - Shareable GitHub Pages URL: `https://ec92009.github.io/ADR/form-mock/`.
 - Local preview: `http://localhost:8124/form-mock/` when serving the repository with `python3 -m http.server 8124`.
 - Live WordPress form: unchanged.
@@ -68,11 +69,17 @@ The original form included callback consent text but did not include a phone fie
 - Browser check confirmed the contact-consent sentence updates when Téléphone or WhatsApp is selected.
 - Browser check confirmed the latest desktop row order: Contact préféré, Téléphone, Êtes-vous fumeur.
 - Browser check confirmed `Envoyer` remains disabled until both required consent boxes are checked.
+- Browser check after the payload update confirmed legacy field names and hidden alias fields sync correctly for civilité, email, profession, date de naissance, code postal, ville, RGPD consent, schema version, consent version, and source URL.
 - Mobile viewport check showed no horizontal overflow during the earlier mock pass.
+- Browser check on the static quote route confirmed the new form replaced the older all-fields-visible form, the gated section opens after quote type selection, consent gating works, legacy/additive payload keys sync, and mobile width has no horizontal overflow.
+- Static quote route now posts to the live MetForm endpoint for form `2073`; wiring check confirmed endpoint, form nonce, and initial disabled submit state without sending a full dummy lead.
 
 ## Implementation Notes For Live WordPress
 
 - Do not edit the live MetForm form through the classic editor textarea; previous captcha work showed that can disturb Elementor/MetForm rendering.
 - Implement the approved form structure through Elementor/MetForm controls where possible.
 - Back up form `2073` before changes.
-- Verify public submission rendering without sending a real customer lead.
+- Preserve the legacy MetForm field names documented in `docs/form-pipeline-compatibility-2026-06-24.md`, and add hidden alias fields for the cleaner refreshed schema.
+- Keep WordPress/MetForm entry storage enabled so submissions continue to land in `wp_postmeta`.
+- Manuel confirmed on 2026-06-24 that the interim email notification may include the full user-submitted payload.
+- Verify public submission rendering without sending a real customer lead, then run one explicitly approved dummy submission to confirm entry storage and full-payload email delivery.

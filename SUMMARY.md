@@ -5,7 +5,7 @@
 - Repository: `ec92009/ADR`.
 - Main static preview: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- Current GitHub Pages version marker: `v114.0`.
+- Current GitHub Pages version marker: `v116.0`.
 - Refreshed WordPress homepage and major pages are live.
 - Quote form captcha issue was resolved by removing the broken reCAPTCHA widget through Elementor/MetForm.
 - Legacy `/contact/` now redirects with a WordPress Redirection 301 to `/courtier-en-assurances-de-rueil-malmaison/`.
@@ -23,6 +23,7 @@
 
 - The user wanted to rethink the secure quote form before changing live WordPress HTML.
 - A standalone mock was created at `form-mock/index.html`.
+- The main static quote route now uses the same simplified gated form as the mock.
 - Shareable mock URL after GitHub Pages deploy: `https://ec92009.github.io/ADR/form-mock/`.
 - Local preview command:
 
@@ -65,6 +66,15 @@ python3 -m http.server 8124
 - The `Envoyer` button stays disabled until contact permission and RGPD consent are both checked.
 - The original pre-refresh RGPD wording and fumeur definition are preserved in the mock for traceability.
 
+## Form Pipeline Decision
+
+- Manuel confirmed on 2026-06-24 that the cabinet is comfortable receiving by email all information a user willingly submits through the form.
+- The interim production path should store the full submission in WordPress/MetForm entries and forward the full submitted payload to the configured email target.
+- The refreshed form should still preserve all legacy MetForm keys for `wp_postmeta`, while adding clearer alias keys for future processing.
+- The static quote route now submits to the existing WordPress MetForm endpoint for form `2073`, using the public form nonce observed on the live page.
+- The public business address visible in the site is `contact@assurancesderueil.fr`; the exact MetForm admin notification recipient is not exposed in public HTML and should be confirmed in WordPress settings before final launch.
+- Pipeline details are recorded in `docs/form-pipeline-compatibility-2026-06-24.md`.
+
 ## Validation Already Done
 
 - Public checks confirmed restored live pages contain the expected detail headings.
@@ -76,8 +86,17 @@ python3 -m http.server 8124
   - the contact-consent copy updates to e-mail, téléphone, or WhatsApp when the preference changes;
   - the latest desktop layout places Contact préféré, Téléphone, and Êtes-vous fumeur in one row;
   - required consent gating enables `Envoyer` only after both required boxes are checked;
+  - legacy MetForm fields and hidden alias fields sync correctly in the form mock after representative dummy input;
   - earlier mobile check showed no horizontal overflow.
+- Static quote-route browser checks confirmed:
+  - `/demande-de-devis-assurance-a-rueil-malmaison/` renders the new required-fields-first form;
+  - the old `Profil emprunteur` form legend is gone;
+  - `Type de devis désiré` reveals the extra fields;
+  - required consent gating enables `Envoyer`;
+  - legacy MetForm fields and hidden alias fields sync correctly after representative dummy input;
+  - submit wiring points to `https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073` with form nonce `f95577a433`;
+  - mobile viewport check showed no horizontal overflow.
 
 ## Next Working Principle
 
-Keep using the mock until Manuel agrees with the structure and wording. Once approved, back up live MetForm form `2073`, implement via Elementor/MetForm, then verify the public page without submitting a real lead.
+The static site now shows the new quote form. For the live WordPress site, back up MetForm form `2073`, implement the same structure through Elementor/MetForm, preserve legacy/additive payload keys, then verify the public page and run one approved dummy submission to confirm WordPress storage plus full-payload email delivery.

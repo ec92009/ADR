@@ -546,14 +546,25 @@
             <span class="status-pill"><span class="fr">Maquette</span><span class="en">Mock</span></span>
           </div>
 
-          <form action="#" method="post" onsubmit="return false">
+          <form action="#" method="post" data-quote-form onsubmit="return false">
+            <input type="hidden" name="schema_version" value="adr_quote_v2" />
+            <input type="hidden" name="source_url" value="" />
+            <input type="hidden" name="consent_version" value="adr_quote_consent_2026-06-24" />
+            <input type="hidden" name="civilite" value="" />
+            <input type="hidden" name="email" value="" />
+            <input type="hidden" name="profession" value="" />
+            <input type="hidden" name="ville" value="" />
+            <input type="hidden" name="code_postal" value="" />
+            <input type="hidden" name="date_naissance" value="" />
+            <input type="hidden" name="mf-date" value="" />
+            <input type="hidden" name="mf-gdpr-consent" value="" />
             <fieldset>
               <legend><span class="fr">Informations obligatoires</span><span class="en">Required information</span></legend>
               <div class="field">
                 <span class="field-label"><span class="fr">Civilité</span><span class="en">Title</span> <span class="required">*</span></span>
                 <div class="segmented" role="radiogroup" aria-label="Civilité">
-                  <label class="choice"><input type="radio" name="civilite" value="Madame" required /> <span class="fr">Madame</span><span class="en">Ms</span></label>
-                  <label class="choice"><input type="radio" name="civilite" value="Monsieur" /> <span class="fr">Monsieur</span><span class="en">Mr</span></label>
+                  <label class="choice"><input type="radio" name="mf-checkbox" value="Madame" required /> <span class="fr">Madame</span><span class="en">Ms</span></label>
+                  <label class="choice"><input type="radio" name="mf-checkbox" value="Monsieur" /> <span class="fr">Monsieur</span><span class="en">Mr</span></label>
                 </div>
               </div>
 
@@ -570,7 +581,7 @@
 
               <label class="field">
                 <span><span class="fr">Adresse e-mail</span><span class="en">Email address</span> <span class="required">*</span></span>
-                <input type="email" name="email" autocomplete="email" required />
+                <input type="email" name="mf-email" autocomplete="email" required />
               </label>
             </fieldset>
 
@@ -583,7 +594,7 @@
                 <div class="quote-type-row">
                   <label class="field">
                     <span><span class="fr">Type de devis désiré</span><span class="en">Desired quote type</span></span>
-                    <select name="type-devis" data-quote-type>
+                    <select name="type_devis" data-quote-type>
                       <option value="">Sélectionner</option>
                       <option value="pret">Assurance de prêt</option>
                       <option value="habitation">Assurance habitation</option>
@@ -601,9 +612,9 @@
                     <div class="field">
                       <span class="field-label"><span class="fr">Contact préféré</span><span class="en">Preferred contact</span></span>
                       <div class="segmented contact-options" role="radiogroup" aria-label="Contact préféré">
-                        <label class="choice"><input type="radio" name="contact-prefere" value="email" checked /> E-mail</label>
-                        <label class="choice"><input type="radio" name="contact-prefere" value="telephone" /> <span class="fr">Téléphone</span><span class="en">Phone</span></label>
-                        <label class="choice"><input type="radio" name="contact-prefere" value="whatsapp" /> WhatsApp</label>
+                        <label class="choice"><input type="radio" name="contact_preference" value="email" checked /> E-mail</label>
+                        <label class="choice"><input type="radio" name="contact_preference" value="telephone" /> <span class="fr">Téléphone</span><span class="en">Phone</span></label>
+                        <label class="choice"><input type="radio" name="contact_preference" value="whatsapp" /> WhatsApp</label>
                       </div>
                     </div>
                     <label class="field">
@@ -628,7 +639,7 @@
                     </label>
                     <label class="field">
                       <span><span class="fr">Profession</span><span class="en">Profession</span></span>
-                      <select name="profession">
+                      <select name="mf-select">
                         <option value="">Sélectionner</option>
                         <option>Cadres</option>
                         <option>Employés, agents de maîtrise</option>
@@ -651,13 +662,13 @@
                     <div class="field">
                       <span class="field-label"><span class="fr">Date de naissance</span><span class="en">Date of birth</span></span>
                       <div class="form-row three">
-                        <select name="jour-naissance" aria-label="Jour de naissance">
+                        <select name="jour_naissance" aria-label="Jour de naissance">
                           <option value="">Jour</option>
                           <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
                           <option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
                           <option>21</option><option>22</option><option>23</option><option>24</option><option>25</option><option>26</option><option>27</option><option>28</option><option>29</option><option>30</option><option>31</option>
                         </select>
-                        <select name="mois-naissance" aria-label="Mois de naissance">
+                        <select name="mois_naissance" aria-label="Mois de naissance">
                           <option value="">Mois</option>
                           <option value="01">Janvier</option>
                           <option value="02">Février</option>
@@ -672,7 +683,7 @@
                           <option value="11">Novembre</option>
                           <option value="12">Décembre</option>
                         </select>
-                        <select name="annee-naissance" aria-label="Année de naissance" data-year-select>
+                        <select name="annee_naissance" aria-label="Année de naissance" data-year-select>
                           <option value="">Année</option>
                         </select>
                       </div>
@@ -690,7 +701,7 @@
                     </label>
                     <label class="field">
                       <span><span class="fr">Ville</span><span class="en">City</span></span>
-                      <input type="text" name="ville" autocomplete="address-level2" />
+                      <input type="text" name="mf-text" autocomplete="address-level2" />
                     </label>
                   </div>
                 </div>
@@ -699,12 +710,12 @@
 
             <div class="checks" aria-label="Consentements">
               <label class="check">
-                <input type="checkbox" name="contact-consent" data-contact-consent required />
+                <input type="checkbox" name="contact_consent" value="Oui" data-contact-consent required />
                 <span class="fr">En cliquant sur « Envoyer », j’accepte qu’Assurances de Rueil me contacte par <span data-contact-channel-fr>e-mail</span>. <span class="required">*</span></span>
                 <span class="en">By clicking “Submit”, I agree that Assurances de Rueil may contact me by <span data-contact-channel-en>email</span>. <span class="required">*</span></span>
               </label>
               <label class="check">
-                <input type="checkbox" name="rgpd-consent" data-rgpd-consent required />
+                <input type="checkbox" name="rgpd_consent" value="Oui" data-rgpd-consent required />
                 <span class="fr">J'accepte le traitement de mes données personnelles conformément au RGPD. <a href="https://5s1e9attsc.preview.infomaniak.website/politique-de-confidentialite/">EN SAVOIR PLUS</a> <span class="required">*</span></span>
                 <span class="en">I agree to the processing of my personal data under GDPR. <a href="https://5s1e9attsc.preview.infomaniak.website/politique-de-confidentialite/">LEARN MORE</a> <span class="required">*</span></span>
               </label>
@@ -721,10 +732,11 @@
     <script>
       const root = document.documentElement;
       const body = document.body;
+      const quoteForm = document.querySelector("[data-quote-form]");
       const quoteType = document.querySelector("[data-quote-type]");
       const quoteExtra = document.querySelector("[data-quote-extra]");
       const yearSelect = document.querySelector("[data-year-select]");
-      const contactPreferences = Array.from(document.querySelectorAll('input[name="contact-prefere"]'));
+      const contactPreferences = Array.from(document.querySelectorAll('input[name="contact_preference"]'));
       const contactChannelFr = document.querySelector("[data-contact-channel-fr]");
       const contactChannelEn = document.querySelector("[data-contact-channel-en]");
       const contactConsent = document.querySelector("[data-contact-consent]");
@@ -754,24 +766,76 @@
 
       quoteType.addEventListener("change", () => {
         quoteExtra.hidden = quoteType.value === "";
+        syncPayloadFields();
       });
+
+      function formValue(name) {
+        const field = quoteForm.elements.namedItem(name);
+        if (!field) {
+          return "";
+        }
+        if (field instanceof RadioNodeList) {
+          return field.value || "";
+        }
+        return field.value || "";
+      }
+
+      function setFormValue(name, value) {
+        const field = quoteForm.elements.namedItem(name);
+        if (!field || field instanceof RadioNodeList) {
+          return;
+        }
+        field.value = value;
+      }
+
+      function birthdateParts() {
+        const day = formValue("jour_naissance").padStart(2, "0");
+        const month = formValue("mois_naissance");
+        const year = formValue("annee_naissance");
+        if (!day || !month || !year || day === "00") {
+          return { legacy: "", canonical: "" };
+        }
+        return {
+          legacy: `${month}-${day}-${year}`,
+          canonical: `${year}-${month}-${day}`
+        };
+      }
+
+      function syncPayloadFields() {
+        const birthdate = birthdateParts();
+        setFormValue("source_url", window.location.href);
+        setFormValue("civilite", formValue("mf-checkbox"));
+        setFormValue("email", formValue("mf-email"));
+        setFormValue("profession", formValue("mf-select"));
+        setFormValue("ville", formValue("mf-text"));
+        setFormValue("code_postal", formValue("code-postal"));
+        setFormValue("mf-date", birthdate.legacy);
+        setFormValue("date_naissance", birthdate.canonical);
+        setFormValue("mf-gdpr-consent", rgpdConsent.checked ? "Oui" : "");
+      }
 
       function updateContactConsentText() {
         const selected = contactPreferences.find((input) => input.checked)?.value || "email";
         const label = contactLabels[selected] || contactLabels.email;
         contactChannelFr.textContent = label.fr;
         contactChannelEn.textContent = label.en;
+        syncPayloadFields();
       }
 
       function updateSubmitState() {
         submitButton.disabled = !(contactConsent.checked && rgpdConsent.checked);
+        syncPayloadFields();
       }
 
       contactPreferences.forEach((input) => input.addEventListener("change", updateContactConsentText));
+      quoteForm.addEventListener("input", syncPayloadFields);
+      quoteForm.addEventListener("change", syncPayloadFields);
+      quoteForm.addEventListener("submit", syncPayloadFields);
       contactConsent.addEventListener("change", updateSubmitState);
       rgpdConsent.addEventListener("change", updateSubmitState);
       updateContactConsentText();
       updateSubmitState();
+      syncPayloadFields();
     </script>
   </body>
 </html>
