@@ -7,8 +7,9 @@
 - Live WordPress site: `https://assurancesderueil.fr/`.
 - GitHub Pages source-truth version marker: `v119.7`.
 - Live WordPress version marker: `v119.7`.
-- Live WordPress support plugin: `ADR Site Fixes` `119.7.1`.
-- The live WordPress pages now use the approved GH.io-style page shells through the child-theme output normalizer, with WordPress kept only where it must remain dynamic.
+- Live WordPress support plugin: `ADR Site Fixes` `119.8.1`.
+- The live WordPress pages now use the approved GH.io-style page shells through `ADR Site Fixes` MU-plugin modules, with WordPress kept only where it must remain dynamic.
+- The live child-theme `functions.php` has been reduced from roughly `5,938` lines / `351,567` editor characters to `91` lines / `2,936` editor characters.
 - The live WordPress pages have been reconciled against the GH.io `v119.7` source-of-truth mock for high-resolution photography, day/night persistence, and the contact/phone form pass.
 - The GH.io `v119.7` source update keeps static mock forms from posting to live MetForm endpoints, changes phone fields to text inputs with telephone keyboard hints, and preserves international prefixes such as `+34`.
 - GH.io and live WordPress both keep the day/night switch choice across page navigation through `adr-theme-persistence.js`.
@@ -31,9 +32,9 @@
 
 - GitHub/GH.io is the working source of truth for static content, visual approvals, review diffs, commits, and handoff history.
 - Live WordPress is currently a dynamic delivery layer:
-  - child-theme `functions.php` normalizes/replaces public page output;
+  - `ADR Site Fixes` normalizes/replaces public page output;
   - dynamic residuals refresh MetForm nonces at render time;
-  - new behavior should be split into modules rather than further growing `functions.php`.
+  - child-theme `functions.php` now holds only the base enqueue and Web-By-Elie credit block.
 - The latest live WordPress deployment details are in `docs/live-wordpress-change-log.md`.
 - The theme-editor workflow and size-limit warning are in `docs/wordpress-theme-editor-publish-workflow.md`.
 
@@ -56,7 +57,7 @@
 - The user-facing quote acknowledgement email was replaced on 2026-06-27; the contact-page acknowledgement was added to the same branded treatment later that day.
 - The fix lives outside the oversized child-theme file as a Must-Use plugin:
   - WordPress name: `ADR Site Fixes`
-  - version: `119.7.1`
+  - version: `119.8.1`
   - local source: `wp-live-plugin/adr-site-fixes/`
 - It applies to MetForm form `2073` for quote requests and form `7487` for the contact page.
 - It replaces the old centered/plain confirmations with branded left-aligned emails, plural `Assurances de Rueil`, cleaner legal copy, and a privacy-policy link.
@@ -66,6 +67,10 @@
 - It uses separate subjects:
   - quote: `Votre demande de devis - Assurances de Rueil`;
   - contact: `Votre message - Assurances de Rueil`.
+- The admin notification/export path now handles both MetForm form `2073` and contact form `7487`:
+  - private CSV route includes a `Source` column for `Devis` vs `Contact`;
+  - contact admin notifications are normalized to `Nouveau message depuis le site - Assurances de Rueil`;
+  - `contacts@assurancesderueil.fr` is accepted as an alias, with canonical delivery to `contact@assurancesderueil.fr`.
 - Rollback for only the contact acknowledgement patch is to restore `ADR Site Fixes` to the previous `119.7.0` files.
 - Rollback for the visual refresh only is to remove the `includes/live-visual-refresh.php` require from `wp-content/mu-plugins/adr-site-fixes.php` or restore the `ADR Site Fixes` MU-plugin to the previous `119.3.1` files. Removing the whole MU-plugin also rolls back the quote and contact acknowledgement emails.
 
@@ -80,7 +85,7 @@
   4. document the rollback path.
 - If a one-shot bootstrap is unavoidable, it must:
   - be locally linted with the exact payload;
-  - self-remove from `functions.php`;
+  - either self-remove from `functions.php` or write the final slim `functions.php` payload directly;
   - leave an after snapshot;
   - be verified through WordPress admin and public HTTP checks.
 
@@ -95,8 +100,8 @@
   - footer marker `v119.7`.
 - The GH.io `v119.4` local preview was verified across `particuliers.html`, `professionnels.html`, and `index.html`: the day/night checkbox state and computed theme colors persist across page navigation in both directions.
 - The GH.io `v119.7` local preview was verified on `courtier.html`: the new `Téléphone *` field renders as `type="text"`, entering `+34 636 63 03 38` preserves the full value, and empty static submits show a preview message instead of `Something went wrong. Envoi non autorisé.`
-- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.7.1`.
-- `instive-child/functions.php` no longer contains the bootstrap block after self-removal.
+- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.8.1`.
+- `instive-child/functions.php` no longer contains any split/replacement bootstrap marker and is now `91` lines / `2,936` editor characters.
 - Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v119-7-1`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body. A real live contact submission was not sent during this verification.
 - The live contact and quote pages remain HTTP 200.
 - Public live verification on Courtier/contact confirms:
@@ -113,14 +118,21 @@
   - `adr_quote_consent_2026-06-27_v119.7`;
   - `type="text"` and `inputmode="tel"` on the quote phone field;
   - no temporary bootstrap marker.
+- Public live verification after the `119.8.1` split confirms:
+  - Home, Courtier/contact, and Demande de devis return HTTP 200;
+  - `adr-live-visual-refresh-v119-7` and footer marker `v119.7` remain present;
+  - quote/contact phone controls remain `type="text"` with telephone hints;
+  - no public response includes `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP`.
 - Public live spot checks on Home and Particuliers confirm `adr-live-visual-refresh-v119-7`, `adr-theme-persistence-v119-7`, footer marker `v119.7`, and the approved `adr-photo-*-v119-5.jpg` assets.
-- The editor cleanup check confirmed page-side `instive-child/functions.php` length `351567` and no `ADR_MU_PLUGIN_BOOTSTRAP` marker after self-removal. A full local after-snapshot was not kept because the browser/editor export path truncated the copied file.
 - PHP lint passes for:
   - `wp-live-plugin/adr-site-fixes/adr-site-fixes.php`;
-  - `wp-live-plugin/adr-site-fixes/includes/quote-user-email.php`;
+  - `wp-live-plugin/adr-site-fixes/includes/form-adapters.php`;
+  - `wp-live-plugin/adr-site-fixes/includes/page-shell-normalizer.php`;
+  - `wp-live-plugin/adr-site-fixes/includes/public-user-email.php`;
+  - `wp-live-plugin/adr-site-fixes/includes/quote-requests-export.php`;
   - `wp-live-plugin/adr-site-fixes/includes/live-visual-refresh.php`.
 
 ## Open Work
 
 - Use `BACKLOG.md` for the current numbered backlog.
-- The highest-risk technical debt is the oversized `functions.php`; future work should move behavior into modules or a proper plugin rather than extending that file.
+- The highest-risk technical debt is now the browser theme-editor bootstrap path; future work should use FTP/SFTP, WP-CLI, or package upload for repeatable MU-plugin deployments.

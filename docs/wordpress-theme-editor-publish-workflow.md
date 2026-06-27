@@ -26,7 +26,7 @@ Important: the child-theme `functions.php` is now too large for reliable browser
 
 ## Browser-Assisted Upload
 
-Use this workflow only when the target file is small enough for reliable browser editing. For the current oversized `instive-child/functions.php`, prefer the MU-plugin split workflow below.
+Use this workflow only when the target file is small enough for reliable browser editing. If a theme file grows beyond reliable browser-editor handling again, prefer the MU-plugin split workflow below.
 
 1. Write the candidate PHP to the built-in browser clipboard.
 2. Focus the CodeMirror editor.
@@ -48,7 +48,12 @@ Use this workflow only when the target file is small enough for reliable browser
   3. submit only after the editor hash matches the locally linted seed;
   4. verify the live editor after save.
 - Temporarily disabling syntax highlighting in the WordPress profile exposes the real textarea and can help, but restore the profile setting immediately afterward.
-- When a one-shot bootstrap is prepended to the file, give it an opening and closing PHP wrapper and verify cleanup afterward. If a self-removal matcher is too strict, use a second tiny cleanup wrapper anchored to the start of `functions.php` rather than replacing the whole file.
+- When a one-shot bootstrap is prepended to the file, give it an opening and closing PHP wrapper and verify cleanup afterward. If CodeMirror replaces the visible editor instead of prepending, do not save a prepend-only bootstrap.
+- For oversized files, prefer a replacement-safe bootstrap that:
+  - fetches pinned plugin files from a commit-specific URL;
+  - verifies hashes before writing;
+  - writes the final slim `functions.php` payload directly;
+  - backs up the pre-replacement file under `wp-content/mu-plugins/adr-site-fixes-backups/`.
 
 ## MU-Plugin Split Workflow
 
@@ -67,8 +72,8 @@ Use this for new live behavior that does not belong in the page mock itself.
 6. The bootstrap must:
    - write files under `wp-content/mu-plugins/`;
    - be locally linted with the exact embedded payload;
-   - self-remove from `functions.php`;
-   - leave a local after snapshot in `wp-backups/`.
+   - self-remove from `functions.php` or write the final slim `functions.php` payload;
+   - leave an on-server backup before replacing oversized theme files.
 7. Verify in WordPress admin under `plugins.php?plugin_status=mustuse`.
 8. Verify public pages still return HTTP 200 and the changed feature marker is present.
 9. Document rollback. For `ADR Site Fixes`, rollback is removing `wp-content/mu-plugins/adr-site-fixes.php` and `wp-content/mu-plugins/adr-site-fixes/`.

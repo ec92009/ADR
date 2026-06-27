@@ -3,13 +3,12 @@
 1. With explicit approval, submit one safe live contact-form test and verify the branded `Votre message - Assurances de Rueil` acknowledgement plus the admin notification.
 2. With explicit approval, submit one safe live quote-form test and verify the branded `Votre demande de devis - Assurances de Rueil` acknowledgement, WordPress entry storage, admin notification, and CSV export.
 3. Back up and document the live MetForm definitions/settings for forms `2073` and `7487`, including recipients, field keys, confirmation settings, and anti-spam settings.
-4. Move more of the oversized child-theme `functions.php` behavior into versioned plugin modules, starting with the page-output normalizer and form adapters.
-5. Replace the browser theme-editor bootstrap workflow with a safer repeatable deploy path for the MU-plugin, such as FTP/SFTP, WP-CLI, or a small authenticated package upload.
-6. Review the live site with Manuel on desktop and mobile, covering home, cabinet, assurance de prêt, particuliers, professionnels, contact, quote, and footer/version details.
-7. Do a full SEO/AIO pass after visual sign-off: titles, meta descriptions, schema image URLs/dimensions, internal links, sitemap, `llms.txt`, and stale `Rueil-Malmaison` wording where it no longer helps.
-8. Finalize legal and consent wording across the forms, acknowledgement emails, privacy policy, cookie policy, and any GDPR data-rights copy.
-9. Revisit anti-spam now that stale reCAPTCHA is removed from the contact form; prefer the least intrusive option that does not block real prospects.
-10. Eventually restore the EN/FR switch with real bilingual content, hreflang/canonical handling, and a separate bilingual SEO/AIO pass.
+4. Replace the browser theme-editor bootstrap workflow with a safer repeatable deploy path for the MU-plugin, such as FTP/SFTP, WP-CLI, or a small authenticated package upload.
+5. Review the live site with Manuel on desktop and mobile, covering home, cabinet, assurance de prêt, particuliers, professionnels, contact, quote, and footer/version details.
+6. Do a full SEO/AIO pass after visual sign-off: titles, meta descriptions, schema image URLs/dimensions, internal links, sitemap, `llms.txt`, and stale `Rueil-Malmaison` wording where it no longer helps.
+7. Finalize legal and consent wording across the forms, acknowledgement emails, privacy policy, cookie policy, and any GDPR data-rights copy.
+8. Revisit anti-spam now that stale reCAPTCHA is removed from the contact form; prefer the least intrusive option that does not block real prospects.
+9. Eventually restore the EN/FR switch with real bilingual content, hreflang/canonical handling, and a separate bilingual SEO/AIO pass.
 
 ## Completed
 
@@ -26,3 +25,4 @@
 - 2026-06-27: Published GH.io source update `v119.7` for static form safety: contact and quote mocks no longer POST to live MetForm endpoints, phone fields use text inputs with telephone keyboard hints, and `+34`-style prefixes are preserved in rendered checks.
 - 2026-06-27: Ported the GH.io `v119.7` form-safety patch to live WordPress through `ADR Site Fixes` (`119.7.0`): backend MetForm metadata for contact form `7487` removes the stale reCAPTCHA field, inserts the backend `telephone` field, and keeps the frontend phone-preserver guard in sync with GH.io.
 - 2026-06-27: Extended the branded acknowledgement email module to contact form `7487` through `ADR Site Fixes` (`119.7.1`), with subject `Votre message - Assurances de Rueil`.
+- 2026-06-27: Split the oversized live child-theme `functions.php` into `ADR Site Fixes` modules (`119.8.1`), including page-shell normalization, quote/contact form adapters, quote/contact request export/admin email handling, and branded user acknowledgement emails; live `functions.php` is now 91 lines / 2,936 editor characters.

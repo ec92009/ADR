@@ -537,3 +537,36 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - to roll back only this contact acknowledgement patch, restore the `ADR Site Fixes` MU-plugin from the previous `119.7.0` files;
   - do not remove the whole MU-plugin unless also rolling back the quote acknowledgement, visual refresh, contact phone, and phone-preservation fixes.
+
+### Child-theme `functions.php` split into MU-plugin modules `119.8.1`
+
+- Goal: move the first four large live behavior blocks out of the oversized child-theme `functions.php` and into versioned `ADR Site Fixes` modules, while preserving the approved `v119.7` public site.
+- Method:
+  - extended `ADR Site Fixes` to version `119.8.1`;
+  - extracted the private request CSV/admin email layer into `includes/quote-requests-export.php`;
+  - extracted the public page-shell/output normalizer into `includes/page-shell-normalizer.php`;
+  - extracted the live quote-form adapter into `includes/form-adapters.php`;
+  - renamed/generalized `includes/quote-user-email.php` to `includes/public-user-email.php`;
+  - updated the MU-plugin loader to require the split modules explicitly;
+  - reduced live `instive-child/functions.php` to the base enqueue and Web-By-Elie credit block.
+- Contact form admin path:
+  - MetForm contact form `7487` is included in the private CSV export alongside quote form `2073`;
+  - the CSV now includes a `Source` column for `Devis` vs `Contact`;
+  - contact admin notifications are rewritten to `Nouveau message depuis le site - Assurances de Rueil`;
+  - `contacts@assurancesderueil.fr` is accepted as an alias, with canonical delivery to `contact@assurancesderueil.fr`.
+- Deployment note:
+  - the prepend-only bootstrap was not saved after visual inspection showed it could replace the visible editor instead of prepending to the existing file;
+  - the final deployment used a replacement-safe bootstrap, which installed the MU-plugin files from pinned GitHub commit `e6d7dd2`, verified SHA-256 hashes, and wrote the slim `functions.php` payload directly.
+- Verification result:
+  - PHP lint passes for all `ADR Site Fixes` PHP files;
+  - local synthetic mail harness confirms contact form `7487` admin mail is normalized, preserves `+34 636 63 03 38`, and does not rewrite user acknowledgement emails addressed to the visitor;
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `119.8.1`;
+  - live `instive-child/functions.php` is `91` lines / `2,936` editor characters;
+  - live `functions.php` contains no `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V119_8_1`, `ADR_MU_PLUGIN_SPLIT_BOOTSTRAP_V119_8`, `adr-quote-requests-v118-9`, `adr-public-wording-normalization-v119-3`, or `adr-live-quote-form-v119-3` markers;
+  - public Home, Courtier/contact, and Demande de devis pages return HTTP 200;
+  - public pages still include `adr-live-visual-refresh-v119-7` and footer marker `v119.7`;
+  - quote and contact phone fields still render as `type="text"` with telephone input hints.
+- Rollback notes:
+  - restore the previous `ADR Site Fixes` MU-plugin files from GitHub before `119.8.1` and restore `instive-child/functions.php` from the backup written under `wp-content/mu-plugins/adr-site-fixes-backups/` if the split needs to be reversed;
+  - because the old behavior now lives in MU-plugin modules, do not paste the old full child-theme file unless deliberately rolling back the whole split.
+
