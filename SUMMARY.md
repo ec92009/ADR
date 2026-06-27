@@ -7,6 +7,7 @@
 - Live WordPress site: `https://assurancesderueil.fr/`.
 - Approved public source-truth version marker: `v119.3`.
 - The live WordPress pages now use the approved GH.io-style page shells through the child-theme output normalizer, with WordPress kept only where it must remain dynamic.
+- The live WordPress homepage has been reconciled against the GH.io `v119.3` source-of-truth mock; only expected production URLs/absolute asset paths differ.
 - Public page titles are normalized to `Assurances de Rueil`.
 - The live quote page remains backed by MetForm form `2073` for storage and notifications.
 
@@ -65,6 +66,13 @@
 
 ## Recent Verification
 
+- The live homepage source and rendered DOM include:
+  - `adr-home-clean-mock`;
+  - the three approved service cards;
+  - service tag bubbles for loan, personal, and professional insurance;
+  - the phone CTA;
+  - the four partner logos;
+  - footer marker `v119.3`.
 - `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.3.1`.
 - `instive-child/functions.php` no longer contains the bootstrap block after self-removal.
 - The live quote page remains HTTP 200.

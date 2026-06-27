@@ -418,3 +418,17 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 
 - To roll back only the acknowledgement-email change, remove `wp-content/mu-plugins/adr-site-fixes.php` and the `wp-content/mu-plugins/adr-site-fixes/` directory from the WordPress server.
 - Do not restore an older `functions.php` for this rollback; the email module now lives outside the child theme.
+
+### Homepage source-truth reconciliation
+
+- Goal: close the visual-parity backlog item for the live homepage versus the GitHub Pages `v119.3` source-of-truth mock.
+- Method:
+  - fetched the cache-busted GH.io homepage and live WordPress homepage;
+  - compared the `adr-home-clean-mock` shell in both sources;
+  - checked rendered DOM geometry and content markers through the in-app browser at desktop and mobile-sized viewports.
+- Result:
+  - no live code patch was needed;
+  - both sources include the same approved homepage shell, service-card copy, service tag bubbles, phone CTA treatment, partner section, normalized `<title>Assurances de Rueil</title>`, and footer marker `v119.3`;
+  - all four partner logos load;
+  - horizontal overflow is `0` in the rendered checks;
+  - the only homepage-shell source differences are expected production URL rewrites and absolute GH.io asset paths on live WordPress.
