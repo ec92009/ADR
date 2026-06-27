@@ -2,7 +2,7 @@
 
 Static GitHub Pages preview for the current Assurances de Rueil redesign candidate.
 
-- Current visible version: `v119.0`
+- Current visible version: `v119.1`
 - Main preview: refreshed static mock promoted to the GitHub Pages root
 - Parked chooser: `chooser.html`
 - Converted routes: quote request, cabinet, loan insurance, personal insurance, business insurance, contact, legal, privacy, cookies, and EU cookie policy
