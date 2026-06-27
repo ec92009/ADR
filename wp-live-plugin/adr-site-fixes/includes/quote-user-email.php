@@ -4,10 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-final class ADR_Site_Fixes_Quote_User_Email {
-    private const FORM_ID = '2073';
+final class ADR_Site_Fixes_Public_User_Email {
+    private const QUOTE_FORM_ID = '2073';
+    private const CONTACT_FORM_ID = '7487';
     private const ADMIN_RECIPIENT = 'contact@assurancesderueil.fr';
-    private const MARKER = 'adr-quote-user-email-v119-3-1';
+    private const QUOTE_MARKER = 'adr-quote-user-email-v119-7-1';
+    private const CONTACT_MARKER = 'adr-contact-user-email-v119-7-1';
 
     public static function init() {
         add_filter( 'metform_confirmation_user_email_body', array( __CLASS__, 'replace_body' ), 20, 5 );
@@ -15,24 +17,41 @@ final class ADR_Site_Fixes_Quote_User_Email {
     }
 
     public static function replace_body( $body, $form_id, $form_data, $file_info, $form_settings ) {
-        if ( (string) $form_id !== self::FORM_ID || ! is_array( $form_data ) ) {
+        $kind = self::form_kind( $form_id );
+        if ( $kind === '' || ! is_array( $form_data ) ) {
             return $body;
         }
 
-        return self::build_message( wp_unslash( $form_data ) );
+        return self::build_message( wp_unslash( $form_data ), $kind );
     }
 
     public static function update_mail_args( $args ) {
         $message = isset( $args['message'] ) ? (string) $args['message'] : '';
 
-        if ( strpos( $message, self::MARKER ) === false ) {
+        if ( strpos( $message, self::QUOTE_MARKER ) !== false ) {
+            $args['subject'] = 'Votre demande de devis - Assurances de Rueil';
+            $args['headers'] = self::headers();
             return $args;
         }
 
-        $args['subject'] = 'Votre demande de devis - Assurances de Rueil';
-        $args['headers'] = self::headers();
+        if ( strpos( $message, self::CONTACT_MARKER ) !== false ) {
+            $args['subject'] = 'Votre message - Assurances de Rueil';
+            $args['headers'] = self::headers();
+        }
 
         return $args;
+    }
+
+    private static function form_kind( $form_id ) {
+        if ( (string) $form_id === self::QUOTE_FORM_ID ) {
+            return 'quote';
+        }
+
+        if ( (string) $form_id === self::CONTACT_FORM_ID ) {
+            return 'contact';
+        }
+
+        return '';
     }
 
     private static function headers() {
@@ -128,17 +147,39 @@ final class ADR_Site_Fixes_Quote_User_Email {
         $type_devis = self::value( $data, array( 'type_devis' ) );
 
         return array(
+            'nom'                => self::value( $data, array( 'nom', 'last_name', 'lastname' ) ),
             'prenom'             => self::value( $data, array( 'prenom' ) ),
+            'email'              => self::value( $data, array( 'mf-email', 'email' ) ),
             'telephone'          => self::value( $data, array( 'telephone', 'tel', 'phone' ) ),
             'contact_preference' => self::contact_label( self::value( $data, array( 'contact_preference' ) ) ),
             'type_devis'         => self::type_label( $type_devis ),
             'date_naissance'     => self::birthdate( $data ),
+            'adresse'            => self::value( $data, array( 'adresse', 'address' ) ),
+            'code_postal'        => self::value( $data, array( 'code-postal', 'code_postal', 'postal_code' ) ),
+            'ville'              => self::value( $data, array( 'ville', 'mf-text', 'city' ) ),
+            'message'            => self::value( $data, array( 'mf-textarea', 'message' ) ),
         );
     }
 
-    private static function summary_rows( $data ) {
+    private static function summary_rows( $data, $kind ) {
         $request = self::normalized( $data );
         $rows = array();
+
+        if ( $kind === 'contact' ) {
+            if ( $request['email'] !== '' ) {
+                $rows[] = array( 'E-mail', $request['email'] );
+            }
+
+            if ( $request['telephone'] !== '' ) {
+                $rows[] = array( 'Téléphone', $request['telephone'] );
+            }
+
+            if ( $request['message'] !== '' ) {
+                $rows[] = array( 'Message', self::excerpt( $request['message'] ) );
+            }
+
+            return $rows;
+        }
 
         if ( $request['type_devis'] !== '' ) {
             $rows[] = array( 'Demande', $request['type_devis'] );
@@ -157,16 +198,54 @@ final class ADR_Site_Fixes_Quote_User_Email {
         return $rows;
     }
 
-    private static function build_message( $data ) {
+    private static function excerpt( $value ) {
+        $value = preg_replace( '/\s+/', ' ', (string) $value );
+        $value = is_string( $value ) ? trim( $value ) : '';
+
+        if ( function_exists( 'mb_strlen' ) && function_exists( 'mb_substr' ) ) {
+            if ( mb_strlen( $value ) <= 420 ) {
+                return $value;
+            }
+
+            return rtrim( mb_substr( $value, 0, 417 ) ) . '...';
+        }
+
+        if ( strlen( $value ) <= 420 ) {
+            return $value;
+        }
+
+        return rtrim( substr( $value, 0, 417 ) ) . '...';
+    }
+
+    private static function email_copy( $kind ) {
+        if ( $kind === 'contact' ) {
+            return array(
+                'marker'    => self::CONTACT_MARKER,
+                'preheader' => 'Votre message a bien été reçu par Assurances de Rueil.',
+                'heading'   => 'Message bien reçu',
+                'intro'     => 'Merci pour votre message. Il a bien été transmis au cabinet, et un conseiller reviendra vers vous dans les meilleurs délais.',
+            );
+        }
+
+        return array(
+            'marker'    => self::QUOTE_MARKER,
+            'preheader' => 'Votre demande de devis a bien été reçue par Assurances de Rueil.',
+            'heading'   => 'Demande de devis bien reçue',
+            'intro'     => 'Merci pour votre demande. Elle a bien été transmise au cabinet, et un conseiller reviendra vers vous dans les meilleurs délais.',
+        );
+    }
+
+    private static function build_message( $data, $kind ) {
         $request = self::normalized( $data );
         $first_name = trim( $request['prenom'] );
         $greeting = $first_name !== '' ? 'Bonjour ' . $first_name . ',' : 'Bonjour,';
         $privacy_url = home_url( '/politique-de-confidentialite/' );
         $site_url = home_url( '/' );
+        $copy = self::email_copy( $kind );
 
         $body  = '<!doctype html><html><body style="margin:0;padding:0;background:#eef5fb;color:#07192f;font-family:Arial,Helvetica,sans-serif;">';
-        $body .= '<!-- ' . esc_html( self::MARKER ) . ' -->';
-        $body .= '<div style="display:none;max-height:0;overflow:hidden;color:#eef5fb;">Votre demande de devis a bien été reçue par Assurances de Rueil.</div>';
+        $body .= '<!-- ' . esc_html( $copy['marker'] ) . ' -->';
+        $body .= '<div style="display:none;max-height:0;overflow:hidden;color:#eef5fb;">' . esc_html( $copy['preheader'] ) . '</div>';
         $body .= '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse;background:#eef5fb;"><tr><td align="center" style="padding:28px 14px;">';
         $body .= '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%;max-width:680px;border-collapse:collapse;background:#ffffff;border:1px solid #c6d4e6;border-radius:8px;overflow:hidden;">';
         $body .= '<tr><td style="background:#07192f;padding:22px 26px;color:#ffffff;">';
@@ -174,12 +253,12 @@ final class ADR_Site_Fixes_Quote_User_Email {
         $body .= '<div style="margin-top:6px;color:#d9e8f6;font-size:13px;line-height:1.5;">Courtier indépendant depuis quatre générations</div>';
         $body .= '</td></tr>';
         $body .= '<tr><td style="padding:30px 26px 8px;">';
-        $body .= '<h1 style="margin:0;color:#0a3f81;font-size:28px;line-height:1.15;font-weight:800;">Demande de devis bien reçue</h1>';
+        $body .= '<h1 style="margin:0;color:#0a3f81;font-size:28px;line-height:1.15;font-weight:800;">' . esc_html( $copy['heading'] ) . '</h1>';
         $body .= '<p style="margin:22px 0 0;color:#07192f;font-size:17px;line-height:1.55;font-weight:700;">' . esc_html( $greeting ) . '</p>';
-        $body .= '<p style="margin:12px 0 0;color:#66758a;font-size:16px;line-height:1.65;">Merci pour votre demande. Elle a bien été transmise au cabinet, et un conseiller reviendra vers vous dans les meilleurs délais.</p>';
+        $body .= '<p style="margin:12px 0 0;color:#66758a;font-size:16px;line-height:1.65;">' . esc_html( $copy['intro'] ) . '</p>';
         $body .= '</td></tr>';
 
-        $rows = self::summary_rows( $data );
+        $rows = self::summary_rows( $data, $kind );
         if ( ! empty( $rows ) ) {
             $body .= '<tr><td style="padding:14px 26px 2px;">';
             $body .= '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:separate;border-spacing:0;border:1px solid #d9e3ef;border-radius:8px;overflow:hidden;">';
@@ -208,4 +287,4 @@ final class ADR_Site_Fixes_Quote_User_Email {
     }
 }
 
-ADR_Site_Fixes_Quote_User_Email::init();
+ADR_Site_Fixes_Public_User_Email::init();

@@ -513,3 +513,27 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - to roll back only `v119.7`, restore the `ADR Site Fixes` MU-plugin from the `119.6.0` files and revert GH.io static files to `v119.6`;
   - do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.
+
+### Contact acknowledgement email MU-plugin patch `119.7.1`
+
+- Goal: give the Courtier/contact page the same branded user acknowledgement email as the quote form, instead of MetForm's old centered/plain confirmation.
+- Root cause:
+  - the branded acknowledgement module introduced for `v119.3` was intentionally scoped only to quote MetForm form `2073`;
+  - the contact page uses MetForm form `7487`, so successful contact submissions still used the default MetForm user-confirmation template.
+- Method:
+  - extended the `ADR Site Fixes` Must-Use plugin to version `119.7.1`;
+  - generalized the acknowledgement module to handle both form `2073` and form `7487`;
+  - added a contact-specific body marker `adr-contact-user-email-v119-7-1` and subject `Votre message - Assurances de Rueil`;
+  - kept the quote subject as `Votre demande de devis - Assurances de Rueil`;
+  - installed the updated MU-plugin through a small, linted, self-removing bootstrap, without leaving changes in the oversized child-theme `functions.php`.
+- Verification result:
+  - PHP lint passes for all `ADR Site Fixes` files and the generated bootstrap payload;
+  - synthetic MetForm email verification confirms form `7487` returns the branded `Message bien reçu` body, contact marker, contact subject, and preserves `+34 636 63 03 38`;
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `119.7.1`;
+  - `instive-child/functions.php` returned to its page-side editor length of `351567` with no `ADR_MU_PLUGIN_BOOTSTRAP_V119_7_1` marker;
+  - public cache-busted Courtier/contact and Demande de devis pages still render, keep title `Assurances de Rueil`, keep footer marker `v119.7`, and keep phone controls as `type="text"` with `inputmode="tel"`.
+- Note:
+  - no real live contact submission was sent during verification; that would send an actual acknowledgement email and lead/admin notification.
+- Rollback notes:
+  - to roll back only this contact acknowledgement patch, restore the `ADR Site Fixes` MU-plugin from the previous `119.7.0` files;
+  - do not remove the whole MU-plugin unless also rolling back the quote acknowledgement, visual refresh, contact phone, and phone-preservation fixes.
