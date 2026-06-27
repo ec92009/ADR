@@ -7,6 +7,7 @@
 - Live WordPress site: `https://assurancesderueil.fr/`.
 - GitHub Pages source-truth version marker: `v119.7`.
 - Live WordPress version marker: `v119.7`.
+- Live WordPress support plugin: `ADR Site Fixes` `119.7.1`.
 - The live WordPress pages now use the approved GH.io-style page shells through the child-theme output normalizer, with WordPress kept only where it must remain dynamic.
 - The live WordPress pages have been reconciled against the GH.io `v119.7` source-of-truth mock for high-resolution photography, day/night persistence, and the contact/phone form pass.
 - The GH.io `v119.7` source update keeps static mock forms from posting to live MetForm endpoints, changes phone fields to text inputs with telephone keyboard hints, and preserves international prefixes such as `+34`.
@@ -14,6 +15,17 @@
 - GH.io and live WordPress both use the higher-resolution JPEG photography in `assets/adr-photo-*-v119-5.jpg`.
 - Public page titles are normalized to `Assurances de Rueil`.
 - The live quote page remains backed by MetForm form `2073` for storage and notifications.
+
+## Conversation Summary, 2026-06-27
+
+- Fixed trailing separator behavior in the mock-page list/tag UI and treated that local mock pass as the source for later publishes.
+- Promoted the approved GH.io `v119.3` state as the source of truth, then normalized public browser titles to `Assurances de Rueil` and removed remaining awkward `à Rueil-Malmaison` title copy from the page chrome.
+- Split live WordPress behavior into the `ADR Site Fixes` Must-Use plugin after confirming the child-theme `functions.php` is too large for reliable browser-editor round trips.
+- Replaced low-resolution photos with higher-resolution `adr-photo-*-v119-5.jpg` assets on GH.io, then pushed those image and day/night persistence changes to live WordPress.
+- Added and aligned a required `Téléphone *` field on the contact page, changed quote/contact phone fields to `type="text"` with `inputmode="tel"`, and preserved international prefixes such as `+34`.
+- Fixed the contact form's `Envoi non autorisé` path by removing stale backend MetForm reCAPTCHA metadata for form `7487` while keeping the public form layout clean.
+- Replaced the old plain/centered quote acknowledgement email and then extended the same branded acknowledgement treatment to the contact form.
+- Latest live verification kept real submissions unsent unless explicitly approved: pages render, version markers are present, phone fields preserve `+34`, and synthetic email checks pass.
 
 ## Source Of Truth
 
@@ -54,7 +66,8 @@
 - It uses separate subjects:
   - quote: `Votre demande de devis - Assurances de Rueil`;
   - contact: `Votre message - Assurances de Rueil`.
-- Rollback for the visual refresh only is to remove the `includes/live-visual-refresh.php` require from `wp-content/mu-plugins/adr-site-fixes.php` or restore the `ADR Site Fixes` MU-plugin to the previous `119.3.1` files. Removing the whole MU-plugin also rolls back the quote acknowledgement email.
+- Rollback for only the contact acknowledgement patch is to restore `ADR Site Fixes` to the previous `119.7.0` files.
+- Rollback for the visual refresh only is to remove the `includes/live-visual-refresh.php` require from `wp-content/mu-plugins/adr-site-fixes.php` or restore the `ADR Site Fixes` MU-plugin to the previous `119.3.1` files. Removing the whole MU-plugin also rolls back the quote and contact acknowledgement emails.
 
 ## WordPress Editing Notes
 
