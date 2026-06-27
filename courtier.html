@@ -667,6 +667,29 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
     .adr-form-card input::placeholder,
     .adr-form-card textarea::placeholder { color: rgba(7,25,47,.58) !important; }
     .adr-form-card .mf-error-message { color: #ffd6cc !important; font-weight: 800 !important; }
+
+    /* adr-contact-phone-align-v1: match the injected phone field to exported MetForm row geometry. */
+    @media (min-width: 768px) {
+      .adr-form-card .elementor-element-adr-phone .mf-input-label {
+        display: inline-block !important;
+        width: 20% !important;
+        margin-bottom: 0 !important;
+        vertical-align: middle !important;
+      }
+      .adr-form-card .elementor-element-adr-phone input[name="telephone"] {
+        width: 78.9% !important;
+      }
+    }
+    @media (max-width: 767px) {
+      .adr-form-card .elementor-element-adr-phone .mf-input-label,
+      .adr-form-card .elementor-element-adr-phone input[name="telephone"] {
+        width: 100% !important;
+      }
+      .adr-form-card .elementor-element-adr-phone .mf-input-label {
+        display: block !important;
+        margin-bottom: 5px !important;
+      }
+    }
 </style>
   <input class="adr-switch-input" id="adr-theme-toggle" type="checkbox" aria-label="Basculer le thème jour/nuit">
   <script id="adr-theme-persistence-v119-4" src="adr-theme-persistence.js?v=119.4"></script>
