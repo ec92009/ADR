@@ -432,3 +432,29 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
   - all four partner logos load;
   - horizontal overflow is `0` in the rendered checks;
   - the only homepage-shell source differences are expected production URL rewrites and absolute GH.io asset paths on live WordPress.
+
+### Live visual refresh MU-plugin `v119.5`
+
+- Goal: port the approved GH.io `v119.5` photography and day/night persistence pass to live WordPress without growing the oversized child-theme `functions.php`.
+- Method:
+  - extended the split `ADR Site Fixes` Must-Use plugin to version `119.5.0`;
+  - added `includes/live-visual-refresh.php`, an output-buffer module that runs after the child-theme page-shell normalizer;
+  - installed the updated MU-plugin through a small, linted one-shot bootstrap in the theme editor;
+  - temporarily disabled syntax highlighting to expose the real textarea, then restored the profile setting;
+  - removed temporary bootstrap wrappers from `instive-child/functions.php` and confirmed the theme file returned to its original 351,567-character editor length.
+- Behavior:
+  - replaces legacy WordPress photo URLs with the GH.io `assets/adr-photo-*-v119-5.jpg` images;
+  - updates OpenGraph/JSON-LD image dimensions for the new photos;
+  - upgrades public footer/source markers from `v119.3` to `v119.5`;
+  - injects the existing `adr-theme-persistence.js` script as `adr-theme-persistence-v119-5`.
+- Verification result:
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `119.5.0`;
+  - public cache-busted checks passed on the homepage, Particuliers, Professionnels, Cabinet, Assurance de prêt, Demande de devis, and Courtier pages;
+  - each checked page includes `adr-live-visual-refresh-v119-5`, footer marker `v119.5`, `adr-theme-persistence-v119-5`, and the expected page-specific `adr-photo-*-v119-5.jpg` URL;
+  - no checked public page includes `ADR_MU_PLUGIN_BOOTSTRAP` or `ADR_THEME_BOOTSTRAP_CLEANUP`;
+  - `instive-child/functions.php` no longer contains either temporary bootstrap marker after cleanup.
+
+### Rollback notes
+
+- To roll back only the `v119.5` visual refresh, restore the `ADR Site Fixes` MU-plugin from the previous `119.3.1` files or remove the `includes/live-visual-refresh.php` require from `wp-content/mu-plugins/adr-site-fixes.php`.
+- Do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.

@@ -48,6 +48,7 @@ Use this workflow only when the target file is small enough for reliable browser
   3. submit only after the editor hash matches the locally linted seed;
   4. verify the live editor after save.
 - Temporarily disabling syntax highlighting in the WordPress profile exposes the real textarea and can help, but restore the profile setting immediately afterward.
+- When a one-shot bootstrap is prepended to the file, give it an opening and closing PHP wrapper and verify cleanup afterward. If a self-removal matcher is too strict, use a second tiny cleanup wrapper anchored to the start of `functions.php` rather than replacing the whole file.
 
 ## MU-Plugin Split Workflow
 
