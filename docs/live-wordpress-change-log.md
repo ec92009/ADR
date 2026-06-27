@@ -502,6 +502,14 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
   - local rendered `courtier.html` keeps `+34 636 63 03 38`, displays the static preview status on submit, and does not show the old unauthorized message;
   - local rendered `demande-de-devis.html` keeps `+34 636 63 03 38` after the quote type reveals the phone field;
   - synthetic MetForm metadata test confirms `mf-recaptcha` is removed and backend `telephone` is present.
+- Live verification result:
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `119.7.0`;
+  - public cache-busted Courtier/contact source includes `adr-live-visual-refresh-v119-7`, `adr-theme-persistence-v119-7`, footer marker `v119.7`, `elementor-element-adr-phone`, `type="text"`, and `adr-form-phone-preserver-v119-7`;
+  - public cache-busted Courtier/contact source no longer includes visible `mf-recaptcha`, `g-recaptcha`, `recaptcha-support`, `reCAPTCHA`, old error text, or temporary bootstrap markers;
+  - rendered live Courtier/contact keeps `+34 636 63 03 38` in the phone field without submitting the form;
+  - public cache-busted Demande de devis source includes `adr-live-quote-form-v119-7`, `version = '119.7'`, `adr_quote_consent_2026-06-27_v119.7`, and `type="text"` on the quote phone field;
+  - public homepage source includes `adr-live-visual-refresh-v119-7`, `adr-theme-persistence-v119-7`, footer marker `v119.7`, and the approved `adr-photo-home-hero-v119-5.jpg`;
+  - `instive-child/functions.php` returned to its page-side editor length of `351567`, CodeMirror syntax highlighting was restored, and no `ADR_MU_PLUGIN_BOOTSTRAP_V119_7` or `ADR_THEME_BOOTSTRAP_CLEANUP_V119_7` marker remains.
 - Rollback notes:
   - to roll back only `v119.7`, restore the `ADR Site Fixes` MU-plugin from the `119.6.0` files and revert GH.io static files to `v119.6`;
   - do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.
