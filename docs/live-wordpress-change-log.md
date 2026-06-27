@@ -570,3 +570,12 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
   - restore the previous `ADR Site Fixes` MU-plugin files from GitHub before `119.8.1` and restore `instive-child/functions.php` from the backup written under `wp-content/mu-plugins/adr-site-fixes-backups/` if the split needs to be reversed;
   - because the old behavior now lives in MU-plugin modules, do not paste the old full child-theme file unless deliberately rolling back the whole split.
 
+### Live contact and quote form verification, 2026-06-28
+
+- User-reported real-world verification:
+  - live contact form `7487` sends the branded visitor acknowledgement and its admin notification was received by Manu;
+  - live quote form `2073` sends the branded visitor acknowledgement and its admin notification was received by Manu;
+  - the private CSV export was reviewed and looked convincing;
+  - no further code change was needed for this verification.
+- Note:
+  - verification used real emails submitted by the user; no extra agent-submitted test was needed.

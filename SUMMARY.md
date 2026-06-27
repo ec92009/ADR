@@ -26,7 +26,13 @@
 - Added and aligned a required `Téléphone *` field on the contact page, changed quote/contact phone fields to `type="text"` with `inputmode="tel"`, and preserved international prefixes such as `+34`.
 - Fixed the contact form's `Envoi non autorisé` path by removing stale backend MetForm reCAPTCHA metadata for form `7487` while keeping the public form layout clean.
 - Replaced the old plain/centered quote acknowledgement email and then extended the same branded acknowledgement treatment to the contact form.
-- Latest live verification kept real submissions unsent unless explicitly approved: pages render, version markers are present, phone fields preserve `+34`, and synthetic email checks pass.
+- Latest live verification includes user-confirmed real submissions: both contact and quote forms sent visitor acknowledgements, Manu received the admin emails, and the private CSV export looked convincing.
+
+## Conversation Summary, 2026-06-28
+
+- Split the oversized live child-theme `functions.php` into the `ADR Site Fixes` MU-plugin modules and confirmed the live theme file is down to `91` lines / `2,936` editor characters.
+- Generalized the request export/admin notification path so both quote form `2073` and contact form `7487` are represented in the private CSV and admin emails.
+- User-confirmed the real live contact and quote paths: Manu received emails, the user received responses after submitting forms, and the CSV output was convincing.
 
 ## Source Of Truth
 
@@ -49,7 +55,7 @@
   - footer marker `v119.7`;
   - dynamic nonce attributes present;
   - `headers: wpNonce ? { 'X-WP-Nonce': wpNonce } : {}` present in the form script.
-- No real lead/test email was sent during the final verification unless explicitly authorized later.
+- Real live quote submission was later verified by the user: the visitor acknowledgement arrived, Manu received the admin email, WordPress storage/CSV output looked convincing, and the phone field preserved international-prefix input.
 - Live WordPress `v119.7` changes quote/contact phone controls to `type="text"` with `inputmode="tel"`, matching the GH.io source change for international prefixes such as `+34`.
 
 ## User Acknowledgement Email State
@@ -102,7 +108,8 @@
 - The GH.io `v119.7` local preview was verified on `courtier.html`: the new `Téléphone *` field renders as `type="text"`, entering `+34 636 63 03 38` preserves the full value, and empty static submits show a preview message instead of `Something went wrong. Envoi non autorisé.`
 - `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.8.1`.
 - `instive-child/functions.php` no longer contains any split/replacement bootstrap marker and is now `91` lines / `2,936` editor characters.
-- Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v119-7-1`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body. A real live contact submission was not sent during this verification.
+- Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v119-7-1`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body.
+- Real live form verification on 2026-06-28 confirms both contact and quote forms send visitor responses, deliver admin emails to Manu, and produce a convincing private CSV export.
 - The live contact and quote pages remain HTTP 200.
 - Public live verification on Courtier/contact confirms:
   - `adr-live-visual-refresh-v119-7`;
