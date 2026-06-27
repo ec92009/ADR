@@ -1,6 +1,6 @@
 # Backlog
 
-1. After GH.io review/sign-off, port the `v119.4` day/night persistence behavior to live WordPress.
+1. After GH.io review/sign-off, port the `v119.5` day/night persistence behavior and high-resolution image assets to live WordPress.
 2. Share the GitHub Pages quote route with Manuel and collect feedback/sign-off on the new form.
 3. Confirm the final legal/consent wording, especially the simplified required contact permission.
 4. Preserve all legacy MetForm payload keys and add clearer alias keys so future `wp_postmeta` consumers have both old and improved schema values.
@@ -20,3 +20,4 @@
 - 2026-06-27: Replaced the user-facing MetForm quote acknowledgement email with the `ADR Site Fixes` Must-Use plugin (`v119.3.1`), keeping the email module out of the oversized child-theme `functions.php`.
 - 2026-06-27: Reconciled the live WordPress homepage against the GH.io `v119.3` source-of-truth mock. The only shell differences are expected production URLs/absolute asset paths; service-card copy, sub-bubbles, phone CTA, partner section, title, and footer version marker match.
 - 2026-06-27: Published GH.io preview `v119.4` source changes for persistent day/night switching across root mock pages.
+- 2026-06-27: Prepared GH.io preview `v119.5` with regenerated higher-resolution local JPEG photography for the root and pretty-path static pages.

@@ -5,11 +5,12 @@
 - Repository: `ec92009/ADR`.
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- GitHub Pages source-truth version marker: `v119.4`.
+- GitHub Pages source-truth version marker: `v119.5`.
 - Live WordPress version marker before this preview fix is ported: `v119.3`.
 - The live WordPress pages now use the approved GH.io-style page shells through the child-theme output normalizer, with WordPress kept only where it must remain dynamic.
 - The live WordPress homepage has been reconciled against the GH.io `v119.3` source-of-truth mock; only expected production URLs/absolute asset paths differ.
 - The GH.io `v119.4` preview keeps the day/night switch choice across page navigation through `adr-theme-persistence.js`.
+- The GH.io `v119.5` preview replaces the main page photography with local higher-resolution JPEG assets in `assets/adr-photo-*-v119-5.jpg`.
 - Public page titles are normalized to `Assurances de Rueil`.
 - The live quote page remains backed by MetForm form `2073` for storage and notifications.
 
@@ -87,5 +88,5 @@
 ## Open Work
 
 - Use `BACKLOG.md` for the current numbered backlog.
-- After GH.io review/sign-off, port the `v119.4` day/night persistence behavior to live WordPress.
+- After GH.io review/sign-off, port the `v119.5` day/night persistence behavior and high-resolution image assets to live WordPress.
 - The highest-risk technical debt is the oversized `functions.php`; future work should move behavior into modules or a proper plugin rather than extending that file.
