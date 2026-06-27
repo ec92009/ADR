@@ -876,14 +876,48 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                 as=${html`<span className="mf-error-message"></span>`}
             />
 
-                    </div>
+	                    </div>
 
-                </div>
-                </div>
-                <div className="elementor-element elementor-element-61eb343 elementor-widget elementor-widget-mf-text" data-id="61eb343" data-element_type="widget" data-settings="{&quot;mf_input_name&quot;:&quot;adresse&quot;}" data-widget_type="mf-text.default">
-                <div className="elementor-widget-container">
+	                </div>
+	                </div>
+	                <div className="elementor-element elementor-element-adr-phone elementor-widget elementor-widget-mf-text" data-id="adr-phone" data-element_type="widget" data-settings="{&quot;mf_input_name&quot;:&quot;telephone&quot;}" data-widget_type="mf-text.default">
+	                <div className="elementor-widget-container">
 
-        <div className="mf-input-wrapper">
+	        <div className="mf-input-wrapper">
+	                            <label className="mf-input-label" htmlFor="mf-input-tel-adr-phone">
+	                    ${ parent.decodeEntities(`Téléphone`) } 					<span className="mf-input-required-indicator">*</span>
+	                </label>
+
+	            <input
+	                type="tel"
+	                inputMode="tel"
+	                autoComplete="tel"
+	                className="mf-input "
+	                id="mf-input-tel-adr-phone"
+	                name="telephone"
+	                placeholder="${ parent.decodeEntities(`+33 1 47 51 06 69`) } "
+	                                    onInput=${parent.handleChange}
+	                    onBlur=${parent.handleChange}
+	                    aria-invalid=${validation.errors['telephone'] ? 'true' : 'false'}
+	                    ref=${el =>{
+	                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":6,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+	                    }}
+	                                />
+
+	                            <${validation.ErrorMessage}
+	                    errors=${validation.errors}
+	                    name="telephone"
+	                    as=${html`<span className="mf-error-message"></span>`}
+	                    />
+
+	                    </div>
+
+	                        </div>
+	                </div>
+	                <div className="elementor-element elementor-element-61eb343 elementor-widget elementor-widget-mf-text" data-id="61eb343" data-element_type="widget" data-settings="{&quot;mf_input_name&quot;:&quot;adresse&quot;}" data-widget_type="mf-text.default">
+	                <div className="elementor-widget-container">
+
+	        <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-61eb343">
                     ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator">*</span>
                 </label>
@@ -1062,40 +1096,13 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                     as=${html`<span className="mf-error-message"></span>`}
                     />
 
-                    </div>
+	                    </div>
 
-                        </div>
-                </div>
-                <div className="elementor-element elementor-element-ebfc01d elementor-widget elementor-widget-mf-recaptcha" data-id="ebfc01d" data-element_type="widget" data-widget_type="mf-recaptcha.default">
-                <div className="elementor-widget-container">
-                            <div className="mf-input-wrapper">
-
-                    <div
-                        className="g-recaptcha centre"
-                        id="g-recaptcha"
-                        data-sitekey="6LcL1RgqAAAAAGaJrpOCsaogH7U397pCt1y4izHG"
-                                                    data-callback="handleReCAPTCHA_${this.state.recaptcha_uid}"
-                            data-expired-callback="handleReCAPTCHA_${this.state.recaptcha_uid}"
-                            data-error-callback="handleReCAPTCHA_${this.state.recaptcha_uid}"
-                            aria-invalid=${validation.errors['g-recaptcha-response'] ? 'true' : 'false'}
-                                                ></div>
-
-                                            <input type="hidden"
-                            name="g-recaptcha-response"
-                            className="mf-input mf-mobile-hidden"
-                            value=${parent.getValue('g-recaptcha-response')}
-                            ref=${el => parent.activateValidation({"message":"reCAPTCHA est n\u00e9cessaire.","required":true}, el)}
-                            />
-
-                        <${validation.ErrorMessage} errors=${validation.errors} name="g-recaptcha-response" as=${html`<span className="mf-error-message"></span>`} />
-
-                            </div>
-
-                        </div>
-                </div>
-                <div className="elementor-element elementor-element-3a46b2f mf-btn--center elementor-widget elementor-widget-mf-button" data-id="3a46b2f" data-element_type="widget" data-widget_type="mf-button.default">
-                <div className="elementor-widget-container">
-                            <div className="mf-btn-wraper " data-mf-form-conditional-logic-requirement="">
+	                        </div>
+	                </div>
+	                <div className="elementor-element elementor-element-3a46b2f mf-btn--center elementor-widget elementor-widget-mf-button" data-id="3a46b2f" data-element_type="widget" data-widget_type="mf-button.default">
+	                <div className="elementor-widget-container">
+	                            <div className="mf-btn-wraper " data-mf-form-conditional-logic-requirement="">
                             <button type="submit" className="metform-btn metform-submit-btn " id="">
                     <span>${ parent.decodeEntities(`Envoyer`) } </span>
                 </button>
@@ -1425,8 +1432,6 @@ var mf = {"postType":"page","restURI":"https://assurancesderueil.fr/wp-json/metf
 //# sourceURL=metform-app-js-extra
 </script>
 <script id="metform-app-js" src="https://assurancesderueil.fr/wp-content/plugins/metform/public/assets/js/app.js?ver=4.0.1"></script>
-<script id="recaptcha-support-js" src="https://assurancesderueil.fr/wp-content/plugins/metform/public/assets/js/recaptcha-support.js?ver=4.0.1"></script>
-<script id="recaptcha-v2-js" src="https://google.com/recaptcha/api.js?render=explicit" async defer></script>
 <script id="elementor-pro-webpack-runtime-js" src="https://assurancesderueil.fr/wp-content/plugins/elementor-pro-10/assets/js/webpack-pro.runtime.min.js?ver=3.28.3"></script>
 <script id="elementor-pro-frontend-js-before">
 var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/assurancesderueil.fr\/wp-admin\/admin-ajax.php","nonce":"74addf136d","urls":{"assets":"https:\/\/assurancesderueil.fr\/wp-content\/plugins\/elementor-pro-10\/assets\/","rest":"https:\/\/assurancesderueil.fr\/wp-json\/"},"settings":{"lazy_load_background_images":true},"popup":{"hasPopUps":false},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"},"x-twitter":{"title":"X"},"threads":{"title":"Threads"}},"facebook_sdk":{"lang":"fr_FR","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/assurancesderueil.fr\/wp-content\/plugins\/elementor-pro-10\/modules\/lottie\/assets\/animations\/default.json"}};
@@ -1553,7 +1558,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             }
         }
     </style>
-    <div class="adr-version-footer" aria-label="Version du site">v119.5</div>
+    <div class="adr-version-footer" aria-label="Version du site">v119.6</div>
     <script id="adr-version-footer-placement-v1">
     (function () {
         function placeVersionMarker() {

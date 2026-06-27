@@ -5,10 +5,11 @@
 - Repository: `ec92009/ADR`.
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- GitHub Pages source-truth version marker: `v119.5`.
+- GitHub Pages source-truth version marker: `v119.6`.
 - Live WordPress version marker: `v119.5`.
 - The live WordPress pages now use the approved GH.io-style page shells through the child-theme output normalizer, with WordPress kept only where it must remain dynamic.
 - The live WordPress pages have been reconciled against the GH.io `v119.5` source-of-truth mock for the high-resolution photography and day/night persistence pass.
+- The GH.io `v119.6` source update adds a required phone field to the static Courtier/contact form, removes the stale contact-form reCAPTCHA requirement, and marks quote-page phone inputs with a telephone input mode so international prefixes such as `+34` are preserved while typing.
 - GH.io and live WordPress both keep the day/night switch choice across page navigation through `adr-theme-persistence.js`.
 - GH.io and live WordPress both use the higher-resolution JPEG photography in `assets/adr-photo-*-v119-5.jpg`.
 - Public page titles are normalized to `Assurances de Rueil`.
@@ -36,6 +37,7 @@
   - dynamic nonce attributes present;
   - `headers: wpNonce ? { 'X-WP-Nonce': wpNonce } : {}` present in the form script.
 - No real lead/test email was sent during the final verification unless explicitly authorized later.
+- GH.io `v119.6` adds `inputmode="tel"` to the quote-page phone input; live WordPress remains at the prior `v119.5` behavior until this source change is ported.
 
 ## Quote Email State
 
@@ -77,6 +79,7 @@
   - the four partner logos;
   - footer marker `v119.5`.
 - The GH.io `v119.4` local preview was verified across `particuliers.html`, `professionnels.html`, and `index.html`: the day/night checkbox state and computed theme colors persist across page navigation in both directions.
+- The GH.io `v119.6` local preview was verified on `courtier.html`: the new `Téléphone *` field renders, entering `+34 636 63 03 38` preserves the leading `+34`, and no `reCAPTCHA est nécessaire` / `g-recaptcha` text remains in the source.
 - `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.5.0`.
 - `instive-child/functions.php` no longer contains the bootstrap block after self-removal.
 - The live quote page remains HTTP 200.
