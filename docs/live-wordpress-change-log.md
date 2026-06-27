@@ -458,3 +458,28 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 
 - To roll back only the `v119.5` visual refresh, restore the `ADR Site Fixes` MU-plugin from the previous `119.3.1` files or remove the `includes/live-visual-refresh.php` require from `wp-content/mu-plugins/adr-site-fixes.php`.
 - Do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.
+
+### Live contact/phone polish MU-plugin `v119.6`
+
+- Goal: port the approved GH.io `v119.6` Courtier/contact form polish to live WordPress without editing the oversized child-theme logic directly.
+- Method:
+  - extended the split `ADR Site Fixes` Must-Use plugin to version `119.6.0`;
+  - kept the high-resolution `adr-photo-*-v119-5.jpg` assets in place while upgrading live source/footer markers to `v119.6`;
+  - added an output-buffer pass for the live Courtier/contact MetForm wrapper that injects the required `Téléphone *` field, removes stale reCAPTCHA widget/script output, and adds alignment CSS matching the GH.io layout;
+  - added `inputmode="tel"` to the live quote-page phone input so international prefixes such as `+34` are not fighting the mobile keyboard;
+  - repaired the prior JSON-LD photo-dimension artifact caused by PHP replacement backreference ambiguity;
+  - installed the updated MU-plugin through a small, linted one-shot bootstrap in the theme editor.
+- Verification result:
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `119.6.0`;
+  - public cache-busted Courtier/contact source includes `adr-live-visual-refresh-v119-6`, `adr-theme-persistence-v119-6`, footer marker `v119.6`, `elementor-element-adr-phone`, and `adr-contact-phone-align-v1`;
+  - public cache-busted Courtier/contact source no longer includes `mf-recaptcha`, `g-recaptcha`, `recaptcha-support`, `reCAPTCHA`, the malformed `"58692` JSON-LD fragment, or any `ADR_MU_PLUGIN_BOOTSTRAP` marker;
+  - public cache-busted Demande de devis source includes `adr-live-quote-form-v119-6`, `version = '119.6'`, `adr_quote_consent_2026-06-27_v119.6`, and `inputmode="tel"`;
+  - public cache-busted Home and Particuliers spot checks include `adr-live-visual-refresh-v119-6`, `adr-theme-persistence-v119-6`, footer marker `v119.6`, and the expected `adr-photo-*-v119-5.jpg` URLs;
+  - `instive-child/functions.php` returned to its page-side editor length of `351567` and no longer contains `ADR_MU_PLUGIN_BOOTSTRAP` after self-removal.
+- Note:
+  - a full local after-snapshot was not kept for this deploy because the browser/editor export path truncated the copied file, which is the failure mode this workflow is designed to avoid. The cleanup check used page-side length and marker verification instead.
+
+### Rollback notes
+
+- To roll back only the `v119.6` contact/phone polish, restore the `ADR Site Fixes` MU-plugin from the previous `119.5.0` files.
+- Do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.

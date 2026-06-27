@@ -8,11 +8,10 @@
 6. Verify the live quote form render publicly on desktop and mobile without submitting a real customer lead.
 7. Confirm the MetForm admin email recipient in WordPress settings, then with explicit approval test with safe dummy data and verify both WordPress entry storage and full-payload email delivery to the configured target.
 8. Document the live form change in `docs/live-wordpress-change-log.md` and store before/after backups in `wp-backups/`.
-9. Port the GH.io `v119.6` Courtier/contact phone-field and stale reCAPTCHA cleanup to live WordPress once approved.
-10. Review the refreshed live site with Manuel for visual polish and any content that should be toned down or expanded.
-11. Revisit anti-spam strategy after the simplified form is live, using the least intrusive option that does not block real prospects.
-12. Re-review SEO / AIO after the refreshed mock content is approved, including page titles, meta descriptions, schema, internal links, and any AI-search answerability gaps.
-13. Eventually restore the EN/FR switch, with a proper bilingual SEO / AIO pass rather than only toggling visible copy.
+9. Review the refreshed live site with Manuel for visual polish and any content that should be toned down or expanded.
+10. Revisit anti-spam strategy after the simplified form is live, using the least intrusive option that does not block real prospects.
+11. Re-review SEO / AIO after the refreshed mock content is approved, including page titles, meta descriptions, schema, internal links, and any AI-search answerability gaps.
+12. Eventually restore the EN/FR switch, with a proper bilingual SEO / AIO pass rather than only toggling visible copy.
 
 ## Completed
 
@@ -23,3 +22,4 @@
 - 2026-06-27: Prepared GH.io preview `v119.5` with regenerated higher-resolution local JPEG photography for the root and pretty-path static pages.
 - 2026-06-27: Ported GH.io `v119.5` to live WordPress through the split `ADR Site Fixes` MU-plugin (`119.5.0`), including persistent day/night behavior, high-resolution photo URLs, and footer/source markers.
 - 2026-06-27: Published GH.io source update `v119.6` for the Courtier/contact form: added a required phone field, removed the stale reCAPTCHA requirement from the static form, and added telephone input mode to the quote-page phone field.
+- 2026-06-27: Ported the GH.io `v119.6` contact/phone polish to live WordPress through `ADR Site Fixes` (`119.6.0`): injected the required Courtier phone field, removed stale contact reCAPTCHA output, aligned the phone field, added quote phone `inputmode="tel"`, and repaired the prior JSON-LD photo-dimension artifact.
