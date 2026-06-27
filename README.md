@@ -1,8 +1,10 @@
-# Assurances de Rueil redesign preview
+# Assurances de Rueil redesign source of truth
 
-Static GitHub Pages preview for the current Assurances de Rueil redesign candidate.
+Static GitHub Pages build for the current Assurances de Rueil redesign source of truth.
 
 - Current visible version: `v119.3`
+- Canonical source of truth: `https://ec92009.github.io/ADR/`
+- Downstream target: WordPress/live-site work should follow this GitHub Pages build unless explicitly superseded
 - Main preview: refreshed static mock promoted to the GitHub Pages root
 - Parked chooser: `chooser.html`
 - Converted routes: quote request, cabinet, loan insurance, personal insurance, business insurance, contact, legal, privacy, cookies, and EU cookie policy
