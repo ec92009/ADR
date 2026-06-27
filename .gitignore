@@ -3,4 +3,5 @@ mobile-*.png
 option-*.png
 qa-*.json
 qa-*.png
+output/pdf/ghio-daily/
 .DS_Store
