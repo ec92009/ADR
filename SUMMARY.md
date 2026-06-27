@@ -3,102 +3,77 @@
 ## Current Site State
 
 - Repository: `ec92009/ADR`.
-- Main static preview: `https://ec92009.github.io/ADR/`.
+- GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- Current GitHub Pages version marker: `v117.0`.
-- Static route pages now include pre-rendered body content in the initial HTML for crawlers and AI/search agents; JavaScript still enhances/re-renders the same content for visitor interactivity.
-- Refreshed WordPress homepage and major pages are live.
-- Quote form captcha issue was resolved by removing the broken reCAPTCHA widget through Elementor/MetForm.
-- Legacy `/contact/` now redirects with a WordPress Redirection 301 to `/courtier-en-assurances-de-rueil-malmaison/`.
-- Original service/cabinet details were restored into the refreshed WordPress pages and documented with before/after backups.
+- Approved public source-truth version marker: `v119.3`.
+- The live WordPress pages now use the approved GH.io-style page shells through the child-theme output normalizer, with WordPress kept only where it must remain dynamic.
+- Public page titles are normalized to `Assurances de Rueil`.
+- The live quote page remains backed by MetForm form `2073` for storage and notifications.
 
-## Safety Baseline
+## Source Of Truth
 
-- UpdraftPlus backup was created before live WordPress replacement work.
-- Live WordPress edits are documented in `docs/live-wordpress-change-log.md`.
-- Original-detail restoration audit is in `docs/audits/original-detail-restoration-2026-06-24.md`.
-- Before/after WordPress page HTML backups are stored under `wp-backups/`.
-- Avoid editing Elementor/MetForm forms through the classic-editor source textarea when possible.
+- GitHub/GH.io is the working source of truth for static content, visual approvals, review diffs, commits, and handoff history.
+- Live WordPress is currently a dynamic delivery layer:
+  - child-theme `functions.php` normalizes/replaces public page output;
+  - dynamic residuals refresh MetForm nonces at render time;
+  - new behavior should be split into modules rather than further growing `functions.php`.
+- The latest live WordPress deployment details are in `docs/live-wordpress-change-log.md`.
+- The theme-editor workflow and size-limit warning are in `docs/wordpress-theme-editor-publish-workflow.md`.
 
-## Form Mock Conversation
+## Quote Form State
 
-- The user wanted to rethink the secure quote form before changing live WordPress HTML.
-- A standalone mock was created at `form-mock/index.html`.
-- The main static quote route now uses the same simplified gated form as the mock.
-- Shareable mock URL after GitHub Pages deploy: `https://ec92009.github.io/ADR/form-mock/`.
-- Local preview command:
+- The public quote page renders the refreshed form shell marked `adr-live-quote-form-v119-3`.
+- It preserves legacy MetForm keys and adds clearer alias keys for future consumers.
+- The form reads the rendered wrapper's current `data-form-nonce` and `data-wp-nonce`.
+- The submit request includes `X-WP-Nonce`, which fixed the previous `Envoi non autorisé` failure.
+- The public smoke check after the fix confirmed:
+  - page HTTP 200;
+  - footer marker `v119.3`;
+  - dynamic nonce attributes present;
+  - `headers: wpNonce ? { 'X-WP-Nonce': wpNonce } : {}` present in the form script.
+- No real lead/test email was sent during the final verification unless explicitly authorized later.
 
-```sh
-python3 -m http.server 8124
-```
+## Quote Email State
 
-- Preview URL: `http://localhost:8124/form-mock/`.
-- The mock is explicitly not wired to send data and is marked `noindex, nofollow`.
+- The user-facing quote acknowledgement email was replaced on 2026-06-27.
+- The fix lives outside the oversized child-theme file as a Must-Use plugin:
+  - WordPress name: `ADR Site Fixes`
+  - version: `119.3.1`
+  - local source: `wp-live-plugin/adr-site-fixes/`
+- It applies only to MetForm form `2073`.
+- It replaces the old centered/plain confirmation with a branded left-aligned email, plural `Assurances de Rueil`, cleaner legal copy, and a privacy-policy link.
+- It normalizes:
+  - subject: `Votre demande de devis - Assurances de Rueil`;
+  - From: `Assurances de Rueil <contact@assurancesderueil.fr>`;
+  - Reply-To: `Assurances de Rueil <contact@assurancesderueil.fr>`.
+- Rollback is to remove `wp-content/mu-plugins/adr-site-fixes.php` and `wp-content/mu-plugins/adr-site-fixes/` from the WordPress server.
 
-## Approved Mock Direction So Far
+## WordPress Editing Notes
 
-- First visible block asks only:
-  1. Civilité
-  2. Nom
-  3. Prénom
-  4. Adresse e-mail
-- `Type de devis désiré` is full-width and acts as the gate.
-- Extra fields remain hidden until a quote type is selected.
-- Revealed fields include:
-  1. Contact préféré: E-mail par défaut, Téléphone, WhatsApp
-  2. Téléphone
-  3. Êtes-vous fumeur ?
-  4. Banque
-  5. Profession
-  6. Date de naissance
-  7. Adresse, Code postal, Ville
-- The date of birth year dropdown runs from current year minus 16 through current year minus 100.
-- The original technical definition of non-smoker is included under fumeur.
-- Contact préféré, Téléphone, and Êtes-vous fumeur now sit in one desktop row; the phone helper note was removed as unnecessary.
-- Date de naissance sits in its own full-width row below that group.
+- Avoid pasting the full child-theme `functions.php` through the browser editor. It is too large and browser/editor reads can truncate.
+- Syntax highlighting can be temporarily disabled in the WordPress profile as an emergency path, but it should not be the normal deployment path.
+- For small live behavior changes, prefer:
+  1. build a local module;
+  2. lint it with MAMP PHP;
+  3. install as a small plugin or MU-plugin;
+  4. document the rollback path.
+- If a one-shot bootstrap is unavoidable, it must:
+  - be locally linted with the exact payload;
+  - self-remove from `functions.php`;
+  - leave an after snapshot;
+  - be verified through WordPress admin and public HTTP checks.
 
-## Consent Decisions
+## Recent Verification
 
-- The original pre-refresh form text said a counselor may call the user, but the original form did not ask for a phone number.
-- The mock fixes that by asking for an optional phone number after a quote type is selected.
-- Contact permission is required, using one simplified contact-consent checkbox that says the user accepts contact by the selected preferred channel.
-- E-mail is the default preferred contact method because it is the only guaranteed contact detail.
-- RGPD consent is required.
-- The `Envoyer` button stays disabled until contact permission and RGPD consent are both checked.
-- The original pre-refresh RGPD wording and fumeur definition are preserved in the mock for traceability.
+- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.3.1`.
+- `instive-child/functions.php` no longer contains the bootstrap block after self-removal.
+- The live quote page remains HTTP 200.
+- PHP lint passes for:
+  - `wp-live-plugin/adr-site-fixes/adr-site-fixes.php`;
+  - `wp-live-plugin/adr-site-fixes/includes/quote-user-email.php`;
+  - `wp-backups/functions-instive-child-after-adr-site-fixes-mu-seed-v119-3-2026-06-27.php`.
 
-## Form Pipeline Decision
+## Open Work
 
-- Manuel confirmed on 2026-06-24 that the cabinet is comfortable receiving by email all information a user willingly submits through the form.
-- The interim production path should store the full submission in WordPress/MetForm entries and forward the full submitted payload to the configured email target.
-- The refreshed form should still preserve all legacy MetForm keys for `wp_postmeta`, while adding clearer alias keys for future processing.
-- The static quote route now submits to the existing WordPress MetForm endpoint for form `2073`, using the public form nonce observed on the live page.
-- The public business address visible in the site is `contact@assurancesderueil.fr`; the exact MetForm admin notification recipient is not exposed in public HTML and should be confirmed in WordPress settings before final launch.
-- Pipeline details are recorded in `docs/form-pipeline-compatibility-2026-06-24.md`.
-
-## Validation Already Done
-
-- Public checks confirmed restored live pages contain the expected detail headings.
-- Public `/contact/` redirect checked: one redirect to the refreshed contact page with HTTP 200.
-- Mock browser checks confirmed:
-  - extra fields are hidden before quote type selection;
-  - extra fields are visible after quote type selection;
-  - e-mail is selected by default as Contact préféré;
-  - the contact-consent copy updates to e-mail, téléphone, or WhatsApp when the preference changes;
-  - the latest desktop layout places Contact préféré, Téléphone, and Êtes-vous fumeur in one row;
-  - required consent gating enables `Envoyer` only after both required boxes are checked;
-  - legacy MetForm fields and hidden alias fields sync correctly in the form mock after representative dummy input;
-  - earlier mobile check showed no horizontal overflow.
-- Static quote-route browser checks confirmed:
-  - `/demande-de-devis-assurance-a-rueil-malmaison/` renders the new required-fields-first form;
-  - the old `Profil emprunteur` form legend is gone;
-  - `Type de devis désiré` reveals the extra fields;
-  - required consent gating enables `Envoyer`;
-  - legacy MetForm fields and hidden alias fields sync correctly after representative dummy input;
-  - submit wiring points to `https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073` with form nonce `f95577a433`;
-  - mobile viewport check showed no horizontal overflow.
-- SEO/AIO pass on 2026-06-25 pre-rendered dynamic route bodies into the HTML, refreshed sitemap `lastmod` dates to `2026-06-25`, and bumped the visible version to `v117.0`.
-
-## Next Working Principle
-
-The static site now shows the new quote form. For the live WordPress site, back up MetForm form `2073`, implement the same structure through Elementor/MetForm, preserve legacy/additive payload keys, then verify the public page and run one approved dummy submission to confirm WordPress storage plus full-payload email delivery.
+- Use `BACKLOG.md` for the current numbered backlog.
+- The highest-risk technical debt is the oversized `functions.php`; future work should move behavior into modules or a proper plugin rather than extending that file.
