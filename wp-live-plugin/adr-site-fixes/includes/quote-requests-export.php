@@ -4,9 +4,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-quote-requests-v118-9: private quote-request CSV and ordered admin email.
-define( 'ADR_QUOTE_REQUESTS_VERSION', '119.3' );
+// adr-quote-requests-v119-8-1: private site-request CSV and ordered admin email.
+define( 'ADR_QUOTE_REQUESTS_VERSION', '119.8.1' );
 define( 'ADR_QUOTE_REQUESTS_FORM_ID', '2073' );
+define( 'ADR_CONTACT_REQUESTS_FORM_ID', '7487' );
 define( 'ADR_QUOTE_REQUESTS_MIN_DATE', '2026-01-01 00:00:00' );
 define( 'ADR_QUOTE_REQUESTS_PATH', 'demandes-de-devis' );
 define( 'ADR_QUOTE_REQUESTS_ACCESS_KEY', '57e957f2bb42963c872a28f1e061dbf6bc06757514bf97173ab571b3a31ee8c3' );
@@ -22,6 +23,22 @@ function adr_quote_requests_url() {
         ADR_QUOTE_REQUESTS_ACCESS_KEY,
         home_url( '/' . ADR_QUOTE_REQUESTS_PATH . '/' )
     );
+}
+
+function adr_site_request_form_ids() {
+    return array( ADR_QUOTE_REQUESTS_FORM_ID, ADR_CONTACT_REQUESTS_FORM_ID );
+}
+
+function adr_site_request_kind_for_form_id( $form_id ) {
+    if ( (string) $form_id === ADR_CONTACT_REQUESTS_FORM_ID ) {
+        return 'contact';
+    }
+
+    if ( (string) $form_id === ADR_QUOTE_REQUESTS_FORM_ID ) {
+        return 'quote';
+    }
+
+    return '';
 }
 
 function adr_is_quote_requests_path() {
@@ -129,11 +146,16 @@ function adr_quote_requests_entries() {
             'meta_query'       => array(
                 array(
                     'key'   => 'metform_entries__form_id',
-                    'value' => ADR_QUOTE_REQUESTS_FORM_ID,
+                    'value' => adr_site_request_form_ids(),
+                    'compare' => 'IN',
                 ),
             ),
         )
     );
+}
+
+function adr_quote_request_form_id_for_post( $post_id ) {
+    return (string) get_post_meta( (int) $post_id, 'metform_entries__form_id', true );
 }
 
 function adr_quote_request_data_for_post( $post_id ) {
@@ -231,6 +253,10 @@ function adr_quote_request_address( $data ) {
     return trim( implode( "\n", array_filter( array( $street, $postal_city ) ) ) );
 }
 
+function adr_site_request_source_label( $form_id ) {
+    return adr_site_request_kind_for_form_id( $form_id ) === 'contact' ? 'Contact' : 'Devis';
+}
+
 function adr_quote_request_consent( $data ) {
     $lines = array();
     $contact = adr_quote_request_value( $data, array( 'contact_consent' ) );
@@ -250,14 +276,17 @@ function adr_quote_request_consent( $data ) {
 function adr_quote_request_normalized( $data, $post = null ) {
     $type_devis = adr_quote_request_value( $data, array( 'type_devis' ) );
     $date = '';
+    $form_id = ADR_QUOTE_REQUESTS_FORM_ID;
 
     if ( $post instanceof WP_Post ) {
         $date = mysql2date( 'd/m/Y H:i', $post->post_date );
+        $form_id = adr_quote_request_form_id_for_post( $post->ID );
     }
 
     return array(
         'id'                  => $post instanceof WP_Post ? (string) $post->ID : '',
         'date'                => $date,
+        'source'              => adr_site_request_source_label( $form_id ),
         'civilite'            => adr_quote_request_value( $data, array( 'mf-checkbox', 'civilite' ) ),
         'nom'                 => adr_quote_request_value( $data, array( 'nom' ) ),
         'prenom'              => adr_quote_request_value( $data, array( 'prenom' ) ),
@@ -270,6 +299,7 @@ function adr_quote_request_normalized( $data, $post = null ) {
         'banque'              => adr_quote_request_value( $data, array( 'banque' ) ),
         'profession'          => adr_quote_request_value( $data, array( 'mf-select', 'profession' ) ),
         'adresse'             => adr_quote_request_address( $data ),
+        'message'             => adr_quote_request_value( $data, array( 'mf-textarea', 'message' ) ),
         'consentement'        => adr_quote_request_consent( $data ),
     );
 }
@@ -288,6 +318,7 @@ function adr_quote_requests_headers() {
     return array(
         'date'               => 'Date',
         'id'                 => 'ID',
+        'source'             => 'Source',
         'civilite'           => 'Civilité',
         'nom'                => 'Nom',
         'prenom'             => 'Prénom',
@@ -300,6 +331,7 @@ function adr_quote_requests_headers() {
         'banque'             => 'Banque',
         'profession'         => 'Profession',
         'adresse'            => 'Adresse',
+        'message'            => 'Message',
         'consentement'       => 'Consentement',
     );
 }
@@ -309,7 +341,7 @@ function adr_render_quote_requests_csv() {
     $rows = adr_quote_requests_rows();
 
     header( 'Content-Type: text/csv; charset=utf-8' );
-    header( 'Content-Disposition: attachment; filename="demandes-de-devis-' . gmdate( 'Ymd-His' ) . '.csv"' );
+    header( 'Content-Disposition: attachment; filename="demandes-site-' . gmdate( 'Ymd-His' ) . '.csv"' );
 
     $output = fopen( 'php://output', 'w' );
     fprintf( $output, "\xEF\xBB\xBF" );
@@ -329,47 +361,77 @@ function adr_render_quote_requests_csv() {
 function adr_update_quote_admin_email( $args ) {
     $subject = isset( $args['subject'] ) ? (string) $args['subject'] : '';
     $message = isset( $args['message'] ) ? (string) $args['message'] : '';
+    $form_id = adr_quote_admin_email_form_id( $subject, $message );
 
-    if ( $subject !== "Contact pour devis d'assurance sur votre site internet" ) {
+    if ( $form_id === '' ) {
         return $args;
     }
 
-    if ( stripos( $message, 'Demande de devis' ) === false || ! adr_quote_admin_email_has_recipient( $args, ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT ) ) {
+    if ( ! adr_quote_admin_email_has_admin_recipient( $args ) ) {
         return $args;
     }
 
-    $data = adr_quote_admin_email_submission_data();
+    $data = adr_quote_admin_email_submission_data( $form_id );
     if ( empty( $data ) ) {
         return $args;
     }
 
-    $args['message'] = adr_build_quote_admin_email_message( $data );
+    $args['to'] = ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT;
+    $args['subject'] = adr_quote_admin_email_subject( $form_id );
+    $args['headers'] = adr_quote_admin_email_headers();
+    $args['message'] = adr_build_quote_admin_email_message( $data, $form_id );
 
     return $args;
 }
 
-function adr_quote_admin_email_has_recipient( $args, $needle ) {
+function adr_quote_admin_email_form_id( $subject, $message ) {
+    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+    if ( preg_match( '#/metform/v1/entries/insert/(\d+)#', $request_uri, $matches ) ) {
+        $form_id = (string) $matches[1];
+        if ( adr_site_request_kind_for_form_id( $form_id ) !== '' ) {
+            return $form_id;
+        }
+    }
+
+    if ( $subject === "Contact pour devis d'assurance sur votre site internet" && stripos( $message, 'Demande de devis' ) !== false ) {
+        return ADR_QUOTE_REQUESTS_FORM_ID;
+    }
+
+    if ( stripos( $subject, 'message' ) !== false || stripos( $message, 'ENVOYER UN MESSAGE' ) !== false ) {
+        return ADR_CONTACT_REQUESTS_FORM_ID;
+    }
+
+    return '';
+}
+
+function adr_quote_admin_email_has_admin_recipient( $args ) {
+    $aliases = array(
+        ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT,
+        'contacts@assurancesderueil.fr',
+    );
     $to = isset( $args['to'] ) ? $args['to'] : array();
     $recipients = is_array( $to ) ? $to : explode( ',', (string) $to );
 
     foreach ( $recipients as $recipient ) {
-        if ( stripos( trim( $recipient ), $needle ) !== false ) {
-            return true;
+        foreach ( $aliases as $alias ) {
+            if ( stripos( trim( $recipient ), $alias ) !== false ) {
+                return true;
+            }
         }
     }
 
     return false;
 }
 
-function adr_quote_admin_email_submission_data() {
+function adr_quote_admin_email_submission_data( $form_id ) {
     if ( ! empty( $_POST ) && is_array( $_POST ) ) {
         return wp_unslash( $_POST );
     }
 
-    return adr_quote_admin_email_latest_entry_data();
+    return adr_quote_admin_email_latest_entry_data( $form_id );
 }
 
-function adr_quote_admin_email_latest_entry_data() {
+function adr_quote_admin_email_latest_entry_data( $form_id ) {
     global $wpdb;
 
     $post_id = $wpdb->get_var(
@@ -386,7 +448,7 @@ function adr_quote_admin_email_latest_entry_data() {
              ORDER BY p.post_date_gmt DESC
              LIMIT 1",
             'metform_entries__form_id',
-            ADR_QUOTE_REQUESTS_FORM_ID,
+            $form_id,
             'metform-entry',
             'publish',
             gmdate( 'Y-m-d H:i:s', time() - 10 * MINUTE_IN_SECONDS )
@@ -400,10 +462,24 @@ function adr_quote_admin_email_latest_entry_data() {
     return adr_quote_request_data_for_post( (int) $post_id );
 }
 
-function adr_quote_admin_email_rows( $data ) {
+function adr_quote_admin_email_subject( $form_id ) {
+    return adr_site_request_kind_for_form_id( $form_id ) === 'contact'
+        ? 'Nouveau message depuis le site - Assurances de Rueil'
+        : 'Nouvelle demande de devis - Assurances de Rueil';
+}
+
+function adr_quote_admin_email_headers() {
+    return array(
+        'MIME-Version: 1.0',
+        'Content-Type: text/html; charset=UTF-8',
+        'From: Assurances de Rueil <' . ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT . '>',
+        'Reply-To: Assurances de Rueil <' . ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT . '>',
+    );
+}
+
+function adr_quote_admin_email_rows( $data, $form_id = ADR_QUOTE_REQUESTS_FORM_ID ) {
     $request = adr_quote_request_normalized( $data );
     $rows = array(
-        array( 'Civilité', $request['civilite'] ),
         array( 'Nom', $request['nom'] ),
         array( 'Prénom', $request['prenom'] ),
         array( 'E-mail', $request['email'] ),
@@ -413,6 +489,15 @@ function adr_quote_admin_email_rows( $data ) {
         $rows[] = array( 'Téléphone', $request['telephone'] );
     }
 
+    if ( adr_site_request_kind_for_form_id( $form_id ) === 'contact' ) {
+        $rows[] = array( 'Adresse', $request['adresse'] );
+        $rows[] = array( 'Message', $request['message'] );
+        $rows[] = array( 'Consentement', $request['consentement'] );
+
+        return $rows;
+    }
+
+    array_unshift( $rows, array( 'Civilité', $request['civilite'] ) );
     $rows[] = array( 'Choix de communication', $request['contact_preference'] );
 
     if ( $request['type_devis'] !== '' ) {
@@ -429,14 +514,15 @@ function adr_quote_admin_email_rows( $data ) {
     return $rows;
 }
 
-function adr_build_quote_admin_email_message( $data ) {
-    $body  = "<html><body><h2 style='text-align: center;'>Demande de devis</h2>";
-    $body .= "<h4 style='text-align: center;'>Nouveau contact pour un devis</h4>";
-    $body .= '<p style="text-align:center;margin:16px 0 20px;"><a href="' . esc_url( adr_quote_requests_url() ) . '" style="display:inline-block;border-radius:6px;background:#0A4464;color:#ffffff;padding:10px 16px;text-decoration:none;font-weight:bold;">Télécharger le CSV des demandes</a></p>';
+function adr_build_quote_admin_email_message( $data, $form_id = ADR_QUOTE_REQUESTS_FORM_ID ) {
+    $is_contact = adr_site_request_kind_for_form_id( $form_id ) === 'contact';
+    $body  = "<html><body><h2 style='text-align: center;'>" . ( $is_contact ? 'Message depuis le site' : 'Demande de devis' ) . '</h2>';
+    $body .= "<h4 style='text-align: center;'>" . ( $is_contact ? 'Nouveau message du formulaire contact' : 'Nouveau contact pour un devis' ) . '</h4>';
+    $body .= '<p style="text-align:center;margin:16px 0 20px;"><a href="' . esc_url( adr_quote_requests_url() ) . '" style="display:inline-block;border-radius:6px;background:#0A4464;color:#ffffff;padding:10px 16px;text-decoration:none;font-weight:bold;">Télécharger le CSV des demandes du site</a></p>';
     $body .= '<div style="border-left:5px solid #2EB5AB;padding-left:5px;">';
     $body .= '<table width="100%" cellpadding="5" cellspacing="0" bgcolor="#FFFFFF" style="border: 1px solid #EAF2FA; word-break: break-word;"><tbody>';
 
-    foreach ( adr_quote_admin_email_rows( $data ) as $row ) {
+    foreach ( adr_quote_admin_email_rows( $data, $form_id ) as $row ) {
         $value = $row[1] === '' ? 'Non renseigné' : $row[1];
         $body .= '<tr bgcolor="#EAF2FA"><td colspan="2"><strong>' . esc_html( $row[0] ) . '</strong></td></tr>';
         $body .= '<tr bgcolor="#FFFFFF"><td width="20">&nbsp;</td><td>' . nl2br( esc_html( $value ) ) . '</td></tr>';
@@ -448,4 +534,3 @@ function adr_build_quote_admin_email_message( $data ) {
 
     return $body;
 }
-
