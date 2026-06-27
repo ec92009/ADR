@@ -483,3 +483,25 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 
 - To roll back only the `v119.6` contact/phone polish, restore the `ADR Site Fixes` MU-plugin from the previous `119.5.0` files.
 - Do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.
+
+### Live contact submit and phone preservation MU-plugin `v119.7`
+
+- Goal: fix the remaining contact-form `Something went wrong. Envoi non autorisé.` response and the phone field dropping an international `+34` prefix, while keeping GH.io as the source of truth.
+- Root cause:
+  - GH.io static contact/quote mocks could still attempt live MetForm POSTs with frozen nonces;
+  - live WordPress removed visible contact reCAPTCHA output, but MetForm form `7487` still contained an `mf-recaptcha` widget in backend Elementor metadata, so REST submissions were rejected before normal validation;
+  - browser telephone controls could normalize typed international numbers in a way that removed the leading country prefix.
+- Method:
+  - published GH.io `v119.7` static changes that add a `adr-form-phone-preserver-v119-7` guard to contact and quote forms;
+  - changed quote/contact phone controls from `type="tel"` to `type="text"` with `inputmode="tel"` and `autocomplete="tel"`;
+  - extended `ADR Site Fixes` to version `119.7.0`;
+  - added a narrow `get_post_metadata` filter for MetForm contact form `7487` that removes only `mf-recaptcha` nodes and inserts a backend `telephone` field before `adresse`;
+  - added a `metform_filter_before_store_form_data` fallback to preserve posted `telephone` values.
+- Local verification:
+  - PHP lint passes for all `ADR Site Fixes` files;
+  - local rendered `courtier.html` keeps `+34 636 63 03 38`, displays the static preview status on submit, and does not show the old unauthorized message;
+  - local rendered `demande-de-devis.html` keeps `+34 636 63 03 38` after the quote type reveals the phone field;
+  - synthetic MetForm metadata test confirms `mf-recaptcha` is removed and backend `telephone` is present.
+- Rollback notes:
+  - to roll back only `v119.7`, restore the `ADR Site Fixes` MU-plugin from the `119.6.0` files and revert GH.io static files to `v119.6`;
+  - do not remove the whole `ADR Site Fixes` MU-plugin unless also rolling back the branded quote acknowledgement email.

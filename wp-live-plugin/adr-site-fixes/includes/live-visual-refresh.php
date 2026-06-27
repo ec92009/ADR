@@ -5,11 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class ADR_Site_Fixes_Live_Visual_Refresh {
-    private const MARKER = 'adr-live-visual-refresh-v119-6';
+    private const MARKER = 'adr-live-visual-refresh-v119-7';
+    private const CONTACT_FORM_ID = 7487;
     private const ASSET_BASE = 'https://ec92009.github.io/ADR/assets/';
-    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=119.6';
+    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=119.7';
+    private static $reading_contact_meta = false;
 
     public static function init() {
+        add_filter( 'get_post_metadata', array( __CLASS__, 'filter_contact_elementor_data' ), 10, 4 );
+        add_filter( 'metform_filter_before_store_form_data', array( __CLASS__, 'preserve_contact_phone_data' ), 10, 4 );
         add_action( 'template_redirect', array( __CLASS__, 'start_buffer' ), -100 );
     }
 
@@ -36,12 +40,193 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
         $html = self::ensure_quote_phone_input_mode( $html );
         $html = self::refresh_contact_form( $html );
         $html = self::ensure_theme_persistence( $html );
+        $html = self::ensure_phone_preserver( $html );
 
         if ( strpos( $html, self::MARKER ) === false ) {
             $html = str_replace( '</head>', '<meta name="adr-live-visual-refresh" content="' . esc_attr( self::MARKER ) . '">' . "\n</head>", $html );
         }
 
         return $html;
+    }
+
+    public static function filter_contact_elementor_data( $value, $object_id, $meta_key, $single ) {
+        if ( $value !== null || $meta_key !== '_elementor_data' || (int) $object_id !== self::CONTACT_FORM_ID || self::$reading_contact_meta ) {
+            return $value;
+        }
+
+        self::$reading_contact_meta = true;
+        $raw = get_metadata( 'post', $object_id, $meta_key, true );
+        self::$reading_contact_meta = false;
+
+        if ( ! is_string( $raw ) || $raw === '' ) {
+            return $value;
+        }
+
+        $data = json_decode( $raw, true );
+        if ( ! is_array( $data ) ) {
+            return $value;
+        }
+
+        $data = self::strip_contact_recaptcha_nodes( $data );
+        if ( ! self::elementor_data_has_field( $data, 'telephone' ) ) {
+            $inserted = false;
+            $data = self::insert_contact_phone_widget( $data, $inserted );
+            if ( ! $inserted && self::is_list_array( $data ) ) {
+                $data[] = self::contact_phone_meta_widget();
+            }
+        }
+
+        $encoded = wp_json_encode( $data );
+        if ( ! is_string( $encoded ) || $encoded === '' ) {
+            return $value;
+        }
+
+        return $single ? $encoded : array( $encoded );
+    }
+
+    public static function preserve_contact_phone_data( $form_data, $form_id, $form_settings, $attributes ) {
+        if ( (int) $form_id !== self::CONTACT_FORM_ID || ! is_array( $form_data ) ) {
+            return $form_data;
+        }
+
+        $phone = self::posted_contact_phone();
+        if ( $phone !== '' ) {
+            $form_data['telephone'] = $phone;
+        }
+
+        return $form_data;
+    }
+
+    private static function posted_contact_phone() {
+        if ( ! isset( $_POST['telephone'] ) ) {
+            return '';
+        }
+
+        $phone = wp_unslash( $_POST['telephone'] );
+        if ( is_array( $phone ) ) {
+            $phone = reset( $phone );
+        }
+
+        if ( ! is_scalar( $phone ) ) {
+            return '';
+        }
+
+        return sanitize_text_field( (string) $phone );
+    }
+
+    private static function strip_contact_recaptcha_nodes( $node ) {
+        if ( ! is_array( $node ) ) {
+            return $node;
+        }
+
+        if ( isset( $node['widgetType'] ) && $node['widgetType'] === 'mf-recaptcha' ) {
+            return null;
+        }
+
+        if ( isset( $node['elements'] ) && is_array( $node['elements'] ) ) {
+            $elements = array();
+            foreach ( $node['elements'] as $child ) {
+                $child = self::strip_contact_recaptcha_nodes( $child );
+                if ( $child !== null ) {
+                    $elements[] = $child;
+                }
+            }
+            $node['elements'] = $elements;
+            return $node;
+        }
+
+        if ( self::is_list_array( $node ) ) {
+            $items = array();
+            foreach ( $node as $child ) {
+                $child = self::strip_contact_recaptcha_nodes( $child );
+                if ( $child !== null ) {
+                    $items[] = $child;
+                }
+            }
+            return $items;
+        }
+
+        return $node;
+    }
+
+    private static function elementor_data_has_field( $node, $field_name ) {
+        if ( ! is_array( $node ) ) {
+            return false;
+        }
+
+        if ( self::node_field_name( $node ) === $field_name ) {
+            return true;
+        }
+
+        foreach ( $node as $value ) {
+            if ( is_array( $value ) && self::elementor_data_has_field( $value, $field_name ) ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static function insert_contact_phone_widget( $node, &$inserted ) {
+        if ( ! is_array( $node ) ) {
+            return $node;
+        }
+
+        if ( self::is_list_array( $node ) ) {
+            $items = array();
+            foreach ( $node as $child ) {
+                if ( ! $inserted && self::node_field_name( $child ) === 'adresse' ) {
+                    $items[] = self::contact_phone_meta_widget();
+                    $inserted = true;
+                }
+                $items[] = self::insert_contact_phone_widget( $child, $inserted );
+            }
+            return $items;
+        }
+
+        if ( isset( $node['elements'] ) && is_array( $node['elements'] ) ) {
+            $node['elements'] = self::insert_contact_phone_widget( $node['elements'], $inserted );
+        }
+
+        return $node;
+    }
+
+    private static function node_field_name( $node ) {
+        if ( ! is_array( $node ) || ! isset( $node['settings'] ) || ! is_array( $node['settings'] ) ) {
+            return '';
+        }
+
+        return isset( $node['settings']['mf_input_name'] ) ? (string) $node['settings']['mf_input_name'] : '';
+    }
+
+    private static function contact_phone_meta_widget() {
+        return array(
+            'id'         => 'adrphone',
+            'elType'     => 'widget',
+            'settings'   => array(
+                'mf_input_label'                 => 'Téléphone',
+                'mf_input_name'                  => 'telephone',
+                'mf_input_required'              => 'yes',
+                'mf_input_min_length'            => 6,
+                'mf_input_max_length'            => '',
+                'mf_input_validation_type'       => 'none',
+                'mf_input_validation_expression' => '',
+            ),
+            'elements'   => array(),
+            'widgetType' => 'mf-text',
+        );
+    }
+
+    private static function is_list_array( $value ) {
+        if ( ! is_array( $value ) ) {
+            return false;
+        }
+
+        if ( $value === array() ) {
+            return true;
+        }
+
+        return array_keys( $value ) === range( 0, count( $value ) - 1 );
     }
 
     private static function replace_photos( $html ) {
@@ -132,36 +317,50 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
     private static function replace_versions( $html ) {
         return str_replace(
             array(
+                'v119.6',
                 'v119.5',
                 'v119.3',
+                "version = '119.6'",
                 "version = '119.5'",
                 "version = '119.3'",
+                'adr_quote_consent_2026-06-27_v119.6',
                 'adr_quote_consent_2026-06-27_v119.5',
                 'adr_quote_consent_2026-06-27_v119.3',
+                'adr-fr-only-v119-6',
                 'adr-fr-only-v119-5',
                 'adr-fr-only-v119-3',
+                'adr-source-truth-residuals-v119-6',
                 'adr-source-truth-residuals-v119-5',
                 'adr-source-truth-residuals-v119-3',
+                'adr-live-quote-form-v119-6',
                 'adr-live-quote-form-v119-5',
                 'adr-live-quote-form-v119-3',
+                'adr-live-visual-refresh-v119-6',
                 'adr-live-visual-refresh-v119-5',
                 'adr-live-visual-refresh-v119-3',
             ),
             array(
-                'v119.6',
-                'v119.6',
-                "version = '119.6'",
-                "version = '119.6'",
-                'adr_quote_consent_2026-06-27_v119.6',
-                'adr_quote_consent_2026-06-27_v119.6',
-                'adr-fr-only-v119-6',
-                'adr-fr-only-v119-6',
-                'adr-source-truth-residuals-v119-6',
-                'adr-source-truth-residuals-v119-6',
-                'adr-live-quote-form-v119-6',
-                'adr-live-quote-form-v119-6',
-                'adr-live-visual-refresh-v119-6',
-                'adr-live-visual-refresh-v119-6',
+                'v119.7',
+                'v119.7',
+                'v119.7',
+                "version = '119.7'",
+                "version = '119.7'",
+                "version = '119.7'",
+                'adr_quote_consent_2026-06-27_v119.7',
+                'adr_quote_consent_2026-06-27_v119.7',
+                'adr_quote_consent_2026-06-27_v119.7',
+                'adr-fr-only-v119-7',
+                'adr-fr-only-v119-7',
+                'adr-fr-only-v119-7',
+                'adr-source-truth-residuals-v119-7',
+                'adr-source-truth-residuals-v119-7',
+                'adr-source-truth-residuals-v119-7',
+                'adr-live-quote-form-v119-7',
+                'adr-live-quote-form-v119-7',
+                'adr-live-quote-form-v119-7',
+                'adr-live-visual-refresh-v119-7',
+                'adr-live-visual-refresh-v119-7',
+                'adr-live-visual-refresh-v119-7',
             ),
             $html
         );
@@ -169,8 +368,11 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
 
     private static function ensure_quote_phone_input_mode( $html ) {
         return str_replace(
-            '<input type="tel" name="telephone" autocomplete="tel" placeholder="+33">',
-            '<input type="tel" name="telephone" autocomplete="tel" inputmode="tel" placeholder="+33">',
+            array(
+                '<input type="tel" name="telephone" autocomplete="tel" placeholder="+33">',
+                '<input type="tel" name="telephone" autocomplete="tel" inputmode="tel" placeholder="+33">',
+            ),
+            '<input type="text" name="telephone" autocomplete="tel" inputmode="tel" placeholder="+33">',
             $html
         );
     }
@@ -229,11 +431,11 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
 	                    ${ parent.decodeEntities(`Téléphone`) } 					<span className="mf-input-required-indicator">*</span>
 	                </label>
 
-	            <input
-	                type="tel"
-	                inputMode="tel"
-	                autoComplete="tel"
-	                className="mf-input "
+            <input
+                type="text"
+                inputMode="tel"
+                autoComplete="tel"
+                className="mf-input "
 	                id="mf-input-tel-adr-phone"
 	                name="telephone"
 	                placeholder="${ parent.decodeEntities(`+33 1 47 51 06 69`) } "
@@ -302,7 +504,7 @@ CSS;
     }
 
     private static function ensure_theme_persistence( $html ) {
-        $script = '<script id="adr-theme-persistence-v119-6" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
+        $script = '<script id="adr-theme-persistence-v119-7" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
 
         $html = preg_replace(
             '#<script id="adr-theme-persistence-v119-[^"]*" src="[^"]*"></script>#',
@@ -310,7 +512,7 @@ CSS;
             $html
         );
 
-        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v119-6' ) !== false ) {
+        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v119-7' ) !== false ) {
             return $html;
         }
 
@@ -320,6 +522,138 @@ CSS;
             $html,
             1
         );
+    }
+
+    private static function ensure_phone_preserver( $html ) {
+        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v119-7' ) !== false ) {
+            return $html;
+        }
+
+        return str_replace( '</body>', self::phone_preserver_script() . "\n</body>", $html );
+    }
+
+    private static function phone_preserver_script() {
+        return <<<'HTML'
+<script id="adr-form-phone-preserver-v119-7">
+(function () {
+  var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
+  var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;
+
+  function phoneInputs(scope) {
+    return Array.prototype.slice.call((scope || document).querySelectorAll('input[name="telephone"]'));
+  }
+
+  function primePhone(input) {
+    if (!input) {
+      return;
+    }
+    try {
+      input.type = 'text';
+    } catch (error) {}
+    input.setAttribute('inputmode', 'tel');
+    input.setAttribute('autocomplete', 'tel');
+    if (!input.dataset.adrRawPhone) {
+      input.dataset.adrRawPhone = input.value || '';
+    }
+  }
+
+  function rememberPhone(event) {
+    var input = event.target;
+    if (!input || !input.matches || !input.matches('input[name="telephone"]')) {
+      return;
+    }
+    primePhone(input);
+    input.dataset.adrRawPhone = input.value || '';
+  }
+
+  function restorePhone(form) {
+    phoneInputs(form).forEach(function (input) {
+      primePhone(input);
+      var raw = input.dataset.adrRawPhone || '';
+      if (raw.charAt(0) === '+' && input.value.charAt(0) !== '+') {
+        input.value = raw;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  }
+
+  function showStaticStatus(form) {
+    var status = form.querySelector('[data-form-status]');
+    if (!status) {
+      var card = form.closest('.adr-form-card') || form.closest('.mf-form-shortcode') || form.parentElement;
+      if (card) {
+        status = card.querySelector('[data-adr-static-status]');
+      }
+      if (!status && card) {
+        status = document.createElement('p');
+        status.className = 'adr-static-status';
+        status.dataset.adrStaticStatus = 'true';
+        status.setAttribute('aria-live', 'polite');
+        status.style.cssText = 'margin:16px 0 18px;padding:14px 16px;border:1px solid rgba(198,212,230,.95);border-radius:8px;background:#fff;color:#66758a;font-weight:800;text-align:center;';
+        var intro = card.querySelector('.adr-form-intro');
+        if (intro && intro.nextSibling) {
+          card.insertBefore(status, intro.nextSibling);
+        } else {
+          card.insertBefore(status, form);
+        }
+      }
+    }
+    if (status) {
+      status.hidden = false;
+      status.textContent = "Prévisualisation : aucune demande n'a été envoyée.";
+    }
+  }
+
+  document.addEventListener('input', rememberPhone, true);
+  document.addEventListener('change', rememberPhone, true);
+  document.addEventListener('blur', rememberPhone, true);
+
+  if (staticPreview && typeof window.fetch === 'function') {
+    var originalFetch = window.fetch;
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : input && input.url;
+      if (url && metformInsert.test(url)) {
+        return Promise.resolve(new Response(JSON.stringify({
+          status: true,
+          success: true,
+          mock: true,
+          data: { message: "Prévisualisation : aucune demande n'a été envoyée." }
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        }));
+      }
+      return originalFetch.apply(this, arguments);
+    };
+  }
+
+  document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (!form || !form.matches || !form.matches('[data-adr-live-quote-form], .metform-form-content')) {
+      return;
+    }
+    restorePhone(form);
+    if (!staticPreview) {
+      return;
+    }
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    showStaticStatus(form);
+  }, true);
+
+  function initPhones() {
+    phoneInputs(document).forEach(primePhone);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhones, { once: true });
+  } else {
+    initPhones();
+  }
+}());
+</script>
+HTML;
     }
 }
 

@@ -692,7 +692,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
     }
 </style>
   <input class="adr-switch-input" id="adr-theme-toggle" type="checkbox" aria-label="Basculer le thème jour/nuit">
-  <script id="adr-theme-persistence-v119-4" src="adr-theme-persistence.js?v=119.4"></script>
+  <script id="adr-theme-persistence-v119-7" src="adr-theme-persistence.js?v=119.7"></script>
   <header class="adr-floating-panel" aria-label="Navigation principale">
     <a class="adr-brand" href="index.html"><img decoding="async" src="https://assurancesderueil.fr/wp-content/uploads/2022/08/cropped-flaticon2.png" alt=""><strong>Assurances de Rueil</strong></a>
     <div class="adr-panel-actions">
@@ -912,7 +912,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 	                </label>
 
 	            <input
-	                type="tel"
+	                type="text"
 	                inputMode="tel"
 	                autoComplete="tel"
 	                className="mf-input "
@@ -1581,7 +1581,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             }
         }
     </style>
-    <div class="adr-version-footer" aria-label="Version du site">v119.6</div>
+    <div class="adr-version-footer" aria-label="Version du site">v119.7</div>
     <script id="adr-version-footer-placement-v1">
     (function () {
         function placeVersionMarker() {
@@ -1618,6 +1618,125 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         }
     }());
     </script>
+<script id="adr-form-phone-preserver-v119-7">
+(function () {
+  var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
+  var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;
+
+  function phoneInputs(scope) {
+    return Array.prototype.slice.call((scope || document).querySelectorAll('input[name="telephone"]'));
+  }
+
+  function primePhone(input) {
+    if (!input) {
+      return;
+    }
+    try {
+      input.type = 'text';
+    } catch (error) {}
+    input.setAttribute('inputmode', 'tel');
+    input.setAttribute('autocomplete', 'tel');
+    if (!input.dataset.adrRawPhone) {
+      input.dataset.adrRawPhone = input.value || '';
+    }
+  }
+
+  function rememberPhone(event) {
+    var input = event.target;
+    if (!input || !input.matches || !input.matches('input[name="telephone"]')) {
+      return;
+    }
+    primePhone(input);
+    input.dataset.adrRawPhone = input.value || '';
+  }
+
+  function restorePhone(form) {
+    phoneInputs(form).forEach(function (input) {
+      primePhone(input);
+      var raw = input.dataset.adrRawPhone || '';
+      if (raw.charAt(0) === '+' && input.value.charAt(0) !== '+') {
+        input.value = raw;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  }
+
+  function showStaticStatus(form) {
+    var status = form.querySelector('[data-form-status]');
+    if (!status) {
+      var card = form.closest('.adr-form-card') || form.closest('.mf-form-shortcode') || form.parentElement;
+      if (card) {
+        status = card.querySelector('[data-adr-static-status]');
+      }
+      if (!status && card) {
+        status = document.createElement('p');
+        status.className = 'adr-static-status';
+        status.dataset.adrStaticStatus = 'true';
+        status.setAttribute('aria-live', 'polite');
+        status.style.cssText = 'margin:16px 0 18px;padding:14px 16px;border:1px solid rgba(198,212,230,.95);border-radius:8px;background:#fff;color:#66758a;font-weight:800;text-align:center;';
+        var intro = card.querySelector('.adr-form-intro');
+        if (intro && intro.nextSibling) {
+          card.insertBefore(status, intro.nextSibling);
+        } else {
+          card.insertBefore(status, form);
+        }
+      }
+    }
+    if (status) {
+      status.hidden = false;
+      status.textContent = "Prévisualisation : aucune demande n'a été envoyée.";
+    }
+  }
+
+  document.addEventListener('input', rememberPhone, true);
+  document.addEventListener('change', rememberPhone, true);
+  document.addEventListener('blur', rememberPhone, true);
+
+  if (staticPreview && typeof window.fetch === 'function') {
+    var originalFetch = window.fetch;
+    window.fetch = function (input, init) {
+      var url = typeof input === 'string' ? input : input && input.url;
+      if (url && metformInsert.test(url)) {
+        return Promise.resolve(new Response(JSON.stringify({
+          status: true,
+          success: true,
+          mock: true,
+          data: { message: "Prévisualisation : aucune demande n'a été envoyée." }
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        }));
+      }
+      return originalFetch.apply(this, arguments);
+    };
+  }
+
+  document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (!form || !form.matches || !form.matches('[data-adr-live-quote-form], .metform-form-content')) {
+      return;
+    }
+    restorePhone(form);
+    if (!staticPreview) {
+      return;
+    }
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    showStaticStatus(form);
+  }, true);
+
+  function initPhones() {
+    phoneInputs(document).forEach(primePhone);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPhones, { once: true });
+  } else {
+    initPhones();
+  }
+}());
+</script>
 
 
    </body>
