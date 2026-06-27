@@ -4,8 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-quote-requests-v119-8-1: private site-request CSV and ordered admin email.
-define( 'ADR_QUOTE_REQUESTS_VERSION', '119.8.1' );
+// adr-quote-requests-v120-0: private site-request CSV and ordered admin email.
+define( 'ADR_QUOTE_REQUESTS_VERSION', '120.0' );
 define( 'ADR_QUOTE_REQUESTS_FORM_ID', '2073' );
 define( 'ADR_CONTACT_REQUESTS_FORM_ID', '7487' );
 define( 'ADR_QUOTE_REQUESTS_MIN_DATE', '2026-01-01 00:00:00' );
@@ -299,7 +299,7 @@ function adr_quote_request_normalized( $data, $post = null ) {
         'banque'              => adr_quote_request_value( $data, array( 'banque' ) ),
         'profession'          => adr_quote_request_value( $data, array( 'mf-select', 'profession' ) ),
         'adresse'             => adr_quote_request_address( $data ),
-        'message'             => adr_quote_request_value( $data, array( 'mf-textarea', 'message' ) ),
+        'message'             => adr_quote_request_value( $data, array( 'message', 'mf-textarea' ) ),
         'consentement'        => adr_quote_request_consent( $data ),
     );
 }

@@ -8,8 +8,8 @@ final class ADR_Site_Fixes_Public_User_Email {
     private const QUOTE_FORM_ID = '2073';
     private const CONTACT_FORM_ID = '7487';
     private const ADMIN_RECIPIENT = 'contact@assurancesderueil.fr';
-    private const QUOTE_MARKER = 'adr-quote-user-email-v119-7-1';
-    private const CONTACT_MARKER = 'adr-contact-user-email-v119-7-1';
+    private const QUOTE_MARKER = 'adr-quote-user-email-v120-0';
+    private const CONTACT_MARKER = 'adr-contact-user-email-v120-0';
 
     public static function init() {
         add_filter( 'metform_confirmation_user_email_body', array( __CLASS__, 'replace_body' ), 20, 5 );
@@ -157,7 +157,7 @@ final class ADR_Site_Fixes_Public_User_Email {
             'adresse'            => self::value( $data, array( 'adresse', 'address' ) ),
             'code_postal'        => self::value( $data, array( 'code-postal', 'code_postal', 'postal_code' ) ),
             'ville'              => self::value( $data, array( 'ville', 'mf-text', 'city' ) ),
-            'message'            => self::value( $data, array( 'mf-textarea', 'message' ) ),
+            'message'            => self::value( $data, array( 'message', 'mf-textarea' ) ),
         );
     }
 

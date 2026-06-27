@@ -5,15 +5,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class ADR_Site_Fixes_Live_Visual_Refresh {
-    private const MARKER = 'adr-live-visual-refresh-v119-7';
+    private const MARKER = 'adr-live-visual-refresh-v120-0';
     private const CONTACT_FORM_ID = 7487;
     private const ASSET_BASE = 'https://ec92009.github.io/ADR/assets/';
-    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=119.7';
+    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=120.0';
     private static $reading_contact_meta = false;
 
     public static function init() {
         add_filter( 'get_post_metadata', array( __CLASS__, 'filter_contact_elementor_data' ), 10, 4 );
-        add_filter( 'metform_filter_before_store_form_data', array( __CLASS__, 'preserve_contact_phone_data' ), 10, 4 );
+        add_filter( 'metform_filter_before_store_form_data', array( __CLASS__, 'preserve_contact_form_alias_data' ), 10, 4 );
         add_action( 'template_redirect', array( __CLASS__, 'start_buffer' ), -100 );
     }
 
@@ -84,7 +84,7 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
         return $single ? $encoded : array( $encoded );
     }
 
-    public static function preserve_contact_phone_data( $form_data, $form_id, $form_settings, $attributes ) {
+    public static function preserve_contact_form_alias_data( $form_data, $form_id, $form_settings, $attributes ) {
         if ( (int) $form_id !== self::CONTACT_FORM_ID || ! is_array( $form_data ) ) {
             return $form_data;
         }
@@ -92,6 +92,15 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
         $phone = self::posted_contact_phone();
         if ( $phone !== '' ) {
             $form_data['telephone'] = $phone;
+        }
+
+        $message = self::posted_contact_message( $form_data );
+        if ( $message !== '' ) {
+            $form_data['message'] = $message;
+
+            if ( empty( $form_data['mf-textarea'] ) ) {
+                $form_data['mf-textarea'] = $message;
+            }
         }
 
         return $form_data;
@@ -112,6 +121,35 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
         }
 
         return sanitize_text_field( (string) $phone );
+    }
+
+    private static function posted_contact_message( $form_data ) {
+        foreach ( array( 'message', 'mf-textarea' ) as $key ) {
+            if ( isset( $_POST[ $key ] ) ) {
+                $message = wp_unslash( $_POST[ $key ] );
+                if ( is_array( $message ) ) {
+                    $message = reset( $message );
+                }
+
+                if ( is_scalar( $message ) ) {
+                    $message = sanitize_textarea_field( (string) $message );
+                    if ( $message !== '' ) {
+                        return $message;
+                    }
+                }
+            }
+        }
+
+        foreach ( array( 'message', 'mf-textarea' ) as $key ) {
+            if ( isset( $form_data[ $key ] ) && is_scalar( $form_data[ $key ] ) ) {
+                $message = sanitize_textarea_field( (string) $form_data[ $key ] );
+                if ( $message !== '' ) {
+                    return $message;
+                }
+            }
+        }
+
+        return '';
     }
 
     private static function strip_contact_recaptcha_nodes( $node ) {
@@ -317,50 +355,68 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
     private static function replace_versions( $html ) {
         return str_replace(
             array(
-                'v119.6',
-                'v119.5',
-                'v119.3',
-                "version = '119.6'",
-                "version = '119.5'",
-                "version = '119.3'",
+                'adr_quote_consent_2026-06-27_v119.7',
                 'adr_quote_consent_2026-06-27_v119.6',
                 'adr_quote_consent_2026-06-27_v119.5',
                 'adr_quote_consent_2026-06-27_v119.3',
+                'adr-fr-only-v119-7',
                 'adr-fr-only-v119-6',
                 'adr-fr-only-v119-5',
                 'adr-fr-only-v119-3',
+                'adr-source-truth-residuals-v119-7',
                 'adr-source-truth-residuals-v119-6',
                 'adr-source-truth-residuals-v119-5',
                 'adr-source-truth-residuals-v119-3',
+                'adr-live-quote-form-v119-7',
                 'adr-live-quote-form-v119-6',
                 'adr-live-quote-form-v119-5',
                 'adr-live-quote-form-v119-3',
+                'adr-live-visual-refresh-v119-7',
                 'adr-live-visual-refresh-v119-6',
                 'adr-live-visual-refresh-v119-5',
                 'adr-live-visual-refresh-v119-3',
+                'adr-theme-persistence-v119-7',
+                'adr-form-phone-preserver-v119-7',
+                "version = '119.7'",
+                "version = '119.6'",
+                "version = '119.5'",
+                "version = '119.3'",
+                'v119.7',
+                'v119.6',
+                'v119.5',
+                'v119.3',
             ),
             array(
-                'v119.7',
-                'v119.7',
-                'v119.7',
-                "version = '119.7'",
-                "version = '119.7'",
-                "version = '119.7'",
-                'adr_quote_consent_2026-06-27_v119.7',
-                'adr_quote_consent_2026-06-27_v119.7',
-                'adr_quote_consent_2026-06-27_v119.7',
-                'adr-fr-only-v119-7',
-                'adr-fr-only-v119-7',
-                'adr-fr-only-v119-7',
-                'adr-source-truth-residuals-v119-7',
-                'adr-source-truth-residuals-v119-7',
-                'adr-source-truth-residuals-v119-7',
-                'adr-live-quote-form-v119-7',
-                'adr-live-quote-form-v119-7',
-                'adr-live-quote-form-v119-7',
-                'adr-live-visual-refresh-v119-7',
-                'adr-live-visual-refresh-v119-7',
-                'adr-live-visual-refresh-v119-7',
+                'adr_quote_consent_2026-06-28_v120.0',
+                'adr_quote_consent_2026-06-28_v120.0',
+                'adr_quote_consent_2026-06-28_v120.0',
+                'adr_quote_consent_2026-06-28_v120.0',
+                'adr-fr-only-v120-0',
+                'adr-fr-only-v120-0',
+                'adr-fr-only-v120-0',
+                'adr-fr-only-v120-0',
+                'adr-source-truth-residuals-v120-0',
+                'adr-source-truth-residuals-v120-0',
+                'adr-source-truth-residuals-v120-0',
+                'adr-source-truth-residuals-v120-0',
+                'adr-live-quote-form-v120-0',
+                'adr-live-quote-form-v120-0',
+                'adr-live-quote-form-v120-0',
+                'adr-live-quote-form-v120-0',
+                'adr-live-visual-refresh-v120-0',
+                'adr-live-visual-refresh-v120-0',
+                'adr-live-visual-refresh-v120-0',
+                'adr-live-visual-refresh-v120-0',
+                'adr-theme-persistence-v120-0',
+                'adr-form-phone-preserver-v120-0',
+                "version = '120.0'",
+                "version = '120.0'",
+                "version = '120.0'",
+                "version = '120.0'",
+                'v120.0',
+                'v120.0',
+                'v120.0',
+                'v120.0',
             ),
             $html
         );
@@ -504,7 +560,7 @@ CSS;
     }
 
     private static function ensure_theme_persistence( $html ) {
-        $script = '<script id="adr-theme-persistence-v119-7" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
+        $script = '<script id="adr-theme-persistence-v120-0" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
 
         $html = preg_replace(
             '#<script id="adr-theme-persistence-v119-[^"]*" src="[^"]*"></script>#',
@@ -512,7 +568,7 @@ CSS;
             $html
         );
 
-        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v119-7' ) !== false ) {
+        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v120-0' ) !== false ) {
             return $html;
         }
 
@@ -525,7 +581,7 @@ CSS;
     }
 
     private static function ensure_phone_preserver( $html ) {
-        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v119-7' ) !== false ) {
+        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v120-0' ) !== false ) {
             return $html;
         }
 
@@ -534,7 +590,7 @@ CSS;
 
     private static function phone_preserver_script() {
         return <<<'HTML'
-<script id="adr-form-phone-preserver-v119-7">
+<script id="adr-form-phone-preserver-v120-0">
 (function () {
   var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;
