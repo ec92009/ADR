@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-live-quote-form-v120-1: refreshed quote form shell, preserving MetForm storage.
+// adr-live-quote-form-v120-2: refreshed quote form shell, preserving MetForm storage.
 add_action( 'wp_footer', 'adr_render_live_quote_form', 990 );
 function adr_render_live_quote_form() {
     if ( is_admin() || ! is_page( 7427 ) ) {
         return;
     }
     ?>
-    <style id="adr-live-quote-form-v120-1">
+    <style id="adr-live-quote-form-v120-2">
         .adr-quote-stage.adr-live-quote-ready .adr-form-card .mf-form-shortcode {
             display: none !important;
         }
@@ -213,11 +213,11 @@ function adr_render_live_quote_form() {
             }
         }
     </style>
-    <script id="adr-live-quote-form-v120-1">
+    <script id="adr-live-quote-form-v120-2">
     (function () {
-        var version = '120.1';
+        var version = '120.2';
         var endpointFallback = 'https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073';
-        var consentVersion = 'adr_quote_consent_2026-06-28_v120.1';
+        var consentVersion = 'adr_quote_consent_2026-06-28_v120.2';
         var quoteTypes = [
             ['pret', 'Assurance de prêt'],
             ['habitation', 'Assurance habitation'],

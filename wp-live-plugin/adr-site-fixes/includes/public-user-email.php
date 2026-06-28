@@ -8,8 +8,8 @@ final class ADR_Site_Fixes_Public_User_Email {
     private const QUOTE_FORM_ID = '2073';
     private const CONTACT_FORM_ID = '7487';
     private const ADMIN_RECIPIENT = 'contact@assurancesderueil.fr';
-    private const QUOTE_MARKER = 'adr-quote-user-email-v120-1';
-    private const CONTACT_MARKER = 'adr-contact-user-email-v120-1';
+    private const QUOTE_MARKER = 'adr-quote-user-email-v120-2';
+    private const CONTACT_MARKER = 'adr-contact-user-email-v120-2';
 
     public static function init() {
         add_filter( 'metform_confirmation_user_email_body', array( __CLASS__, 'replace_body' ), 20, 5 );
@@ -22,7 +22,12 @@ final class ADR_Site_Fixes_Public_User_Email {
             return $body;
         }
 
-        return self::build_message( wp_unslash( $form_data ), $kind );
+        $data = wp_unslash( $form_data );
+        if ( function_exists( 'adr_site_request_merge_live_payload_fields' ) ) {
+            $data = adr_site_request_merge_live_payload_fields( $data, (string) $form_id );
+        }
+
+        return self::build_message( $data, $kind );
     }
 
     public static function update_mail_args( $args ) {

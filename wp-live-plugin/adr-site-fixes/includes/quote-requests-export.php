@@ -4,8 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-quote-requests-v120-1: private site-request CSV and ordered admin email.
-define( 'ADR_QUOTE_REQUESTS_VERSION', '120.1' );
+// adr-quote-requests-v120-2: private site-request CSV and ordered admin email.
+define( 'ADR_QUOTE_REQUESTS_VERSION', '120.2' );
 define( 'ADR_QUOTE_REQUESTS_FORM_ID', '2073' );
 define( 'ADR_CONTACT_REQUESTS_FORM_ID', '7487' );
 define( 'ADR_QUOTE_REQUESTS_MIN_DATE', '2026-01-01 00:00:00' );
@@ -16,6 +16,8 @@ define( 'ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT', 'contact@assurancesderueil.fr' );
 
 add_action( 'template_redirect', 'adr_maybe_render_quote_requests_page', 0 );
 add_filter( 'wp_mail', 'adr_update_quote_admin_email', 20 );
+add_action( 'added_post_meta', 'adr_site_request_preserve_live_payload_fields', 20, 4 );
+add_action( 'updated_post_meta', 'adr_site_request_preserve_live_payload_fields', 20, 4 );
 
 function adr_quote_requests_url() {
     return add_query_arg(
@@ -39,6 +41,158 @@ function adr_site_request_kind_for_form_id( $form_id ) {
     }
 
     return '';
+}
+
+function adr_site_request_form_id_from_request() {
+    $request_uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+    if ( preg_match( '#/metform/v1/entries/insert/(\d+)#', $request_uri, $matches ) ) {
+        return (string) $matches[1];
+    }
+
+    foreach ( array( 'form_id', 'formId', 'mf_form_id' ) as $key ) {
+        if ( isset( $_POST[ $key ] ) ) {
+            return sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
+        }
+    }
+
+    return '';
+}
+
+function adr_site_request_request_value( $key ) {
+    if ( ! isset( $_POST[ $key ] ) ) {
+        return '';
+    }
+
+    $value = wp_unslash( $_POST[ $key ] );
+    if ( is_array( $value ) ) {
+        $parts = array();
+        array_walk_recursive(
+            $value,
+            function ( $item ) use ( &$parts ) {
+                if ( is_scalar( $item ) ) {
+                    $item = sanitize_text_field( (string) $item );
+                    if ( $item !== '' ) {
+                        $parts[] = $item;
+                    }
+                }
+            }
+        );
+
+        return implode( ', ', $parts );
+    }
+
+    return sanitize_text_field( (string) $value );
+}
+
+function adr_site_request_live_payload_field_keys( $form_id ) {
+    $keys = array(
+        'schema_version',
+        'source_url',
+        'consent_version',
+        'nom',
+        'prenom',
+        'mf-email',
+        'email',
+        'telephone',
+        'contact_consent',
+        'rgpd_consent',
+        'mf-gdpr-consent',
+    );
+
+    if ( adr_site_request_kind_for_form_id( $form_id ) === 'contact' ) {
+        return array_merge(
+            $keys,
+            array(
+                'adresse',
+                'code-postal',
+                'code_postal',
+                'mf-text',
+                'ville',
+                'message',
+                'mf-textarea',
+            )
+        );
+    }
+
+    return array_merge(
+        $keys,
+        array(
+            'mf-checkbox',
+            'civilite',
+            'type_devis',
+            'jour_naissance',
+            'mois_naissance',
+            'annee_naissance',
+            'mf-date',
+            'date_naissance',
+            'contact_preference',
+            'fumeur',
+            'banque',
+            'mf-select',
+            'profession',
+            'adresse',
+            'code-postal',
+            'code_postal',
+            'mf-text',
+            'ville',
+        )
+    );
+}
+
+function adr_site_request_merge_live_payload_fields( $data, $form_id = '' ) {
+    if ( ! is_array( $data ) ) {
+        $data = array();
+    }
+
+    if ( $form_id === '' ) {
+        $form_id = adr_site_request_form_id_from_request();
+    }
+
+    if ( adr_site_request_kind_for_form_id( $form_id ) === '' ) {
+        return $data;
+    }
+
+    foreach ( adr_site_request_live_payload_field_keys( $form_id ) as $key ) {
+        $value = adr_site_request_request_value( $key );
+        if ( $value === '' ) {
+            continue;
+        }
+
+        if ( isset( $data[ $key ] ) && adr_quote_request_flatten_value( $data[ $key ] ) !== '' ) {
+            continue;
+        }
+
+        $data[ $key ] = $value;
+    }
+
+    return $data;
+}
+
+function adr_site_request_preserve_live_payload_fields( $meta_id, $post_id, $meta_key, $meta_value ) {
+    static $updating = false;
+
+    if ( $updating || $meta_key !== 'metform_entries__form_data' ) {
+        return;
+    }
+
+    $form_id = adr_site_request_form_id_from_request();
+    if ( adr_site_request_kind_for_form_id( $form_id ) === '' ) {
+        return;
+    }
+
+    $data = is_array( $meta_value ) ? $meta_value : maybe_unserialize( $meta_value );
+    if ( ! is_array( $data ) ) {
+        return;
+    }
+
+    $merged = adr_site_request_merge_live_payload_fields( $data, $form_id );
+    if ( $merged === $data ) {
+        return;
+    }
+
+    $updating = true;
+    update_post_meta( (int) $post_id, 'metform_entries__form_data', $merged );
+    $updating = false;
 }
 
 function adr_is_quote_requests_path() {
