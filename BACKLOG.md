@@ -25,3 +25,4 @@
 - 2026-06-27: Extended the branded acknowledgement email module to contact form `7487` through `ADR Site Fixes` (`119.7.1`), with subject `Votre message - Assurances de Rueil`.
 - 2026-06-27: Split the oversized live child-theme `functions.php` into `ADR Site Fixes` modules (`119.8.1`), including page-shell normalization, quote/contact form adapters, quote/contact request export/admin email handling, and branded user acknowledgement emails; live `functions.php` is now 91 lines / 2,936 editor characters.
 - 2026-06-28: Real live contact and quote form submissions were verified by the user: visitor acknowledgements arrived, Manu received the admin emails, and the private CSV export looked convincing.
+- 2026-06-28: Published `ADR Site Fixes` `120.0` so contact form `7487` preserves the visitor message in storage, includes it in the private CSV `Message` column, and forwards it to `contact@assurancesderueil.fr` in the contact admin email.

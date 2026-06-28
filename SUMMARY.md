@@ -6,16 +6,16 @@
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
 - GitHub Pages source-truth version marker: `v119.7`.
-- Live WordPress version marker: `v119.7`.
-- Live WordPress support plugin: `ADR Site Fixes` `119.8.1`.
+- Live WordPress version marker: `v120.0`.
+- Live WordPress support plugin: `ADR Site Fixes` `120.0`.
 - The live WordPress pages now use the approved GH.io-style page shells through `ADR Site Fixes` MU-plugin modules, with WordPress kept only where it must remain dynamic.
 - The live child-theme `functions.php` has been reduced from roughly `5,938` lines / `351,567` editor characters to `91` lines / `2,936` editor characters.
-- The live WordPress pages have been reconciled against the GH.io `v119.7` source-of-truth mock for high-resolution photography, day/night persistence, and the contact/phone form pass.
+- The live WordPress pages have been reconciled against the GH.io `v119.7` source-of-truth mock for high-resolution photography, day/night persistence, the contact/phone form pass, and the contact message storage/export pass.
 - The GH.io `v119.7` source update keeps static mock forms from posting to live MetForm endpoints, changes phone fields to text inputs with telephone keyboard hints, and preserves international prefixes such as `+34`.
 - GH.io and live WordPress both keep the day/night switch choice across page navigation through `adr-theme-persistence.js`.
 - GH.io and live WordPress both use the higher-resolution JPEG photography in `assets/adr-photo-*-v119-5.jpg`.
 - Public page titles are normalized to `Assurances de Rueil`.
-- The live quote page remains backed by MetForm form `2073` for storage and notifications.
+- The live quote page remains backed by MetForm form `2073`; the live contact page remains backed by MetForm form `7487`. Both feed storage, private CSV export, admin delivery, and branded visitor acknowledgements through `ADR Site Fixes`.
 
 ## Conversation Summary, 2026-06-27
 
@@ -33,6 +33,7 @@
 - Split the oversized live child-theme `functions.php` into the `ADR Site Fixes` MU-plugin modules and confirmed the live theme file is down to `91` lines / `2,936` editor characters.
 - Generalized the request export/admin notification path so both quote form `2073` and contact form `7487` are represented in the private CSV and admin emails.
 - User-confirmed the real live contact and quote paths: Manu received emails, the user received responses after submitting forms, and the CSV output was convincing.
+- Advanced the live MU-plugin to `120.0` so contact form `7487` stores the free-text message under canonical `message`, preserves legacy `mf-textarea`, includes the message in the private CSV `Message` column, and forwards it in the admin email to `contact@assurancesderueil.fr`.
 
 ## Source Of Truth
 
@@ -46,24 +47,24 @@
 
 ## Quote Form State
 
-- The public quote page renders the refreshed form shell marked `adr-live-quote-form-v119-7` in live output.
+- The public quote page renders the refreshed form shell marked `adr-live-quote-form-v120-0` in live output.
 - It preserves legacy MetForm keys and adds clearer alias keys for future consumers.
 - The form reads the rendered wrapper's current `data-form-nonce` and `data-wp-nonce`.
 - The submit request includes `X-WP-Nonce`, which fixed the previous `Envoi non autorisé` failure.
 - The public smoke check after the fix confirmed:
   - page HTTP 200;
-  - footer marker `v119.7`;
+  - footer marker `v120.0`;
   - dynamic nonce attributes present;
   - `headers: wpNonce ? { 'X-WP-Nonce': wpNonce } : {}` present in the form script.
 - Real live quote submission was later verified by the user: the visitor acknowledgement arrived, Manu received the admin email, WordPress storage/CSV output looked convincing, and the phone field preserved international-prefix input.
-- Live WordPress `v119.7` changes quote/contact phone controls to `type="text"` with `inputmode="tel"`, matching the GH.io source change for international prefixes such as `+34`.
+- Live WordPress `v120.0` keeps quote/contact phone controls as `type="text"` with `inputmode="tel"`, matching the GH.io source change for international prefixes such as `+34`.
 
 ## User Acknowledgement Email State
 
 - The user-facing quote acknowledgement email was replaced on 2026-06-27; the contact-page acknowledgement was added to the same branded treatment later that day.
 - The fix lives outside the oversized child-theme file as a Must-Use plugin:
   - WordPress name: `ADR Site Fixes`
-  - version: `119.8.1`
+  - version: `120.0`
   - local source: `wp-live-plugin/adr-site-fixes/`
 - It applies to MetForm form `2073` for quote requests and form `7487` for the contact page.
 - It replaces the old centered/plain confirmations with branded left-aligned emails, plural `Assurances de Rueil`, cleaner legal copy, and a privacy-policy link.
@@ -75,7 +76,9 @@
   - contact: `Votre message - Assurances de Rueil`.
 - The admin notification/export path now handles both MetForm form `2073` and contact form `7487`:
   - private CSV route includes a `Source` column for `Devis` vs `Contact`;
+  - private CSV route includes a `Message` column, preferring canonical `message` and falling back to legacy `mf-textarea`;
   - contact admin notifications are normalized to `Nouveau message depuis le site - Assurances de Rueil`;
+  - contact admin notifications include the visitor's message when present;
   - `contacts@assurancesderueil.fr` is accepted as an alias, with canonical delivery to `contact@assurancesderueil.fr`.
 - Rollback for only the contact acknowledgement patch is to restore `ADR Site Fixes` to the previous `119.7.0` files.
 - Rollback for the visual refresh only is to remove the `includes/live-visual-refresh.php` require from `wp-content/mu-plugins/adr-site-fixes.php` or restore the `ADR Site Fixes` MU-plugin to the previous `119.3.1` files. Removing the whole MU-plugin also rolls back the quote and contact acknowledgement emails.
@@ -103,34 +106,35 @@
   - service tag bubbles for loan, personal, and professional insurance;
   - the phone CTA;
   - the four partner logos;
-  - footer marker `v119.7`.
+  - footer marker `v120.0`.
 - The GH.io `v119.4` local preview was verified across `particuliers.html`, `professionnels.html`, and `index.html`: the day/night checkbox state and computed theme colors persist across page navigation in both directions.
 - The GH.io `v119.7` local preview was verified on `courtier.html`: the new `Téléphone *` field renders as `type="text"`, entering `+34 636 63 03 38` preserves the full value, and empty static submits show a preview message instead of `Something went wrong. Envoi non autorisé.`
-- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `119.8.1`.
+- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `120.0`.
 - `instive-child/functions.php` no longer contains any split/replacement bootstrap marker and is now `91` lines / `2,936` editor characters.
-- Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v119-7-1`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body.
+- Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v120-0`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body.
 - Real live form verification on 2026-06-28 confirms both contact and quote forms send visitor responses, deliver admin emails to Manu, and produce a convincing private CSV export.
 - The live contact and quote pages remain HTTP 200.
 - Public live verification on Courtier/contact confirms:
-  - `adr-live-visual-refresh-v119-7`;
-  - footer marker `v119.7`;
-  - `adr-theme-persistence-v119-7`;
+  - `adr-live-visual-refresh-v120-0`;
+  - footer marker `v120.0`;
+  - `adr-theme-persistence-v120-0`;
   - the injected `Téléphone *` field marker `elementor-element-adr-phone`;
   - backend MetForm form `7487` metadata filtering removes `mf-recaptcha` and inserts `telephone`;
   - alignment CSS marker `adr-contact-phone-align-v1`;
   - no stale `mf-recaptcha`, `g-recaptcha`, `recaptcha-support`, `reCAPTCHA`, or temporary bootstrap marker.
 - Public live verification on Demande de devis confirms:
-  - `adr-live-quote-form-v119-7`;
-  - `version = '119.7'`;
-  - `adr_quote_consent_2026-06-27_v119.7`;
+  - `adr-live-quote-form-v120-0`;
+  - `version = '120.0'`;
+  - `adr_quote_consent_2026-06-28_v120.0`;
   - `type="text"` and `inputmode="tel"` on the quote phone field;
   - no temporary bootstrap marker.
-- Public live verification after the `119.8.1` split confirms:
+- Public live verification after the `120.0` message-storage deploy confirms:
   - Home, Courtier/contact, and Demande de devis return HTTP 200;
-  - `adr-live-visual-refresh-v119-7` and footer marker `v119.7` remain present;
+  - `adr-live-visual-refresh-v120-0`, `adr-theme-persistence-v120-0`, and footer marker `v120.0` remain present;
+  - Courtier/contact includes `Message`, `Téléphone`, and `adr-form-phone-preserver-v120-0`;
   - quote/contact phone controls remain `type="text"` with telephone hints;
   - no public response includes `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP`.
-- Public live spot checks on Home and Particuliers confirm `adr-live-visual-refresh-v119-7`, `adr-theme-persistence-v119-7`, footer marker `v119.7`, and the approved `adr-photo-*-v119-5.jpg` assets.
+- Public live spot checks on Home and Particuliers confirm `adr-live-visual-refresh-v120-0`, `adr-theme-persistence-v120-0`, footer marker `v120.0`, and the approved `adr-photo-*-v119-5.jpg` assets.
 - PHP lint passes for:
   - `wp-live-plugin/adr-site-fixes/adr-site-fixes.php`;
   - `wp-live-plugin/adr-site-fixes/includes/form-adapters.php`;

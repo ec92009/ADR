@@ -579,3 +579,30 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
   - no further code change was needed for this verification.
 - Note:
   - verification used real emails submitted by the user; no extra agent-submitted test was needed.
+
+### Contact message storage/export/admin delivery MU-plugin `120.0`
+
+- Goal: preserve the free-text message from contact form `7487` everywhere the cabinet expects to see it.
+- Method:
+  - extended `ADR Site Fixes` to version `120.0` under the canonical 2026-06-28 visible version;
+  - added a `metform_filter_before_store_form_data` pass for contact form `7487`;
+  - stores the posted contact message under canonical `message` and keeps legacy `mf-textarea` as a fallback/compatibility key;
+  - keeps `telephone` preservation in the same storage pass;
+  - updates the private CSV/export normalizer so the `Message` column prefers `message` and falls back to `mf-textarea`;
+  - updates contact admin delivery so messages are sent to canonical `contact@assurancesderueil.fr`; `contacts@assurancesderueil.fr` remains accepted only as an alias/detection input.
+- Deployment note:
+  - installed through a linted replacement bootstrap marked `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V120_0`;
+  - the bootstrap fetched pinned GitHub commit `64fdba7`, verified SHA-256 hashes, wrote the MU-plugin files, and restored the slim child-theme `functions.php`.
+- Verification result:
+  - PHP lint passes for the changed `ADR Site Fixes` files and generated bootstrap payload;
+  - local synthetic harness verifies contact storage aliases `telephone`, `message`, and `mf-textarea`;
+  - local synthetic harness verifies the contact admin email body includes `Message`, the CSV headers include `Message`, and canonical admin delivery is `contact@assurancesderueil.fr`;
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `120.0`;
+  - public Home, Courtier/contact, and Demande de devis pages return HTTP 200;
+  - public Home includes `adr-live-visual-refresh-v120-0`, `adr-theme-persistence-v120-0`, and footer marker `v120.0`;
+  - public Courtier/contact includes `Message`, `Téléphone`, `adr-form-phone-preserver-v120-0`, `adr-live-visual-refresh-v120-0`, `adr-theme-persistence-v120-0`, and footer marker `v120.0`;
+  - public Demande de devis includes `adr-live-quote-form-v120-0`, `adr_quote_consent_2026-06-28_v120.0`, `adr-form-phone-preserver-v120-0`, `adr-live-visual-refresh-v120-0`, `adr-theme-persistence-v120-0`, and footer marker `v120.0`;
+  - no checked public response includes `Something went wrong. Envoi non autorisé.` or the replacement bootstrap marker.
+- Rollback notes:
+  - to roll back only the `120.0` contact-message storage/admin-delivery change, restore the `ADR Site Fixes` MU-plugin files from the previous `119.8.1` commit;
+  - do not paste the old full child-theme `functions.php` unless deliberately rolling back the entire MU-plugin split.
