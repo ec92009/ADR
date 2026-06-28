@@ -606,3 +606,26 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - to roll back only the `120.0` contact-message storage/admin-delivery change, restore the `ADR Site Fixes` MU-plugin files from the previous `119.8.1` commit;
   - do not paste the old full child-theme `functions.php` unless deliberately rolling back the entire MU-plugin split.
+
+### Quote live payload preservation MU-plugin `120.2`
+
+- Goal: fix the live quote form `2073` storage gap where the browser posted `telephone` and `type_devis`, but the saved MetForm entry and private CSV dropped those two fields.
+- Method:
+  - extended `ADR Site Fixes` to version `120.2`;
+  - added a shared live-payload merge helper for quote/contact request fields;
+  - merges posted live-form fields back into `metform_entries__form_data` on MetForm entry meta creation/update;
+  - reuses the same merge helper for visitor acknowledgement emails so the email, admin email, and CSV read from aligned data;
+  - kept the quote birthdate format as French `DD-MMM-YYYY`, e.g. `11-JUIN-1957`;
+  - bumped active GH.io/static and live version markers/cache-busts to `v120.2`.
+- Deployment note:
+  - installed through replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V120_2`;
+  - bootstrap fetched pinned GitHub commit `64efedb`, verified SHA-256 hashes, wrote the MU-plugin files, and restored the slim child-theme `functions.php`.
+- Verification result:
+  - MAMP PHP lint passes on PHP `8.4.1` and PHP `7.4.33` for the changed MU-plugin files and generated bootstrap;
+  - public Home, Courtier/contact, and Demande de devis pages return HTTP 200, show `v120.2`, include the expected `v120-2` markers, and do not include `Something went wrong. Envoi non autorisé.` or a replacement-bootstrap marker;
+  - live `instive-child/functions.php` is `91` lines / `2,936` editor characters and contains no replacement bootstrap marker;
+  - live contact test row `8203` used `COHEN - 2026-06-28 12-14-09 - CONTACT`, displayed a success message, sent the branded visitor acknowledgement, preserved `+34 636 63 03 38`, stored the address over two CSV lines, and included the stamped message in the CSV `Message` column;
+  - live quote test row `8204` used `COHEN - 2026-06-28 12-14-09 - DEVIS`, displayed a success message, sent the branded visitor acknowledgement, did not echo the birthdate to the visitor, and stored `Téléphone: +34 636 63 03 38`, `Type de devis: Assurance de prêt`, `Naissance: 11-JUIN-1957`, `Communication: E-mail`, `Fumeur: Non`, `Banque: Banque test`, and `Profession: Cadres` in the CSV.
+- Rollback notes:
+  - to roll back only the `120.2` quote-payload preservation change, restore the `ADR Site Fixes` MU-plugin files from the previous `120.1` deployment;
+  - do not paste the old full child-theme `functions.php` unless deliberately rolling back the entire MU-plugin split.
