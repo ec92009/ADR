@@ -5,10 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class ADR_Site_Fixes_Live_Visual_Refresh {
-    private const MARKER = 'adr-live-visual-refresh-v120-0';
+    private const MARKER = 'adr-live-visual-refresh-v120-1';
     private const CONTACT_FORM_ID = 7487;
     private const ASSET_BASE = 'https://ec92009.github.io/ADR/assets/';
-    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=120.0';
+    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=120.1';
     private static $reading_contact_meta = false;
 
     public static function init() {
@@ -37,6 +37,7 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
         $html = self::replace_photos( $html );
         $html = self::replace_photo_dimensions( $html );
         $html = self::replace_versions( $html );
+        $html = self::replace_consent_wording( $html );
         $html = self::ensure_quote_phone_input_mode( $html );
         $html = self::refresh_contact_form( $html );
         $html = self::ensure_theme_persistence( $html );
@@ -75,6 +76,7 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
                 $data[] = self::contact_phone_meta_widget();
             }
         }
+        $data = self::make_contact_detail_fields_optional( $data );
 
         $encoded = wp_json_encode( $data );
         if ( ! is_string( $encoded ) || $encoded === '' ) {
@@ -229,6 +231,32 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
         return $node;
     }
 
+    private static function make_contact_detail_fields_optional( $node ) {
+        if ( ! is_array( $node ) ) {
+            return $node;
+        }
+
+        if ( isset( $node['settings'] ) && is_array( $node['settings'] ) ) {
+            $field_name = self::node_field_name( $node );
+            if ( in_array( $field_name, array( 'telephone', 'adresse', 'code-postal', 'ville', 'mf-textarea' ), true ) ) {
+                $node['settings']['mf_input_required'] = '';
+                $node['settings']['mf_input_min_length'] = '';
+            }
+            if ( $field_name === 'mf-gdpr-consent' ) {
+                $node['settings']['mf_input_required'] = 'yes';
+                $node['settings']['mf_input_min_length'] = '1';
+            }
+        }
+
+        foreach ( $node as $key => $value ) {
+            if ( is_array( $value ) ) {
+                $node[ $key ] = self::make_contact_detail_fields_optional( $value );
+            }
+        }
+
+        return $node;
+    }
+
     private static function node_field_name( $node ) {
         if ( ! is_array( $node ) || ! isset( $node['settings'] ) || ! is_array( $node['settings'] ) ) {
             return '';
@@ -244,8 +272,8 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
             'settings'   => array(
                 'mf_input_label'                 => 'Téléphone',
                 'mf_input_name'                  => 'telephone',
-                'mf_input_required'              => 'yes',
-                'mf_input_min_length'            => 6,
+                'mf_input_required'              => '',
+                'mf_input_min_length'            => '',
                 'mf_input_max_length'            => '',
                 'mf_input_validation_type'       => 'none',
                 'mf_input_validation_expression' => '',
@@ -353,71 +381,60 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
     }
 
     private static function replace_versions( $html ) {
+        $replacements = array(
+            'adr_quote_consent_2026-06-28_v120.0' => 'adr_quote_consent_2026-06-28_v120.1',
+            'adr_quote_consent_2026-06-27_v119.7' => 'adr_quote_consent_2026-06-28_v120.1',
+            'adr_quote_consent_2026-06-27_v119.6' => 'adr_quote_consent_2026-06-28_v120.1',
+            'adr_quote_consent_2026-06-27_v119.5' => 'adr_quote_consent_2026-06-28_v120.1',
+            'adr_quote_consent_2026-06-27_v119.3' => 'adr_quote_consent_2026-06-28_v120.1',
+            'adr-fr-only-v120-0'                 => 'adr-fr-only-v120-1',
+            'adr-fr-only-v119-7'                 => 'adr-fr-only-v120-1',
+            'adr-fr-only-v119-6'                 => 'adr-fr-only-v120-1',
+            'adr-fr-only-v119-5'                 => 'adr-fr-only-v120-1',
+            'adr-fr-only-v119-3'                 => 'adr-fr-only-v120-1',
+            'adr-source-truth-residuals-v120-0'  => 'adr-source-truth-residuals-v120-1',
+            'adr-source-truth-residuals-v119-7'  => 'adr-source-truth-residuals-v120-1',
+            'adr-source-truth-residuals-v119-6'  => 'adr-source-truth-residuals-v120-1',
+            'adr-source-truth-residuals-v119-5'  => 'adr-source-truth-residuals-v120-1',
+            'adr-source-truth-residuals-v119-3'  => 'adr-source-truth-residuals-v120-1',
+            'adr-live-quote-form-v120-0'         => 'adr-live-quote-form-v120-1',
+            'adr-live-quote-form-v119-7'         => 'adr-live-quote-form-v120-1',
+            'adr-live-quote-form-v119-6'         => 'adr-live-quote-form-v120-1',
+            'adr-live-quote-form-v119-5'         => 'adr-live-quote-form-v120-1',
+            'adr-live-quote-form-v119-3'         => 'adr-live-quote-form-v120-1',
+            'adr-live-visual-refresh-v120-0'     => 'adr-live-visual-refresh-v120-1',
+            'adr-live-visual-refresh-v119-7'     => 'adr-live-visual-refresh-v120-1',
+            'adr-live-visual-refresh-v119-6'     => 'adr-live-visual-refresh-v120-1',
+            'adr-live-visual-refresh-v119-5'     => 'adr-live-visual-refresh-v120-1',
+            'adr-live-visual-refresh-v119-3'     => 'adr-live-visual-refresh-v120-1',
+            'adr-theme-persistence-v120-0'       => 'adr-theme-persistence-v120-1',
+            'adr-theme-persistence-v119-7'       => 'adr-theme-persistence-v120-1',
+            'adr-form-phone-preserver-v120-0'    => 'adr-form-phone-preserver-v120-1',
+            'adr-form-phone-preserver-v119-7'    => 'adr-form-phone-preserver-v120-1',
+            "version = '120.0'"                  => "version = '120.1'",
+            "version = '119.7'"                  => "version = '120.1'",
+            "version = '119.6'"                  => "version = '120.1'",
+            "version = '119.5'"                  => "version = '120.1'",
+            "version = '119.3'"                  => "version = '120.1'",
+            'v120.0'                             => 'v120.1',
+            'v119.7'                             => 'v120.1',
+            'v119.6'                             => 'v120.1',
+            'v119.5'                             => 'v120.1',
+            'v119.3'                             => 'v120.1',
+        );
+
+        return str_replace( array_keys( $replacements ), array_values( $replacements ), $html );
+    }
+
+    private static function replace_consent_wording( $html ) {
         return str_replace(
             array(
-                'adr_quote_consent_2026-06-27_v119.7',
-                'adr_quote_consent_2026-06-27_v119.6',
-                'adr_quote_consent_2026-06-27_v119.5',
-                'adr_quote_consent_2026-06-27_v119.3',
-                'adr-fr-only-v119-7',
-                'adr-fr-only-v119-6',
-                'adr-fr-only-v119-5',
-                'adr-fr-only-v119-3',
-                'adr-source-truth-residuals-v119-7',
-                'adr-source-truth-residuals-v119-6',
-                'adr-source-truth-residuals-v119-5',
-                'adr-source-truth-residuals-v119-3',
-                'adr-live-quote-form-v119-7',
-                'adr-live-quote-form-v119-6',
-                'adr-live-quote-form-v119-5',
-                'adr-live-quote-form-v119-3',
-                'adr-live-visual-refresh-v119-7',
-                'adr-live-visual-refresh-v119-6',
-                'adr-live-visual-refresh-v119-5',
-                'adr-live-visual-refresh-v119-3',
-                'adr-theme-persistence-v119-7',
-                'adr-form-phone-preserver-v119-7',
-                "version = '119.7'",
-                "version = '119.6'",
-                "version = '119.5'",
-                "version = '119.3'",
-                'v119.7',
-                'v119.6',
-                'v119.5',
-                'v119.3',
+                'j’accepte qu’un conseiller Assurances de Rueil, m’appelle',
+                'j’accepte qu’un conseiller Assurances de Rueil m’appelle',
+                "j'accepte qu'un conseiller Assurances de Rueil, m'appelle",
+                "j'accepte qu'un conseiller Assurances de Rueil m'appelle",
             ),
-            array(
-                'adr_quote_consent_2026-06-28_v120.0',
-                'adr_quote_consent_2026-06-28_v120.0',
-                'adr_quote_consent_2026-06-28_v120.0',
-                'adr_quote_consent_2026-06-28_v120.0',
-                'adr-fr-only-v120-0',
-                'adr-fr-only-v120-0',
-                'adr-fr-only-v120-0',
-                'adr-fr-only-v120-0',
-                'adr-source-truth-residuals-v120-0',
-                'adr-source-truth-residuals-v120-0',
-                'adr-source-truth-residuals-v120-0',
-                'adr-source-truth-residuals-v120-0',
-                'adr-live-quote-form-v120-0',
-                'adr-live-quote-form-v120-0',
-                'adr-live-quote-form-v120-0',
-                'adr-live-quote-form-v120-0',
-                'adr-live-visual-refresh-v120-0',
-                'adr-live-visual-refresh-v120-0',
-                'adr-live-visual-refresh-v120-0',
-                'adr-live-visual-refresh-v120-0',
-                'adr-theme-persistence-v120-0',
-                'adr-form-phone-preserver-v120-0',
-                "version = '120.0'",
-                "version = '120.0'",
-                "version = '120.0'",
-                "version = '120.0'",
-                'v120.0',
-                'v120.0',
-                'v120.0',
-                'v120.0',
-            ),
+            "j'accepte qu'un conseiller Assurances de Rueil me contacte",
             $html
         );
     }
@@ -440,6 +457,8 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
 
         $html = self::remove_contact_recaptcha( $html );
         $html = self::ensure_contact_phone_field( $html );
+        $html = self::make_contact_detail_fields_optional_in_markup( $html );
+        $html = self::make_contact_consents_required_in_markup( $html );
         $html = self::ensure_contact_phone_alignment( $html );
 
         return $html;
@@ -482,10 +501,10 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
 <div className="elementor-element elementor-element-adr-phone elementor-widget elementor-widget-mf-text" data-id="adr-phone" data-element_type="widget" data-settings="{&quot;mf_input_name&quot;:&quot;telephone&quot;}" data-widget_type="mf-text.default">
 	                <div className="elementor-widget-container">
 
-	        <div className="mf-input-wrapper">
-	                            <label className="mf-input-label" htmlFor="mf-input-tel-adr-phone">
-	                    ${ parent.decodeEntities(`Téléphone`) } 					<span className="mf-input-required-indicator">*</span>
-	                </label>
+        <div className="mf-input-wrapper">
+                            <label className="mf-input-label" htmlFor="mf-input-tel-adr-phone">
+                    ${ parent.decodeEntities(`Téléphone`) } 					<span className="mf-input-required-indicator"></span>
+                </label>
 
             <input
                 type="text"
@@ -497,11 +516,11 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
 	                placeholder="${ parent.decodeEntities(`+33 1 47 51 06 69`) } "
 	                                    onInput=${parent.handleChange}
 	                    onBlur=${parent.handleChange}
-	                    aria-invalid=${validation.errors['telephone'] ? 'true' : 'false'}
-	                    ref=${el =>{
-	                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":6,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
-	                    }}
-	                                />
+                    aria-invalid=${validation.errors['telephone'] ? 'true' : 'false'}
+                    ref=${el =>{
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
+                    }}
+                                />
 
 	                            <${validation.ErrorMessage}
 	                    errors=${validation.errors}
@@ -514,6 +533,56 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
 	                        </div>
 	                </div>
 HTML;
+    }
+
+    private static function make_contact_detail_fields_optional_in_markup( $html ) {
+        $html = preg_replace(
+            '#(\$\{ parent\.decodeEntities\(`(?:Téléphone|Adresse|Code postal|Ville)`\) \}\s*)<span className="mf-input-required-indicator">\*</span>#',
+            '$1<span className="mf-input-required-indicator"></span>',
+            $html
+        );
+
+        foreach ( array( 'telephone', 'adresse', 'code-postal', 'ville', 'mf-textarea' ) as $field_name ) {
+            $html = preg_replace_callback(
+                '#aria-invalid=\$\{validation\.errors\[\'' . preg_quote( $field_name, '#' ) . '\'[^\n]*\}.*?parent\.activateValidation\(\{.*?\}, el\)#s',
+                function ( $matches ) {
+                    return str_replace(
+                        array( '"minLength":6', '"minLength":1', '"required":true' ),
+                        array( '"minLength":""', '"minLength":""', '"required":false' ),
+                        $matches[0]
+                    );
+                },
+                $html
+            );
+        }
+
+        return $html;
+    }
+
+    private static function make_contact_consents_required_in_markup( $html ) {
+        $html = preg_replace_callback(
+            '#aria-invalid=\$\{validation\.errors\[\'mf-gdpr-consent\'[^\n]*\}.*?parent\.activateValidation\(\{.*?\}, el\)#s',
+            function ( $matches ) {
+                return str_replace(
+                    array( '"minLength":""', '"minLength":1', '"required":false' ),
+                    array( '"minLength":1', '"minLength":1', '"required":true' ),
+                    $matches[0]
+                );
+            },
+            $html
+        );
+
+        return preg_replace_callback(
+            '#<input\b(?:(?!/?>).)*name="mf-gdpr-consent"(?:(?!/?>).)*\/>#s',
+            function ( $matches ) {
+                if ( strpos( $matches[0], ' required' ) !== false ) {
+                    return $matches[0];
+                }
+
+                return preg_replace( '#\s*/>$#', ' required />', $matches[0] );
+            },
+            $html
+        );
     }
 
     private static function ensure_contact_phone_alignment( $html ) {
@@ -560,15 +629,15 @@ CSS;
     }
 
     private static function ensure_theme_persistence( $html ) {
-        $script = '<script id="adr-theme-persistence-v120-0" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
+        $script = '<script id="adr-theme-persistence-v120-1" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
 
         $html = preg_replace(
-            '#<script id="adr-theme-persistence-v119-[^"]*" src="[^"]*"></script>#',
+            '#<script id="adr-theme-persistence-v(?:119|120)-[^"]*" src="[^"]*"></script>#',
             $script,
             $html
         );
 
-        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v120-0' ) !== false ) {
+        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v120-1' ) !== false ) {
             return $html;
         }
 
@@ -581,7 +650,7 @@ CSS;
     }
 
     private static function ensure_phone_preserver( $html ) {
-        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v120-0' ) !== false ) {
+        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v120-1' ) !== false ) {
             return $html;
         }
 
@@ -590,7 +659,7 @@ CSS;
 
     private static function phone_preserver_script() {
         return <<<'HTML'
-<script id="adr-form-phone-preserver-v120-0">
+<script id="adr-form-phone-preserver-v120-1">
 (function () {
   var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;

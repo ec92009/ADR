@@ -692,7 +692,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
     }
 </style>
   <input class="adr-switch-input" id="adr-theme-toggle" type="checkbox" aria-label="Basculer le thème jour/nuit">
-  <script id="adr-theme-persistence-v119-7" src="adr-theme-persistence.js?v=119.7"></script>
+  <script id="adr-theme-persistence-v120-1" src="adr-theme-persistence.js?v=120.1"></script>
   <header class="adr-floating-panel" aria-label="Navigation principale">
     <a class="adr-brand" href="index.html"><img decoding="async" src="https://assurancesderueil.fr/wp-content/uploads/2022/08/cropped-flaticon2.png" alt=""><strong>Assurances de Rueil</strong></a>
     <div class="adr-panel-actions">
@@ -908,7 +908,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 
 	        <div className="mf-input-wrapper">
 	                            <label className="mf-input-label" htmlFor="mf-input-tel-adr-phone">
-	                    ${ parent.decodeEntities(`Téléphone`) } 					<span className="mf-input-required-indicator">*</span>
+	                    ${ parent.decodeEntities(`Téléphone`) } 					<span className="mf-input-required-indicator"></span>
 	                </label>
 
 	            <input
@@ -923,7 +923,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 	                    onBlur=${parent.handleChange}
 	                    aria-invalid=${validation.errors['telephone'] ? 'true' : 'false'}
 	                    ref=${el =>{
-	                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":6,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+	                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
 	                    }}
 	                                />
 
@@ -942,7 +942,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 
 	        <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-61eb343">
-                    ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -955,7 +955,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['adresse'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -974,7 +974,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-63dcd8c">
-                    ${ parent.decodeEntities(`Code postal`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Code postal`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -987,7 +987,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['code-postal'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -1006,7 +1006,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-6a07518">
-                    ${ parent.decodeEntities(`Ville`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Ville`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -1019,7 +1019,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['ville'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -1071,12 +1071,13 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                             type="checkbox"
                             className="mf-input mf-checkbox-input "
                             name="mf-gdpr-consent"
+                            required
                                                             onInput=${ parent.handleOptin }
                                 aria-invalid=${validation.errors['mf-gdpr-consent'] ? 'true' : 'false'}
-                                ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":false,"expression":"null"}, el) }
+                                ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
                                                         />
                         <span>
-                            En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.						</span>
+                            En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil me contacte pour m’accompagner dans le choix de mon assurance.						</span>
                     </label>
                 </div>
             </div>
@@ -1103,6 +1104,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
                             type="checkbox"
                             className="mf-input mf-checkbox-input "
                             name="mf-gdpr-consent"
+                            required
                                                             onInput=${ parent.handleOptin }
                                 aria-invalid=${validation.errors['mf-gdpr-consent'] ? 'true' : 'false'}
                                 ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
@@ -1581,7 +1583,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             }
         }
     </style>
-    <div class="adr-version-footer" aria-label="Version du site">v119.7</div>
+    <div class="adr-version-footer" aria-label="Version du site">v120.1</div>
     <script id="adr-version-footer-placement-v1">
     (function () {
         function placeVersionMarker() {
@@ -1618,7 +1620,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         }
     }());
     </script>
-<script id="adr-form-phone-preserver-v119-7">
+<script id="adr-form-phone-preserver-v120-1">
 (function () {
   var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;

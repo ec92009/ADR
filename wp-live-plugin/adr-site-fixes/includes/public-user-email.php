@@ -8,8 +8,8 @@ final class ADR_Site_Fixes_Public_User_Email {
     private const QUOTE_FORM_ID = '2073';
     private const CONTACT_FORM_ID = '7487';
     private const ADMIN_RECIPIENT = 'contact@assurancesderueil.fr';
-    private const QUOTE_MARKER = 'adr-quote-user-email-v120-0';
-    private const CONTACT_MARKER = 'adr-contact-user-email-v120-0';
+    private const QUOTE_MARKER = 'adr-quote-user-email-v120-1';
+    private const CONTACT_MARKER = 'adr-contact-user-email-v120-1';
 
     public static function init() {
         add_filter( 'metform_confirmation_user_email_body', array( __CLASS__, 'replace_body' ), 20, 5 );
@@ -130,17 +130,16 @@ final class ADR_Site_Fixes_Public_User_Email {
     }
 
     private static function birthdate( $data ) {
-        $legacy = self::value( $data, array( 'mf-date' ) );
-        if ( $legacy !== '' ) {
-            return $legacy;
+        if ( function_exists( 'adr_quote_request_birthdate' ) ) {
+            return adr_quote_request_birthdate( $data );
         }
 
         $canonical = self::value( $data, array( 'date_naissance' ) );
-        if ( preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $canonical, $matches ) ) {
-            return $matches[3] . '/' . $matches[2] . '/' . $matches[1];
+        if ( $canonical !== '' ) {
+            return $canonical;
         }
 
-        return $canonical;
+        return self::value( $data, array( 'mf-date' ) );
     }
 
     private static function normalized( $data ) {
@@ -189,10 +188,6 @@ final class ADR_Site_Fixes_Public_User_Email {
 
         if ( $request['telephone'] !== '' ) {
             $rows[] = array( 'Téléphone', $request['telephone'] );
-        }
-
-        if ( $request['date_naissance'] !== '' ) {
-            $rows[] = array( 'Date de naissance', $request['date_naissance'] );
         }
 
         return $rows;

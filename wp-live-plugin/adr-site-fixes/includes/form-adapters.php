@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-live-quote-form-v120-0: refreshed quote form shell, preserving MetForm storage.
+// adr-live-quote-form-v120-1: refreshed quote form shell, preserving MetForm storage.
 add_action( 'wp_footer', 'adr_render_live_quote_form', 990 );
 function adr_render_live_quote_form() {
     if ( is_admin() || ! is_page( 7427 ) ) {
         return;
     }
     ?>
-    <style id="adr-live-quote-form-v120-0">
+    <style id="adr-live-quote-form-v120-1">
         .adr-quote-stage.adr-live-quote-ready .adr-form-card .mf-form-shortcode {
             display: none !important;
         }
@@ -213,11 +213,11 @@ function adr_render_live_quote_form() {
             }
         }
     </style>
-    <script id="adr-live-quote-form-v120-0">
+    <script id="adr-live-quote-form-v120-1">
     (function () {
-        var version = '120.0';
+        var version = '120.1';
         var endpointFallback = 'https://assurancesderueil.fr/wp-json/metform/v1/entries/insert/2073';
-        var consentVersion = 'adr_quote_consent_2026-06-28_v120.0';
+        var consentVersion = 'adr_quote_consent_2026-06-28_v120.1';
         var quoteTypes = [
             ['pret', 'Assurance de prêt'],
             ['habitation', 'Assurance habitation'],
@@ -256,6 +256,20 @@ function adr_render_live_quote_form() {
             ['11', 'Novembre'],
             ['12', 'Décembre']
         ];
+        var monthCodes = {
+            '01': 'JAN',
+            '02': 'FEV',
+            '03': 'MAR',
+            '04': 'AVR',
+            '05': 'MAI',
+            '06': 'JUIN',
+            '07': 'JUIL',
+            '08': 'AOUT',
+            '09': 'SEP',
+            '10': 'OCT',
+            '11': 'NOV',
+            '12': 'DEC'
+        };
 
         function ready(callback) {
             if (document.readyState === 'loading') {
@@ -328,9 +342,10 @@ function adr_render_live_quote_form() {
             if (!day || day === '00' || !month || !year) {
                 return { legacy: '', canonical: '' };
             }
+            var formatted = day + '-' + (monthCodes[month] || month) + '-' + year;
             return {
-                legacy: month + '-' + day + '-' + year,
-                canonical: year + '-' + month + '-' + day
+                legacy: formatted,
+                canonical: formatted
             };
         }
 
@@ -449,7 +464,7 @@ function adr_render_live_quote_form() {
                             </div>
                             <label class="adr-live-field adr-live-phone-field">
                                 <span>Téléphone</span>
-                                <input type="tel" name="telephone" autocomplete="tel" placeholder="+33">
+                                <input type="text" name="telephone" autocomplete="tel" inputmode="tel" placeholder="+33">
                             </label>
                             <div class="adr-live-field" role="group" aria-labelledby="adr-live-fumeur-label">
                                 <span id="adr-live-fumeur-label">Êtes-vous fumeur ?</span>

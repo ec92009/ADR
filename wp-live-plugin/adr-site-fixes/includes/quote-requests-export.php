@@ -4,8 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-quote-requests-v120-0: private site-request CSV and ordered admin email.
-define( 'ADR_QUOTE_REQUESTS_VERSION', '120.0' );
+// adr-quote-requests-v120-1: private site-request CSV and ordered admin email.
+define( 'ADR_QUOTE_REQUESTS_VERSION', '120.1' );
 define( 'ADR_QUOTE_REQUESTS_FORM_ID', '2073' );
 define( 'ADR_CONTACT_REQUESTS_FORM_ID', '7487' );
 define( 'ADR_QUOTE_REQUESTS_MIN_DATE', '2026-01-01 00:00:00' );
@@ -230,18 +230,177 @@ function adr_quote_request_type_label( $value ) {
     return isset( $types[ $value ] ) ? $types[ $value ] : $value;
 }
 
+function adr_quote_request_month_number( $month ) {
+    $normalized = trim( (string) $month );
+    $normalized = strtr(
+        $normalized,
+        array(
+            'à' => 'a',
+            'â' => 'a',
+            'ä' => 'a',
+            'À' => 'A',
+            'Â' => 'A',
+            'Ä' => 'A',
+            'é' => 'e',
+            'è' => 'e',
+            'ê' => 'e',
+            'ë' => 'e',
+            'É' => 'E',
+            'È' => 'E',
+            'Ê' => 'E',
+            'Ë' => 'E',
+            'î' => 'i',
+            'ï' => 'i',
+            'Î' => 'I',
+            'Ï' => 'I',
+            'ô' => 'o',
+            'ö' => 'o',
+            'Ô' => 'O',
+            'Ö' => 'O',
+            'ù' => 'u',
+            'û' => 'u',
+            'ü' => 'u',
+            'Ù' => 'U',
+            'Û' => 'U',
+            'Ü' => 'U',
+            'ç' => 'c',
+            'Ç' => 'C',
+        )
+    );
+    $normalized = strtoupper( preg_replace( '/[^A-Za-z0-9]/', '', $normalized ) );
+
+    if ( ctype_digit( $normalized ) ) {
+        $month_number = (int) $normalized;
+        return $month_number >= 1 && $month_number <= 12 ? $month_number : 0;
+    }
+
+    $months = array(
+        'JAN'       => 1,
+        'JANV'      => 1,
+        'JANVIER'   => 1,
+        'FEV'       => 2,
+        'FEVR'      => 2,
+        'FEVRIER'   => 2,
+        'FEB'       => 2,
+        'MAR'       => 3,
+        'MARS'      => 3,
+        'AVR'       => 4,
+        'AVRIL'     => 4,
+        'APR'       => 4,
+        'MAI'       => 5,
+        'MAY'       => 5,
+        'JUIN'      => 6,
+        'JUN'       => 6,
+        'JUIL'      => 7,
+        'JUILLET'   => 7,
+        'JUL'       => 7,
+        'AOU'       => 8,
+        'AOUT'      => 8,
+        'AUG'       => 8,
+        'SEP'       => 9,
+        'SEPT'      => 9,
+        'SEPTEMBRE' => 9,
+        'OCT'       => 10,
+        'OCTOBRE'   => 10,
+        'NOV'       => 11,
+        'NOVEMBRE'  => 11,
+        'DEC'       => 12,
+        'DECEMBRE'  => 12,
+    );
+
+    return isset( $months[ $normalized ] ) ? $months[ $normalized ] : 0;
+}
+
+function adr_quote_request_format_french_date_parts( $year, $month, $day ) {
+    $year = (int) $year;
+    if ( $year >= 0 && $year < 100 ) {
+        $year += $year >= 30 ? 1900 : 2000;
+    }
+
+    $month = adr_quote_request_month_number( $month );
+    $day = (int) $day;
+
+    if ( $year < 1000 || ! checkdate( $month, $day, $year ) ) {
+        return '';
+    }
+
+    $months = array(
+        1  => 'JAN',
+        2  => 'FEV',
+        3  => 'MAR',
+        4  => 'AVR',
+        5  => 'MAI',
+        6  => 'JUIN',
+        7  => 'JUIL',
+        8  => 'AOUT',
+        9  => 'SEP',
+        10 => 'OCT',
+        11 => 'NOV',
+        12 => 'DEC',
+    );
+
+    return sprintf( '%02d-%s-%04d', $day, $months[ $month ], $year );
+}
+
+function adr_quote_request_format_french_date_value( $value, $hint = 'auto' ) {
+    $value = trim( (string) $value );
+    if ( $value === '' ) {
+        return '';
+    }
+
+    if ( preg_match( '/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/', $value, $matches ) ) {
+        return adr_quote_request_format_french_date_parts( $matches[1], $matches[2], $matches[3] );
+    }
+
+    if ( preg_match( '/^(\d{1,2})[-\/\s.]([A-Za-zÀ-ÿ.]+)[-\/\s.](\d{2,4})$/u', $value, $matches ) ) {
+        return adr_quote_request_format_french_date_parts( $matches[3], $matches[2], $matches[1] );
+    }
+
+    if ( preg_match( '/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})$/', $value, $matches ) ) {
+        return adr_quote_request_format_french_date_parts( $matches[3], $matches[2], $matches[1] );
+    }
+
+    if ( preg_match( '/^(\d{1,2})-(\d{1,2})-(\d{2,4})$/', $value, $matches ) ) {
+        if ( $hint === 'legacy_mdy' ) {
+            return adr_quote_request_format_french_date_parts( $matches[3], $matches[1], $matches[2] );
+        }
+
+        return adr_quote_request_format_french_date_parts( $matches[3], $matches[2], $matches[1] );
+    }
+
+    return $value;
+}
+
+function adr_quote_request_format_french_datetime( $mysql_date ) {
+    $mysql_date = trim( (string) $mysql_date );
+    if ( ! preg_match( '/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{2}):(\d{2}))?/', $mysql_date, $matches ) ) {
+        return $mysql_date;
+    }
+
+    $date = adr_quote_request_format_french_date_parts( $matches[1], $matches[2], $matches[3] );
+    if ( $date === '' ) {
+        return $mysql_date;
+    }
+
+    if ( isset( $matches[4], $matches[5] ) && $matches[4] !== '' && $matches[5] !== '' ) {
+        return $date . ' ' . $matches[4] . ':' . $matches[5];
+    }
+
+    return $date;
+}
+
 function adr_quote_request_birthdate( $data ) {
-    $legacy = adr_quote_request_value( $data, array( 'mf-date' ) );
+    $canonical = adr_quote_request_format_french_date_value( adr_quote_request_value( $data, array( 'date_naissance' ) ) );
+    if ( $canonical !== '' ) {
+        return $canonical;
+    }
+
+    $legacy = adr_quote_request_format_french_date_value( adr_quote_request_value( $data, array( 'mf-date' ) ), 'legacy_mdy' );
     if ( $legacy !== '' ) {
         return $legacy;
     }
 
-    $canonical = adr_quote_request_value( $data, array( 'date_naissance' ) );
-    if ( preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $canonical, $matches ) ) {
-        return $matches[3] . '/' . $matches[2] . '/' . $matches[1];
-    }
-
-    return $canonical;
+    return '';
 }
 
 function adr_quote_request_address( $data ) {
@@ -279,7 +438,7 @@ function adr_quote_request_normalized( $data, $post = null ) {
     $form_id = ADR_QUOTE_REQUESTS_FORM_ID;
 
     if ( $post instanceof WP_Post ) {
-        $date = mysql2date( 'd/m/Y H:i', $post->post_date );
+        $date = adr_quote_request_format_french_datetime( mysql2date( 'Y-m-d H:i:s', $post->post_date ) );
         $form_id = adr_quote_request_form_id_for_post( $post->ID );
     }
 

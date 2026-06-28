@@ -1635,7 +1635,7 @@ ADR_STAGE_HOME
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-61eb343">
-                    ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -1648,7 +1648,7 @@ ADR_STAGE_HOME
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['adresse'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -1667,7 +1667,7 @@ ADR_STAGE_HOME
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-63dcd8c">
-                    ${ parent.decodeEntities(`Code postal`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Code postal`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -1680,7 +1680,7 @@ ADR_STAGE_HOME
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['code-postal'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -1699,7 +1699,7 @@ ADR_STAGE_HOME
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-6a07518">
-                    ${ parent.decodeEntities(`Ville`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Ville`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -1712,7 +1712,7 @@ ADR_STAGE_HOME
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['mf-text'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -1738,12 +1738,13 @@ ADR_STAGE_HOME
                             type="checkbox"
                             className="mf-input mf-checkbox-input "
                             name="mf-gdpr-consent"
+                            required
                                                             onInput=${ parent.handleOptin }
                                 aria-invalid=${validation.errors['mf-gdpr-consent'] ? 'true' : 'false'}
-                                ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":false,"expression":"null"}, el) }
+                                ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
                                                         />
                         <span>
-                            En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.						</span>
+                            En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil me contacte pour m’accompagner dans le choix de mon assurance.						</span>
                     </label>
                 </div>
             </div>
@@ -1770,6 +1771,7 @@ ADR_STAGE_HOME
                             type="checkbox"
                             className="mf-input mf-checkbox-input "
                             name="mf-gdpr-consent"
+                            required
                                                             onInput=${ parent.handleOptin }
                                 aria-invalid=${validation.errors['mf-gdpr-consent'] ? 'true' : 'false'}
                                 ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
@@ -3488,7 +3490,7 @@ ADR_STAGE_PROFESSIONNELS
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-61eb343">
-                    ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Adresse`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -3501,7 +3503,7 @@ ADR_STAGE_PROFESSIONNELS
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['adresse'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -3520,7 +3522,7 @@ ADR_STAGE_PROFESSIONNELS
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-63dcd8c">
-                    ${ parent.decodeEntities(`Code postal`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Code postal`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -3533,7 +3535,7 @@ ADR_STAGE_PROFESSIONNELS
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['code-postal'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -3552,7 +3554,7 @@ ADR_STAGE_PROFESSIONNELS
 
         <div className="mf-input-wrapper">
                             <label className="mf-input-label" htmlFor="mf-input-text-6a07518">
-                    ${ parent.decodeEntities(`Ville`) } 					<span className="mf-input-required-indicator">*</span>
+                    ${ parent.decodeEntities(`Ville`) } 					<span className="mf-input-required-indicator"></span>
                 </label>
 
             <input
@@ -3565,7 +3567,7 @@ ADR_STAGE_PROFESSIONNELS
                     onBlur=${parent.handleChange}
                     aria-invalid=${validation.errors['ville'] ? 'true' : 'false'}
                     ref=${el =>{
-                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el)
+                                                parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":"","maxLength":"","type":"none","required":false,"expression":"null"}, el)
                     }}
                                 />
 
@@ -3617,12 +3619,13 @@ ADR_STAGE_PROFESSIONNELS
                             type="checkbox"
                             className="mf-input mf-checkbox-input "
                             name="mf-gdpr-consent"
+                            required
                                                             onInput=${ parent.handleOptin }
                                 aria-invalid=${validation.errors['mf-gdpr-consent'] ? 'true' : 'false'}
-                                ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":false,"expression":"null"}, el) }
+                                ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
                                                         />
                         <span>
-                            En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil, m’appelle pour m’accompagner dans le choix de mon assurance.						</span>
+                            En cliquant sur « Envoyer », j’accepte qu’un conseiller Assurances de Rueil me contacte pour m’accompagner dans le choix de mon assurance.						</span>
                     </label>
                 </div>
             </div>
@@ -3649,6 +3652,7 @@ ADR_STAGE_PROFESSIONNELS
                             type="checkbox"
                             className="mf-input mf-checkbox-input "
                             name="mf-gdpr-consent"
+                            required
                                                             onInput=${ parent.handleOptin }
                                 aria-invalid=${validation.errors['mf-gdpr-consent'] ? 'true' : 'false'}
                                 ref=${ el => parent.activateValidation({"message":"Ce champ est n\u00e9cessaire.","minLength":1,"maxLength":"","type":"none","required":true,"expression":"null"}, el) }
@@ -4814,4 +4818,3 @@ function adr_render_version_footer() {
     </script>
     <?php
 }
-
