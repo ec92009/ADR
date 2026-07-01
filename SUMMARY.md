@@ -37,6 +37,17 @@
 - Advanced the live MU-plugin to `120.2` after stamped testing showed quote form `2073` dropped `telephone` and `type_devis` from storage/CSV even though the browser payload contained them; the saved MetForm entry now merges live posted fields before emails/CSV read them.
 - Verified `v120.2` live with stamped contact row `8203` and quote row `8204`: both forms displayed success, Gmail confirmations arrived, quote acknowledgement includes `Téléphone +34 636 63 03 38` and `Demande Assurance de prêt`, the quote email still does not echo birthdate, and the private CSV contains the quote phone, type, and French birthdate `11-JUIN-1957`.
 
+## Conversation Summary, 2026-07-01
+
+- Reworked the daily PDF automation from GH.io-only reporting into `Render ADR site and DB`, targeting the official `https://assurancesderueil.fr/` site.
+- Extended `scripts/render-ghio-long-pdf.cjs` with an `official` profile so it uses the live WordPress slugs and writes `output/pdf/official-daily/assurances-de-rueil-official-*.pdf` artifacts while preserving the GH.io profile.
+- Added `scripts/download-site-contacts-tsv.cjs`, which downloads the private quote/contact export, normalizes it to TSV, filters to the last 7 days, and writes latest/versioned TSV artifacts.
+- Extended the private request export endpoint with `format=tsv` and `days=7` support so the DB export can be generated directly by WordPress once the MU-plugin is deployed.
+- Verified the official PDF render on 2026-07-01: `v120.2`, `21` pages, `11103032` bytes, with latest PDF and manifest updated.
+- Verified the 7-day contacts TSV on 2026-07-01: `2825` bytes and `31` lines, with the latest TSV copy updated.
+- Updated the automation prompt so Friday runs send Manu `manuelveludo1@gmail.com` a French signed Gmail message from the connected `ec92009@gmail.com` account with the latest PDF and TSV attached.
+- Created sample Gmail drafts during review; the canonical current sample is the signed French draft ending `-- Elie`.
+
 ## Source Of Truth
 
 - GitHub/GH.io is the working source of truth for static content, visual approvals, review diffs, commits, and handoff history.
@@ -46,6 +57,7 @@
   - child-theme `functions.php` now holds only the base enqueue and Web-By-Elie credit block.
 - The latest live WordPress deployment details are in `docs/live-wordpress-change-log.md`.
 - The theme-editor workflow and size-limit warning are in `docs/wordpress-theme-editor-publish-workflow.md`.
+- The daily official-site PDF and DB export automation is named `Render ADR site and DB`; it stores generated artifacts under `output/pdf/official-daily/`, which is intentionally ignored by Git.
 - On this Mac, PHP linting should use MAMP when shell `php` is absent: `/Applications/MAMP/bin/php/php8.4.1/bin/php` for current checks and `/Applications/MAMP/bin/php/php7.4.33/bin/php` for WordPress/PHP 7.4 compatibility checks. This is now recorded in the parent `~/Dev/AGENTS.md`.
 
 ## Quote Form State
@@ -153,6 +165,8 @@
   - contact CSV row `8203` has `Téléphone: +34 636 63 03 38`, two-line address, and the contact `Message`;
   - quote CSV row `8204` has `Téléphone: +34 636 63 03 38`, `Type de devis: Assurance de prêt`, `Naissance: 11-JUIN-1957`, `Communication: E-mail`, `Fumeur: Non`, `Banque: Banque test`, and `Profession: Cadres`;
   - visitor Gmail confirmations arrived for both forms, and the quote confirmation includes phone/type without echoing birthdate.
+- Official-site PDF automation verification on 2026-07-01 confirms `assurances-de-rueil-official-v120.2-2026-07-01.pdf` has `21` pages and `11103032` bytes.
+- Contacts TSV automation verification on 2026-07-01 confirms `assurances-de-rueil-contacts-last-7-days-2026-07-01.tsv` has `2825` bytes and `31` lines.
 
 ## Open Work
 

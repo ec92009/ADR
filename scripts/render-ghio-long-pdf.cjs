@@ -20,17 +20,21 @@ function loadPlaywright() {
 const { chromium } = loadPlaywright();
 
 const repoRoot = path.resolve(__dirname, "..");
-const siteBase = (process.env.ADR_GHIO_BASE || "https://ec92009.github.io/ADR").replace(/\/+$/, "");
+const siteProfile = (process.env.ADR_PDF_PROFILE || process.env.ADR_SITE_PROFILE || "ghio").toLowerCase();
+const defaultSiteBase = siteProfile === "official" ? "https://assurancesderueil.fr" : "https://ec92009.github.io/ADR";
+const siteBase = (process.env.ADR_GHIO_BASE || process.env.ADR_SITE_BASE || defaultSiteBase).replace(/\/+$/, "");
+const artifactSlug = siteProfile === "official" ? "official" : "ghio";
+const exportLabel = siteProfile === "official" ? "site officiel" : "GH.io";
 const outputDir = process.env.ADR_PDF_OUT_DIR
   ? path.resolve(process.env.ADR_PDF_OUT_DIR)
-  : path.join(repoRoot, "output/pdf/ghio-daily");
+  : path.join(repoRoot, `output/pdf/${artifactSlug}-daily`);
 const bundledPython = path.join(
   os.homedir(),
   ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3"
 );
 const pythonBin = process.env.ADR_PYTHON || (fs.existsSync(bundledPython) ? bundledPython : "python3");
 
-const pages = [
+const ghioPages = [
   ["Accueil", "/"],
   ["Cabinet", "/cabinet.html"],
   ["Assurance de prêt", "/assurance-de-pret.html"],
@@ -42,7 +46,27 @@ const pages = [
   ["Politique de confidentialité", "/politique-de-confidentialite.html"],
   ["Politique de cookies UE", "/politique-de-cookies-ue.html"],
   ["Cookies traceurs", "/cookies-traceurs.html"],
-].map(([title, route]) => ({ title, route, url: `${siteBase}${route}` }));
+];
+
+const officialPages = [
+  ["Accueil", "/"],
+  ["Cabinet", "/cabinet-de-courtage-en-assurances-rueil-malmaison/"],
+  ["Assurance de prêt", "/assurance-de-pret-a-rueil-malmaison/"],
+  ["Particuliers", "/assurance-particuliers-rueil-malmaison/"],
+  ["Professionnels", "/assurance-entreprise-rueil-malmaison/"],
+  ["Courtier / Contact", "/courtier-en-assurances-de-rueil-malmaison/"],
+  ["Demande de devis", "/demande-de-devis-assurance-a-rueil-malmaison/"],
+  ["Mentions légales", "/mentions-legales/"],
+  ["Politique de confidentialité", "/politique-de-confidentialite/"],
+  ["Politique de cookies UE", "/politique-de-cookies-ue/"],
+  ["Cookies traceurs", "/cookies-traceurs/"],
+];
+
+const pages = (siteProfile === "official" ? officialPages : ghioPages).map(([title, route]) => ({
+  title,
+  route,
+  url: `${siteBase}${route}`,
+}));
 
 function parisParts(date) {
   const formatter = new Intl.DateTimeFormat("en-CA", {
@@ -109,7 +133,7 @@ async function renderCover(browser, tmpDir, generated, version) {
 <html lang="fr">
 <head>
   <meta charset="utf-8">
-  <title>Assurances de Rueil - export GH.io</title>
+  <title>Assurances de Rueil - export ${exportLabel}</title>
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; min-height: 100%; }
@@ -180,7 +204,7 @@ async function renderCover(browser, tmpDir, generated, version) {
 </head>
 <body>
   <main class="sheet">
-    <h1>Assurances de Rueil<br>Export GH.io</h1>
+    <h1>Assurances de Rueil<br>Export ${exportLabel}</h1>
     <section class="meta">
       <div><span class="label">Source</span>${siteBase}/</div>
       <div><span class="label">Version détectée</span>${version}</div>
@@ -324,16 +348,16 @@ async function main() {
     const coverPath = await renderCover(browser, tmpDir, generated, version);
     const mergedTmp = path.join(tmpDir, "merged.pdf");
     mergePdfs([coverPath, ...rendered], mergedTmp, {
-      title: `Assurances de Rueil GH.io ${generated.date}`,
+      title: `Assurances de Rueil ${exportLabel} ${generated.date}`,
       subject: `${siteBase}/ ${version}`,
     });
 
-    const durableStem = `assurances-de-rueil-ghio-${versionSlug(version)}-${generated.date}`;
+    const durableStem = `assurances-de-rueil-${artifactSlug}-${versionSlug(version)}-${generated.date}`;
     const fallbackSuffix = generated.stamp.replace(/:/g, "-");
     const datedPdf = uniquePathWithoutOverwrite(path.join(outputDir, `${durableStem}.pdf`), fallbackSuffix);
-    const latestPdf = path.join(outputDir, "assurances-de-rueil-ghio-latest.pdf");
+    const latestPdf = path.join(outputDir, `assurances-de-rueil-${artifactSlug}-latest.pdf`);
     const manifestPath = datedPdf.replace(/\.pdf$/i, ".json");
-    const latestManifestPath = path.join(outputDir, "assurances-de-rueil-ghio-latest.json");
+    const latestManifestPath = path.join(outputDir, `assurances-de-rueil-${artifactSlug}-latest.json`);
     fs.renameSync(mergedTmp, datedPdf);
     fs.copyFileSync(datedPdf, latestPdf);
     const stat = fs.statSync(datedPdf);

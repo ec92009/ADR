@@ -281,7 +281,26 @@ function adr_render_quote_requests_forbidden() {
     <?php
 }
 
-function adr_quote_requests_entries() {
+function adr_quote_requests_export_after() {
+    $days = isset( $_GET['days'] ) ? absint( wp_unslash( $_GET['days'] ) ) : 0;
+    if ( $days > 0 ) {
+        return date( 'Y-m-d H:i:s', current_time( 'timestamp' ) - $days * DAY_IN_SECONDS );
+    }
+
+    return ADR_QUOTE_REQUESTS_MIN_DATE;
+}
+
+function adr_quote_requests_export_format() {
+    $format = isset( $_GET['format'] ) ? strtolower( sanitize_key( wp_unslash( $_GET['format'] ) ) ) : 'csv';
+
+    return $format === 'tsv' ? 'tsv' : 'csv';
+}
+
+function adr_quote_requests_entries( $after = '' ) {
+    if ( $after === '' ) {
+        $after = ADR_QUOTE_REQUESTS_MIN_DATE;
+    }
+
     return get_posts(
         array(
             'post_type'        => 'metform-entry',
@@ -292,7 +311,7 @@ function adr_quote_requests_entries() {
             'suppress_filters' => true,
             'date_query'       => array(
                 array(
-                    'after'     => ADR_QUOTE_REQUESTS_MIN_DATE,
+                    'after'     => $after,
                     'inclusive' => true,
                     'column'    => 'post_date',
                 ),
@@ -619,8 +638,9 @@ function adr_quote_request_normalized( $data, $post = null ) {
 
 function adr_quote_requests_rows() {
     $rows = array();
+    $after = adr_quote_requests_export_after();
 
-    foreach ( adr_quote_requests_entries() as $entry ) {
+    foreach ( adr_quote_requests_entries( $after ) as $entry ) {
         $rows[] = adr_quote_request_normalized( adr_quote_request_data_for_post( $entry->ID ), $entry );
     }
 
@@ -652,20 +672,26 @@ function adr_quote_requests_headers() {
 function adr_render_quote_requests_csv() {
     $headers = adr_quote_requests_headers();
     $rows = adr_quote_requests_rows();
+    $format = adr_quote_requests_export_format();
 
-    header( 'Content-Type: text/csv; charset=utf-8' );
-    header( 'Content-Disposition: attachment; filename="demandes-site-' . gmdate( 'Ymd-His' ) . '.csv"' );
+    if ( $format === 'tsv' ) {
+        header( 'Content-Type: text/tab-separated-values; charset=utf-8' );
+        header( 'Content-Disposition: attachment; filename="demandes-site-' . gmdate( 'Ymd-His' ) . '.tsv"' );
+    } else {
+        header( 'Content-Type: text/csv; charset=utf-8' );
+        header( 'Content-Disposition: attachment; filename="demandes-site-' . gmdate( 'Ymd-His' ) . '.csv"' );
+    }
 
     $output = fopen( 'php://output', 'w' );
     fprintf( $output, "\xEF\xBB\xBF" );
-    fputcsv( $output, array_values( $headers ), ';' );
+    fputcsv( $output, array_values( $headers ), $format === 'tsv' ? "\t" : ';' );
 
     foreach ( $rows as $row ) {
         $line = array();
         foreach ( $headers as $key => $label ) {
             $line[] = isset( $row[ $key ] ) ? $row[ $key ] : '';
         }
-        fputcsv( $output, $line, ';' );
+        fputcsv( $output, $line, $format === 'tsv' ? "\t" : ';' );
     }
 
     fclose( $output );

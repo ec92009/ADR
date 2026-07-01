@@ -2,11 +2,12 @@
 
 1. Back up and document the live MetForm definitions/settings for forms `2073` and `7487`, including recipients, field keys, confirmation settings, and anti-spam settings.
 2. Replace the browser theme-editor bootstrap workflow with a safer repeatable deploy path for the MU-plugin, such as FTP/SFTP, WP-CLI, or a small authenticated package upload.
-3. Review the live site with Manuel on desktop and mobile, covering home, cabinet, assurance de prêt, particuliers, professionnels, contact, quote, and footer/version details.
-4. Do a full SEO/AIO pass after visual sign-off: titles, meta descriptions, schema image URLs/dimensions, internal links, sitemap, `llms.txt`, and stale `Rueil-Malmaison` wording where it no longer helps.
-5. Finalize legal and consent wording across the forms, acknowledgement emails, privacy policy, cookie policy, and any GDPR data-rights copy.
-6. Revisit anti-spam now that stale reCAPTCHA is removed from the contact form; prefer the least intrusive option that does not block real prospects.
-7. Eventually restore the EN/FR switch with real bilingual content, hreflang/canonical handling, and a separate bilingual SEO/AIO pass.
+3. Deploy the TSV `format=tsv&days=7` export enhancement to the live `ADR Site Fixes` MU-plugin so the automation no longer needs its CSV fallback normalizer.
+4. Review the live site with Manuel on desktop and mobile, covering home, cabinet, assurance de prêt, particuliers, professionnels, contact, quote, and footer/version details.
+5. Do a full SEO/AIO pass after visual sign-off: titles, meta descriptions, schema image URLs/dimensions, internal links, sitemap, `llms.txt`, and stale `Rueil-Malmaison` wording where it no longer helps.
+6. Finalize legal and consent wording across the forms, acknowledgement emails, privacy policy, cookie policy, and any GDPR data-rights copy.
+7. Revisit anti-spam now that stale reCAPTCHA is removed from the contact form; prefer the least intrusive option that does not block real prospects.
+8. Eventually restore the EN/FR switch with real bilingual content, hreflang/canonical handling, and a separate bilingual SEO/AIO pass.
 
 ## Completed
 
@@ -27,3 +28,4 @@
 - 2026-06-28: Real live contact and quote form submissions were verified by the user: visitor acknowledgements arrived, Manu received the admin emails, and the private CSV export looked convincing.
 - 2026-06-28: Published `ADR Site Fixes` `120.0` so contact form `7487` preserves the visitor message in storage, includes it in the private CSV `Message` column, and forwards it to `contact@assurancesderueil.fr` in the contact admin email.
 - 2026-06-28: Published `ADR Site Fixes` `120.2` so quote form `2073` preserves live-posted `telephone` and `type_devis` in MetForm storage, visitor/admin email normalization, and the private CSV; stamped live tests confirmed quote row `8204` has phone, type, and `11-JUIN-1957`.
+- 2026-07-01: Renamed the daily automation to `Render ADR site and DB`, switched it to the official live site PDF, added last-7-days contacts TSV generation, and configured Friday-only signed French Gmail delivery to Manu with PDF and TSV attachments.

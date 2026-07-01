@@ -4,4 +4,6 @@ option-*.png
 qa-*.json
 qa-*.png
 output/pdf/ghio-daily/
+output/pdf/official-daily/
 .DS_Store
+quote-requests/

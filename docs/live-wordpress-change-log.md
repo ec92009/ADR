@@ -629,3 +629,23 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - to roll back only the `120.2` quote-payload preservation change, restore the `ADR Site Fixes` MU-plugin files from the previous `120.1` deployment;
   - do not paste the old full child-theme `functions.php` unless deliberately rolling back the entire MU-plugin split.
+
+### Official-site PDF and contacts TSV automation, 2026-07-01
+
+- Goal: replace the GH.io-only daily PDF report with an official live-site report plus a recent DB contacts attachment for Manu.
+- Method:
+  - renamed the Codex automation to `Render ADR site and DB`;
+  - added an `official` profile to `scripts/render-ghio-long-pdf.cjs`, mapping the report pages to the live WordPress slugs under `https://assurancesderueil.fr/`;
+  - kept the GH.io profile available for explicit GH.io renders;
+  - added `scripts/download-site-contacts-tsv.cjs` to download the private request export, normalize it to TSV, filter the last 7 days, and write versioned/latest files under `output/pdf/official-daily/`;
+  - extended the private export endpoint with `format=tsv` and `days=7` support for the next MU-plugin deployment;
+  - updated the automation prompt so Friday runs send Manu a French signed Gmail message with the latest PDF and TSV attached.
+- Verification result:
+  - official PDF render produced `assurances-de-rueil-official-v120.2-2026-07-01.pdf`;
+  - `pdfinfo` reported `21` pages;
+  - the official PDF size was `11103032` bytes;
+  - the contacts TSV size was `2825` bytes and `31` lines;
+  - the latest official PDF, latest manifest, and latest TSV copies were updated;
+  - a signed French sample Gmail draft was created but not sent.
+- Follow-up:
+  - deploy the `format=tsv&days=7` endpoint enhancement to the live MU-plugin so the local downloader can stop relying on CSV fallback parsing when the live site has not yet been updated.
