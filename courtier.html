@@ -597,12 +597,14 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
     .adr-hero p { max-width: 680px; margin: 0; color: var(--adr-muted); font-size: clamp(18px, 2vw, 23px); line-height: 1.55; }
     .adr-hero-media { min-height: 340px; background: #d9e7f2; }
     .adr-hero-media img { width: 100%; height: 100%; object-fit: cover; }
-    .adr-mini-nav { position: static; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 18px; margin-bottom: 18px; border: 1px solid var(--adr-line); border-radius: 8px; padding: 8px; background: var(--adr-paper); backdrop-filter: blur(18px); }
+    .adr-mini-nav { position: sticky; top: 116px; z-index: 8; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 18px; margin-bottom: 18px; border: 1px solid var(--adr-line); border-radius: 8px; padding: 8px; background: var(--adr-paper); backdrop-filter: blur(18px); }
     .adr-mini-nav a { border-radius: 999px; padding: 9px 12px; color: var(--adr-blue); font-size: 13px; font-weight: 900; text-decoration: none; }
+    html.adr-pdf-export .adr-mini-nav { position: static !important; top: auto !important; z-index: auto !important; }
+    @media print { .adr-mini-nav { position: static !important; top: auto !important; z-index: auto !important; } }
     .adr-form-section { display: grid; grid-template-columns: minmax(270px, .52fr) minmax(0, 1fr); gap: 16px; align-items: start; }
     .adr-side-card, .adr-form-card, .adr-step-card { border: 1px solid var(--adr-line); border-radius: 8px; background: var(--adr-paper); box-shadow: var(--adr-soft-shadow); backdrop-filter: blur(18px); }
     .adr-side-card { position: sticky; top: 178px; display: grid; gap: 14px; padding: clamp(22px, 3vw, 34px); }
-    .adr-side-card h2, .adr-form-card h2, .adr-step-card h2 { margin: 0; color: var(--adr-blue); line-height: 1.12; letter-spacing: 0; }
+    .adr-side-card h2, .adr-form-card h2, .adr-step-card h2 { margin: 0; max-width: 100%; min-width: 0; color: var(--adr-blue); line-height: 1.12; letter-spacing: 0; overflow-wrap: anywhere; word-break: normal; hyphens: auto; }
     .adr-side-card p, .adr-form-card p, .adr-step-card p, .adr-side-card li { margin: 0; color: var(--adr-muted); line-height: 1.58; }
     .adr-side-card ol { display: grid; gap: 12px; margin: 6px 0 0; padding-left: 22px; font-weight: 900; color: var(--adr-muted); }
     .adr-form-card { padding: clamp(18px, 3vw, 28px); }
@@ -692,7 +694,8 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
     }
 </style>
   <input class="adr-switch-input" id="adr-theme-toggle" type="checkbox" aria-label="Basculer le thème jour/nuit">
-  <script id="adr-theme-persistence-v125-1" src="adr-theme-persistence.js?v=125.1"></script>
+  <script id="adr-theme-persistence-v125-2" src="adr-theme-persistence.js?v=125.2"></script>
+  <script id="adr-pdf-export-mode-v125-2">(function(){if(/[?&]pdf=/.test(window.location.search)){document.documentElement.classList.add("adr-pdf-export");}}());</script>
   <header class="adr-floating-panel" aria-label="Navigation principale">
     <a class="adr-brand" href="index.html"><img decoding="async" src="https://assurancesderueil.fr/wp-content/uploads/2022/08/cropped-flaticon2.png" alt=""><strong>Assurances de Rueil</strong></a>
     <div class="adr-panel-actions">
@@ -1583,7 +1586,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             }
         }
     </style>
-    <div class="adr-version-footer" aria-label="Version du site">v125.1</div>
+    <div class="adr-version-footer" aria-label="Version du site">v125.2</div>
     <script id="adr-version-footer-placement-v1">
     (function () {
         function placeVersionMarker() {
@@ -1620,7 +1623,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
         }
     }());
     </script>
-<script id="adr-form-phone-preserver-v125-1">
+<script id="adr-form-phone-preserver-v125-2">
 (function () {
   var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;

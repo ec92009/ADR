@@ -237,6 +237,11 @@ async function renderPage(browser, entry, index, tmpDir, cacheToken) {
   await page.addStyleTag({
     content: `
       html, body { scroll-behavior: auto !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      .adr-mini-nav {
+        position: static !important;
+        top: auto !important;
+        z-index: auto !important;
+      }
       #cookie-law-info-bar,
       #cookie-law-info-again,
       .cli_settings_button,
