@@ -5,10 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 final class ADR_Site_Fixes_Live_Visual_Refresh {
-    private const MARKER = 'adr-live-visual-refresh-v125-0';
+    private const MARKER = 'adr-live-visual-refresh-v125-1';
     private const CONTACT_FORM_ID = 7487;
     private const ASSET_BASE = 'https://ec92009.github.io/ADR/assets/';
-    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=125.0';
+    private const THEME_SCRIPT = 'https://ec92009.github.io/ADR/adr-theme-persistence.js?v=125.1';
     private static $reading_contact_meta = false;
 
     public static function init() {
@@ -388,57 +388,57 @@ final class ADR_Site_Fixes_Live_Visual_Refresh {
             'adr_quote_consent_2026-06-27_v119.6' => 'adr_quote_consent_2026-06-28_v120.2',
             'adr_quote_consent_2026-06-27_v119.5' => 'adr_quote_consent_2026-06-28_v120.2',
             'adr_quote_consent_2026-06-27_v119.3' => 'adr_quote_consent_2026-06-28_v120.2',
-            'adr-fr-only-v120-2'                 => 'adr-fr-only-v125-0',
-            'adr-fr-only-v120-1'                 => 'adr-fr-only-v125-0',
-            'adr-fr-only-v120-0'                 => 'adr-fr-only-v125-0',
-            'adr-fr-only-v119-7'                 => 'adr-fr-only-v125-0',
-            'adr-fr-only-v119-6'                 => 'adr-fr-only-v125-0',
-            'adr-fr-only-v119-5'                 => 'adr-fr-only-v125-0',
-            'adr-fr-only-v119-3'                 => 'adr-fr-only-v125-0',
-            'adr-source-truth-residuals-v120-2'  => 'adr-source-truth-residuals-v125-0',
-            'adr-source-truth-residuals-v120-1'  => 'adr-source-truth-residuals-v125-0',
-            'adr-source-truth-residuals-v120-0'  => 'adr-source-truth-residuals-v125-0',
-            'adr-source-truth-residuals-v119-7'  => 'adr-source-truth-residuals-v125-0',
-            'adr-source-truth-residuals-v119-6'  => 'adr-source-truth-residuals-v125-0',
-            'adr-source-truth-residuals-v119-5'  => 'adr-source-truth-residuals-v125-0',
-            'adr-source-truth-residuals-v119-3'  => 'adr-source-truth-residuals-v125-0',
-            'adr-live-quote-form-v120-2'         => 'adr-live-quote-form-v125-0',
-            'adr-live-quote-form-v120-1'         => 'adr-live-quote-form-v125-0',
-            'adr-live-quote-form-v120-0'         => 'adr-live-quote-form-v125-0',
-            'adr-live-quote-form-v119-7'         => 'adr-live-quote-form-v125-0',
-            'adr-live-quote-form-v119-6'         => 'adr-live-quote-form-v125-0',
-            'adr-live-quote-form-v119-5'         => 'adr-live-quote-form-v125-0',
-            'adr-live-quote-form-v119-3'         => 'adr-live-quote-form-v125-0',
-            'adr-live-visual-refresh-v120-2'     => 'adr-live-visual-refresh-v125-0',
-            'adr-live-visual-refresh-v120-1'     => 'adr-live-visual-refresh-v125-0',
-            'adr-live-visual-refresh-v120-0'     => 'adr-live-visual-refresh-v125-0',
-            'adr-live-visual-refresh-v119-7'     => 'adr-live-visual-refresh-v125-0',
-            'adr-live-visual-refresh-v119-6'     => 'adr-live-visual-refresh-v125-0',
-            'adr-live-visual-refresh-v119-5'     => 'adr-live-visual-refresh-v125-0',
-            'adr-live-visual-refresh-v119-3'     => 'adr-live-visual-refresh-v125-0',
-            'adr-theme-persistence-v120-2'       => 'adr-theme-persistence-v125-0',
-            'adr-theme-persistence-v120-1'       => 'adr-theme-persistence-v125-0',
-            'adr-theme-persistence-v120-0'       => 'adr-theme-persistence-v125-0',
-            'adr-theme-persistence-v119-7'       => 'adr-theme-persistence-v125-0',
-            'adr-form-phone-preserver-v120-2'    => 'adr-form-phone-preserver-v125-0',
-            'adr-form-phone-preserver-v120-1'    => 'adr-form-phone-preserver-v125-0',
-            'adr-form-phone-preserver-v120-0'    => 'adr-form-phone-preserver-v125-0',
-            'adr-form-phone-preserver-v119-7'    => 'adr-form-phone-preserver-v125-0',
-            "version = '120.2'"                  => "version = '125.0'",
-            "version = '120.1'"                  => "version = '125.0'",
-            "version = '120.0'"                  => "version = '125.0'",
-            "version = '119.7'"                  => "version = '125.0'",
-            "version = '119.6'"                  => "version = '125.0'",
-            "version = '119.5'"                  => "version = '125.0'",
-            "version = '119.3'"                  => "version = '125.0'",
-            'v120.2'                             => 'v125.0',
-            'v120.1'                             => 'v125.0',
-            'v120.0'                             => 'v125.0',
-            'v119.7'                             => 'v125.0',
-            'v119.6'                             => 'v125.0',
-            'v119.5'                             => 'v125.0',
-            'v119.3'                             => 'v125.0',
-            'adr_quote_consent_2026-06-28_v125.0' => 'adr_quote_consent_2026-06-28_v120.2',
+            'adr-fr-only-v120-2'                 => 'adr-fr-only-v125-1',
+            'adr-fr-only-v120-1'                 => 'adr-fr-only-v125-1',
+            'adr-fr-only-v120-0'                 => 'adr-fr-only-v125-1',
+            'adr-fr-only-v119-7'                 => 'adr-fr-only-v125-1',
+            'adr-fr-only-v119-6'                 => 'adr-fr-only-v125-1',
+            'adr-fr-only-v119-5'                 => 'adr-fr-only-v125-1',
+            'adr-fr-only-v119-3'                 => 'adr-fr-only-v125-1',
+            'adr-source-truth-residuals-v120-2'  => 'adr-source-truth-residuals-v125-1',
+            'adr-source-truth-residuals-v120-1'  => 'adr-source-truth-residuals-v125-1',
+            'adr-source-truth-residuals-v120-0'  => 'adr-source-truth-residuals-v125-1',
+            'adr-source-truth-residuals-v119-7'  => 'adr-source-truth-residuals-v125-1',
+            'adr-source-truth-residuals-v119-6'  => 'adr-source-truth-residuals-v125-1',
+            'adr-source-truth-residuals-v119-5'  => 'adr-source-truth-residuals-v125-1',
+            'adr-source-truth-residuals-v119-3'  => 'adr-source-truth-residuals-v125-1',
+            'adr-live-quote-form-v120-2'         => 'adr-live-quote-form-v125-1',
+            'adr-live-quote-form-v120-1'         => 'adr-live-quote-form-v125-1',
+            'adr-live-quote-form-v120-0'         => 'adr-live-quote-form-v125-1',
+            'adr-live-quote-form-v119-7'         => 'adr-live-quote-form-v125-1',
+            'adr-live-quote-form-v119-6'         => 'adr-live-quote-form-v125-1',
+            'adr-live-quote-form-v119-5'         => 'adr-live-quote-form-v125-1',
+            'adr-live-quote-form-v119-3'         => 'adr-live-quote-form-v125-1',
+            'adr-live-visual-refresh-v120-2'     => 'adr-live-visual-refresh-v125-1',
+            'adr-live-visual-refresh-v120-1'     => 'adr-live-visual-refresh-v125-1',
+            'adr-live-visual-refresh-v120-0'     => 'adr-live-visual-refresh-v125-1',
+            'adr-live-visual-refresh-v119-7'     => 'adr-live-visual-refresh-v125-1',
+            'adr-live-visual-refresh-v119-6'     => 'adr-live-visual-refresh-v125-1',
+            'adr-live-visual-refresh-v119-5'     => 'adr-live-visual-refresh-v125-1',
+            'adr-live-visual-refresh-v119-3'     => 'adr-live-visual-refresh-v125-1',
+            'adr-theme-persistence-v120-2'       => 'adr-theme-persistence-v125-1',
+            'adr-theme-persistence-v120-1'       => 'adr-theme-persistence-v125-1',
+            'adr-theme-persistence-v120-0'       => 'adr-theme-persistence-v125-1',
+            'adr-theme-persistence-v119-7'       => 'adr-theme-persistence-v125-1',
+            'adr-form-phone-preserver-v120-2'    => 'adr-form-phone-preserver-v125-1',
+            'adr-form-phone-preserver-v120-1'    => 'adr-form-phone-preserver-v125-1',
+            'adr-form-phone-preserver-v120-0'    => 'adr-form-phone-preserver-v125-1',
+            'adr-form-phone-preserver-v119-7'    => 'adr-form-phone-preserver-v125-1',
+            "version = '120.2'"                  => "version = '125.1'",
+            "version = '120.1'"                  => "version = '125.1'",
+            "version = '120.0'"                  => "version = '125.1'",
+            "version = '119.7'"                  => "version = '125.1'",
+            "version = '119.6'"                  => "version = '125.1'",
+            "version = '119.5'"                  => "version = '125.1'",
+            "version = '119.3'"                  => "version = '125.1'",
+            'v120.2'                             => 'v125.1',
+            'v120.1'                             => 'v125.1',
+            'v120.0'                             => 'v125.1',
+            'v119.7'                             => 'v125.1',
+            'v119.6'                             => 'v125.1',
+            'v119.5'                             => 'v125.1',
+            'v119.3'                             => 'v125.1',
+            'adr_quote_consent_2026-06-28_v125.1' => 'adr_quote_consent_2026-06-28_v120.2',
         );
 
         return str_replace( array_keys( $replacements ), array_values( $replacements ), $html );
@@ -647,7 +647,7 @@ CSS;
     }
 
     private static function ensure_theme_persistence( $html ) {
-        $script = '<script id="adr-theme-persistence-v125-0" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
+        $script = '<script id="adr-theme-persistence-v125-1" src="' . esc_url( self::THEME_SCRIPT ) . '"></script>';
 
         $html = preg_replace(
             '#<script id="adr-theme-persistence-v(?:119|120|125)-[^"]*" src="[^"]*"></script>#',
@@ -655,7 +655,7 @@ CSS;
             $html
         );
 
-        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v125-0' ) !== false ) {
+        if ( strpos( $html, 'id="adr-theme-toggle"' ) === false || strpos( $html, 'adr-theme-persistence-v125-1' ) !== false ) {
             return $html;
         }
 
@@ -668,7 +668,7 @@ CSS;
     }
 
     private static function ensure_phone_preserver( $html ) {
-        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v125-0' ) !== false ) {
+        if ( strpos( $html, 'name="telephone"' ) === false || strpos( $html, 'adr-form-phone-preserver-v125-1' ) !== false ) {
             return $html;
         }
 
@@ -677,7 +677,7 @@ CSS;
 
     private static function phone_preserver_script() {
         return <<<'HTML'
-<script id="adr-form-phone-preserver-v125-0">
+<script id="adr-form-phone-preserver-v125-1">
 (function () {
   var staticPreview = /(^|\.)github\.io$/.test(window.location.hostname) || window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || window.location.protocol === 'file:';
   var metformInsert = /\/wp-json\/metform\/v1\/entries\/insert\//;

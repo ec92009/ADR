@@ -644,7 +644,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 	    .adr-bottom p { margin: 0; color: var(--adr-muted); line-height: 1.58; }
     .adr-icon-panel .adr-link-text,
     .adr-page-panel .adr-link-text { justify-self: end; color: var(--adr-blue); font-weight: 900; white-space: nowrap; }
-    .adr-mini-nav { position: sticky; top: 116px; z-index: 8; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; width: min(100%, 1180px); margin: 18px auto; border: 1px solid var(--adr-line); border-radius: 8px; padding: 8px; background: var(--adr-paper); backdrop-filter: blur(18px); }
+    .adr-mini-nav { position: static; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; width: min(100%, 1180px); margin: 18px auto; border: 1px solid var(--adr-line); border-radius: 8px; padding: 8px; background: var(--adr-paper); backdrop-filter: blur(18px); }
     .adr-mini-nav a { border-radius: 999px; padding: 9px 12px; color: var(--adr-blue); font-size: 13px; font-weight: 900; text-decoration: none; }
     .adr-mini-nav a:hover { background: color-mix(in srgb, var(--adr-blue) 10%, transparent); }
     .adr-page-list { display: grid; gap: 12px; margin-top: 18px; }
@@ -721,7 +721,7 @@ var WebFontConfig = {"google":{"families":["Rubik:500","Open Sans:800800,800"]}}
 	  </style>
 
   <input class="adr-switch-input" id="adr-theme-toggle" type="checkbox" aria-label="Basculer le thème jour/nuit">
-  <script id="adr-theme-persistence-v125-0" src="adr-theme-persistence.js?v=125.0"></script>
+  <script id="adr-theme-persistence-v125-1" src="adr-theme-persistence.js?v=125.1"></script>
   <header class="adr-floating-panel" aria-label="Navigation principale">
     <a class="adr-brand" href="index.html">
       <img decoding="async" src="https://assurancesderueil.fr/wp-content/uploads/2022/08/cropped-flaticon2.png" alt="">
@@ -1215,7 +1215,7 @@ const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(
             }
         }
     </style>
-    <div class="adr-version-footer" aria-label="Version du site">v125.0</div>
+    <div class="adr-version-footer" aria-label="Version du site">v125.1</div>
     <script id="adr-version-footer-placement-v1">
     (function () {
         function placeVersionMarker() {
