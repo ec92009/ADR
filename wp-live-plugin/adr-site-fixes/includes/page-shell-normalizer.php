@@ -2765,9 +2765,9 @@ ADR_STAGE_PRET
       </article>
       <article class="adr-detail-card" id="assurance-de-pret">
         <h2>Assurance de prêt</h2>
-        <p>Quel que soit le type de prêt ou d'investissement, l'assurance emprunteur peut rembourser le capital restant dû en cas de décès, perte d'autonomie ou invalidité, et prendre en charge les mensualités en cas d'incapacité de travail.</p>
-        <p>Choisir son assurance emprunteur en dehors de la banque peut permettre de réaliser des économies selon le profil : emprunteurs de moins de 30 ans, non-fumeurs de plus de 54 ans, fumeurs ou emprunteurs atteints de maladies graves acceptées.</p>
-        <p>La loi Hamon autorise, depuis le 26 Juillet 2014, la résiliation de l'assurance de prêt groupe dans les 12 mois suivant la signature de l'offre, sous réserve de garanties au moins équivalentes.</p>
+        <p>L'assurance emprunteur protège votre projet et vos proches. En cas de décès, de perte totale et irréversible d'autonomie (PTIA), d'invalidité ou, selon les garanties souscrites, d'incapacité de travail, elle peut prendre en charge le remboursement de votre prêt.</p>
+        <p>Contrairement aux idées reçues, vous n'êtes pas obligé de choisir l'assurance proposée par votre banque. Une assurance individuelle offre souvent des garanties mieux adaptées à votre situation et peut vous permettre de réaliser d'importantes économies, quel que soit votre profil.</p>
+        <p>Grâce à la loi Lemoine, vous pouvez changer d'assurance emprunteur à tout moment, sans frais, à condition que le nouveau contrat présente des garanties au moins équivalentes à celles demandées par votre banque. C'est une opportunité simple de réduire le coût de votre crédit tout en conservant une protection de qualité.</p>
       </article>
       <article class="adr-detail-card" id="sante">
         <h2>Santé</h2>
@@ -3047,9 +3047,9 @@ ADR_STAGE_PARTICULIERS
       </article>
       <article class="adr-detail-card" id="assurance-emprunteur-professionnelle">
         <h2>Assurance emprunteur professionnelle</h2>
-        <p>Quel que soit le type de prêt et d'investissement, l'assurance emprunteur propose le remboursement du capital restant dû en cas de décès, perte d'autonomie ou invalidité, mais aussi la prise en charge des mensualités du prêt en cas d'incapacité de travail.</p>
-        <p>Choisir son assurance emprunteur en dehors de la banque peut permettre d'importantes économies selon le profil : emprunteurs de moins de 30 ans, non-fumeurs de plus de 54 ans, fumeurs ou emprunteurs atteints de maladies graves acceptées.</p>
-        <p>La loi Hamon autorise, depuis le 26 Juillet 2014, la résiliation de l'assurance de prêt groupe dans les 12 mois suivant la signature de l'offre, avec des garanties au moins équivalentes au contrat initial.</p>
+        <p>L'assurance emprunteur protège votre entreprise, votre activité et vos proches. En cas de décès, de perte totale et irréversible d'autonomie (PTIA), d'invalidité ou, selon les garanties choisies, d'incapacité de travail, elle peut prendre en charge le remboursement de votre prêt professionnel.</p>
+        <p>Choisir une assurance adaptée à votre situation permet souvent de bénéficier d'une meilleure protection tout en réduisant le coût de votre assurance. L'âge, la profession, le statut de fumeur ou encore certains antécédents médicaux peuvent avoir un impact sur le tarif et les garanties proposées.</p>
+        <p>Il est souvent possible de choisir une assurance différente de celle proposée par la banque, à la mise en place du prêt ou même en cours de financement. Une étude de votre dossier permet de vérifier cette possibilité et de rechercher la solution la plus adaptée à vos besoins.</p>
       </article>
       <article class="adr-detail-card" id="responsabilite-civile-professionnelle">
         <h2>Responsabilité civile et professionnelle</h2>
@@ -4543,9 +4543,9 @@ HTML
       </article>
       <article class="adr-detail-card" id="assurance-de-pret">
         <h2>Assurance de prêt</h2>
-        <p>Quel que soit le type de prêt ou d'investissement, l'assurance emprunteur peut rembourser le capital restant dû en cas de décès, perte d'autonomie ou invalidité, et prendre en charge les mensualités en cas d'incapacité de travail.</p>
-        <p>Choisir son assurance emprunteur en dehors de la banque peut permettre de réaliser des économies selon le profil : emprunteurs de moins de 30 ans, non-fumeurs de plus de 54 ans, fumeurs ou emprunteurs atteints de maladies graves acceptées.</p>
-        <p>La loi Hamon autorise, depuis le 26 Juillet 2014, la résiliation de l'assurance de prêt groupe dans les 12 mois suivant la signature de l'offre, sous réserve de garanties au moins équivalentes.</p>
+        <p>L'assurance emprunteur protège votre projet et vos proches. En cas de décès, de perte totale et irréversible d'autonomie (PTIA), d'invalidité ou, selon les garanties souscrites, d'incapacité de travail, elle peut prendre en charge le remboursement de votre prêt.</p>
+        <p>Contrairement aux idées reçues, vous n'êtes pas obligé de choisir l'assurance proposée par votre banque. Une assurance individuelle offre souvent des garanties mieux adaptées à votre situation et peut vous permettre de réaliser d'importantes économies, quel que soit votre profil.</p>
+        <p>Grâce à la loi Lemoine, vous pouvez changer d'assurance emprunteur à tout moment, sans frais, à condition que le nouveau contrat présente des garanties au moins équivalentes à celles demandées par votre banque. C'est une opportunité simple de réduire le coût de votre crédit tout en conservant une protection de qualité.</p>
       </article>
       <article class="adr-detail-card" id="sante">
         <h2>Santé</h2>
@@ -4616,9 +4616,9 @@ HTML
       </article>
       <article class="adr-detail-card" id="assurance-emprunteur-professionnelle">
         <h2>Assurance emprunteur professionnelle</h2>
-        <p>Quel que soit le type de prêt et d'investissement, l'assurance emprunteur propose le remboursement du capital restant dû en cas de décès, perte d'autonomie ou invalidité, mais aussi la prise en charge des mensualités du prêt en cas d'incapacité de travail.</p>
-        <p>Choisir son assurance emprunteur en dehors de la banque peut permettre d'importantes économies selon le profil : emprunteurs de moins de 30 ans, non-fumeurs de plus de 54 ans, fumeurs ou emprunteurs atteints de maladies graves acceptées.</p>
-        <p>La loi Hamon autorise, depuis le 26 Juillet 2014, la résiliation de l'assurance de prêt groupe dans les 12 mois suivant la signature de l'offre, avec des garanties au moins équivalentes au contrat initial.</p>
+        <p>L'assurance emprunteur protège votre entreprise, votre activité et vos proches. En cas de décès, de perte totale et irréversible d'autonomie (PTIA), d'invalidité ou, selon les garanties choisies, d'incapacité de travail, elle peut prendre en charge le remboursement de votre prêt professionnel.</p>
+        <p>Choisir une assurance adaptée à votre situation permet souvent de bénéficier d'une meilleure protection tout en réduisant le coût de votre assurance. L'âge, la profession, le statut de fumeur ou encore certains antécédents médicaux peuvent avoir un impact sur le tarif et les garanties proposées.</p>
+        <p>Il est souvent possible de choisir une assurance différente de celle proposée par la banque, à la mise en place du prêt ou même en cours de financement. Une étude de votre dossier permet de vérifier cette possibilité et de rechercher la solution la plus adaptée à vos besoins.</p>
       </article>
       <article class="adr-detail-card" id="responsabilite-civile-professionnelle">
         <h2>Responsabilité civile et professionnelle</h2>

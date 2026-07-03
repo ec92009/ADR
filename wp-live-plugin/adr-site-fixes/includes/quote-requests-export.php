@@ -4,8 +4,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// adr-quote-requests-v120-2: private site-request CSV and ordered admin email.
-define( 'ADR_QUOTE_REQUESTS_VERSION', '120.2' );
+// adr-quote-requests-v125-0: private site-request CSV and ordered admin email.
+define( 'ADR_QUOTE_REQUESTS_VERSION', '125.0' );
 define( 'ADR_QUOTE_REQUESTS_FORM_ID', '2073' );
 define( 'ADR_CONTACT_REQUESTS_FORM_ID', '7487' );
 define( 'ADR_QUOTE_REQUESTS_MIN_DATE', '2026-01-01 00:00:00' );
