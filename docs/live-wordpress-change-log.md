@@ -649,3 +649,29 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
   - a signed French sample Gmail draft was created but not sent.
 - Follow-up:
   - deploy the `format=tsv&days=7` endpoint enhancement to the live MU-plugin so the local downloader can stop relying on CSV fallback parsing when the live site has not yet been updated.
+
+### Public source-truth refresh MU-plugin `125.2`, 2026-07-03
+
+- Goal: promote the approved GH.io/source-of-truth `v125.2` state to the live WordPress public site.
+- Method:
+  - extended `ADR Site Fixes` to version `125.2`;
+  - published Manuel's latest page-copy pass and the updated live visual refresh module;
+  - restored the desktop sticky mini-nav on public web pages while keeping the mini-nav static for PDF/export and print contexts;
+  - kept the long-card heading overflow fix, including headings such as `Accompagnement`;
+  - installed through replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V125_2`, pinned to GitHub commit `83892fa84f9ded1bf896710d2756c09a0ce606f8`.
+- Deployment note:
+  - the first generated bootstrap had visual-alignment padding inside the quoted file-map keys, so it temporarily wrote an empty root MU file and public pages served the underlying WordPress content;
+  - the issue was caught during public marker verification before closeout;
+  - a corrected repair pass used exact keys (`adr-site-fixes.php`, `includes/...`), overwrote the MU root file, restored the slim child-theme `functions.php`, and brought the public refresh back online.
+- Verification result:
+  - MAMP PHP lint passes on PHP `8.4.1` and PHP `7.4.33` for all `ADR Site Fixes` files and the corrected bootstrap;
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `125.2`;
+  - live `instive-child/functions.php` is `91` lines / `2,936` editor characters and contains no `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V125_2` marker;
+  - public Home, Assurance de prêt, Particuliers, Professionnels, Courtier/contact, and Demande de devis pages return HTTP 200, show `v125.2`, include `adr-live-visual-refresh-v125-2` and `adr-theme-persistence-v125-2`, normalize the browser title to `Assurances de Rueil`, and do not include the replacement-bootstrap marker;
+  - public Particuliers includes the approved borrower-insurance copy beginning `Contrairement aux idées reçues`;
+  - public Professionnels includes `Assurance emprunteur professionnelle`;
+  - browser measurement on live Assurance de prêt confirms `.adr-mini-nav` renders as `position: sticky` with `top: 116px`, while the CSS keeps it static for `html.adr-pdf-export` and `@media print`;
+  - browser measurement confirms the `Accompagnement` and `Assurance emprunteur professionnelle` headings do not overflow their containers.
+- Rollback notes:
+  - to roll back only the `125.2` live visual/content refresh, restore the `ADR Site Fixes` MU-plugin files from the previous `120.2` deployment and flush page cache;
+  - do not paste the old full child-theme `functions.php` unless deliberately rolling back the entire MU-plugin split.

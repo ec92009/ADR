@@ -52,6 +52,7 @@ Use this workflow only when the target file is small enough for reliable browser
 - For oversized files, prefer a replacement-safe bootstrap that:
   - fetches pinned plugin files from a commit-specific URL;
   - verifies hashes before writing;
+  - uses exact file-map keys such as `adr-site-fixes.php` and `includes/live-visual-refresh.php`; do not put visual alignment padding inside quoted path strings;
   - writes the final slim `functions.php` payload directly;
   - backs up the pre-replacement file under `wp-content/mu-plugins/adr-site-fixes-backups/`.
 
