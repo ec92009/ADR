@@ -675,3 +675,36 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - to roll back only the `125.2` live visual/content refresh, restore the `ADR Site Fixes` MU-plugin files from the previous `120.2` deployment and flush page cache;
   - do not paste the old full child-theme `functions.php` unless deliberately rolling back the entire MU-plugin split.
+
+### Requester IP reporting and privacy note MU-plugin `134.0`, 2026-07-12
+
+- Goal: let the cabinet report the requester IP address for quote/contact submissions in the private export and admin email path, while keeping the public privacy-policy disclosure aligned with the technical behavior.
+- Method:
+  - extended `ADR Site Fixes` to version `134.0` after applying the canonical visible-version SOP for 2026-07-12;
+  - captures the requester IP from `CF-Connecting-IP`, `True-Client-IP`, `X-Forwarded-For`, or `REMOTE_ADDR`, in that order;
+  - captures optional Cloudflare visitor-location headers when present: country, city, region, region code, postal code, timezone, latitude, longitude, and `CF-Ray`;
+  - preserves those technical fields in MetForm entries for quote form `2073` and contact form `7487`;
+  - adds `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` columns to the TSV/private export;
+  - includes the requester IP/geolocation fields in normalized admin emails when values exist;
+  - adds a daily cleanup hook for requester technical metadata older than `30` days;
+  - updates privacy-policy output to state that IP/geolocation data is collected only for diagnostics, maintenance, security, and abuse prevention, not for commercial profiling.
+- Deployment note:
+  - initial work used a `125.2`-named bootstrap while adding the IP/privacy behavior;
+  - after rereading the canonical versioning SOP, the deployment was corrected to `v134.0`;
+  - final live deployment used replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V134_0`, pinned to GitHub commit `94572583b7976dd36caea070f532cb3e6c8ba7ef`;
+  - user-assisted Safari paste/update was used because the built-in browser repeatedly lost the WordPress theme-editor session.
+- Verification result:
+  - local MAMP PHP lint passed for the changed `ADR Site Fixes` files and generated bootstrap;
+  - public Home verification found `adr-live-visual-refresh-v134-0`, `adr-theme-persistence-v134-0`, and footer marker `v134.0`;
+  - public privacy-policy verification found the diagnostics/maintenance/security-only caveat, no-commercial-profiling caveat, 30-day technical retention statement, and footer marker `v134.0`;
+  - private TSV export headers include `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID`;
+  - post-deployment official PDF automation generated `assurances-de-rueil-official-v134.0-2026-07-12.pdf`, `21` pages, `11026033` bytes, with latest PDF and manifest matching the versioned artifacts;
+  - post-deployment contacts TSV refresh generated `assurances-de-rueil-contacts-last-7-days-2026-07-12.tsv`, `3787` bytes, `43` data rows, with latest TSV matching the versioned artifact.
+- Geolocation decision:
+  - current live DNS/headers show the site resolving through Infomaniak/Apache rather than Cloudflare, so Cloudflare visitor-location headers are not available on current requests;
+  - no third-party IP geolocation API or microservice will be added for now;
+  - manual after-the-fact lookups can use IPinfo, the MaxMind GeoIP demo, or RIPEstat when an individual IP address needs inspection;
+  - if lookup convenience becomes useful later, prefer formatting the TSV IP cell as `https://ipinfo.io/<IP address>` instead of adding automatic API enrichment.
+- Rollback notes:
+  - to roll back only the requester-IP/privacy reporting change, restore the `ADR Site Fixes` MU-plugin files from the previous `125.2` deployment and flush page cache;
+  - if privacy-policy copy is rolled back independently, make sure it still matches any remaining technical logging behavior.

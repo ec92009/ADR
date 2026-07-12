@@ -19,9 +19,10 @@ Static GitHub Pages build and live-site support code for the current Assurances 
 
 ## 2026-07-12 live deployment note
 
-- Deployed requester IP reporting for quote/contact requests, including Cloudflare-derived geolocation context and Ray ID in admin emails and TSV exports.
+- Deployed requester IP reporting for quote/contact requests, including optional Cloudflare-derived geolocation context and Ray ID in admin emails and TSV exports when those headers are present.
 - Updated the privacy-policy copy to state that IP/geolocation data is collected only for diagnostics, maintenance, security, and abuse prevention, not for commercial profiling, with a 30-day technical retention window unless an incident or legal obligation requires longer retention.
 - Corrected the visible site version per the canonical versioning SOP to `v134.0` and verified the official live site, privacy page, and TSV headers after the WordPress update.
+- Operational decision: keep the live site as-is and do not add a third-party IP geolocation API/microservice. The official TSV reports IP addresses for new requests; manual after-the-fact lookup can use IPinfo, MaxMind GeoIP demo, or RIPEstat when needed. If lookup convenience becomes useful later, prefer formatting the TSV IP value as `https://ipinfo.io/<IP address>` over adding automatic API enrichment.
 
 Live site after Pages deploys:
 

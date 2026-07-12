@@ -5,9 +5,9 @@
 - Repository: `ec92009/ADR`.
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- GitHub Pages source-truth version marker: `v125.2`.
-- Live WordPress version marker: `v125.2`.
-- Live WordPress support plugin: `ADR Site Fixes` `125.2`.
+- GitHub Pages source-truth version marker: `v134.0`.
+- Live WordPress version marker: `v134.0`.
+- Live WordPress support plugin: `ADR Site Fixes` `134.0`.
 - The live WordPress pages now use the approved GH.io-style page shells through `ADR Site Fixes` MU-plugin modules, with WordPress kept only where it must remain dynamic.
 - The live child-theme `functions.php` has been reduced from roughly `5,938` lines / `351,567` editor characters to `91` lines / `2,936` editor characters.
 - The live WordPress pages have been reconciled against the GH.io source-of-truth mock for high-resolution photography, day/night persistence, the contact/phone form pass, contact message storage/export, and quote payload preservation.
@@ -16,6 +16,7 @@
 - GH.io and live WordPress both use the higher-resolution JPEG photography in `assets/adr-photo-*-v119-5.jpg`.
 - Public page titles are normalized to `Assurances de Rueil`.
 - The live quote page remains backed by MetForm form `2073`; the live contact page remains backed by MetForm form `7487`. Both feed storage, private CSV export, admin delivery, and branded visitor acknowledgements through `ADR Site Fixes`.
+- New quote/contact requests now store the requester IP when available and expose `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` columns in TSV exports. Geolocation is populated only if the origin receives Cloudflare visitor-location headers; the current operational decision is not to add an external IP-geolocation microservice.
 
 ## Conversation Summary, 2026-06-27
 
@@ -55,6 +56,19 @@
 - Deployment used replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V125_2`, pinned to GitHub commit `83892fa`; an initial generated fragment had padded file-map keys that wrote an empty MU root file, then an immediate corrected repair pass overwrote it with exact paths.
 - Live WordPress verification confirms `ADR Site Fixes` appears as version `125.2`, `functions.php` is back to `91` lines / `2,936` editor characters, affected public pages return HTTP 200, show `v125.2`, include `adr-live-visual-refresh-v125-2` and `adr-theme-persistence-v125-2`, and contain no temporary bootstrap marker.
 
+## Conversation Summary, 2026-07-12
+
+- Implemented requester IP reporting for live quote/contact requests in `ADR Site Fixes`, covering MetForm quote form `2073` and contact form `7487`.
+- Added optional Cloudflare visitor-location metadata capture (`CF-IPCountry`, city, region, postal code, timezone, latitude/longitude, and `CF-Ray`) while keeping IP/geolocation technical data on a 30-day cleanup schedule.
+- Updated admin email and TSV export output so new request rows include `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID`.
+- Updated the privacy-policy copy to state that IP/geolocation data is collected only for diagnostics, maintenance, security, and abuse prevention; it is not used for commercial profiling.
+- Corrected the visible version according to the canonical versioning SOP: 2026-07-12 is `v134.0`, not a same-day `v125.x` bump.
+- Deployed the live WordPress update through a replacement bootstrap marked `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V134_0`, after user-assisted Safari paste into the WordPress theme editor.
+- Verified the live site after deployment: official pages show `v134.0`, privacy copy includes the technical-data caveat, and the TSV headers include the new IP/geolocation/Ray columns.
+- Reran the official automation after deployment. The post-fix official PDF was `assurances-de-rueil-official-v134.0-2026-07-12.pdf`, `21` pages, `11026033` bytes. The refreshed contacts TSV was `3787` bytes with `43` data rows.
+- Confirmed that current TSV rows may have blank IP/geolocation values until post-deployment submissions are captured; existing historical rows cannot be backfilled from data that was not stored.
+- Decided not to add an external IP-geolocation API or microservice. If an individual IP address needs a one-off lookup, use IPinfo, MaxMind GeoIP demo, or RIPEstat manually after the fact. If lookup convenience is later desired in the TSV itself, prefer replacing the raw IP cell with `https://ipinfo.io/<IP address>` rather than adding automatic API enrichment.
+
 ## Source Of Truth
 
 - GitHub/GH.io is the working source of truth for static content, visual approvals, review diffs, commits, and handoff history.
@@ -69,7 +83,7 @@
 
 ## Quote Form State
 
-- The public quote page renders the refreshed form shell marked `adr-live-quote-form-v125-2` in live output.
+- The public quote page renders the refreshed form shell marked `adr-live-quote-form-v134-0` in live output.
 - It preserves legacy MetForm keys and adds clearer alias keys for future consumers.
 - The form reads the rendered wrapper's current `data-form-nonce` and `data-wp-nonce`.
 - The submit request includes `X-WP-Nonce`, which fixed the previous `Envoi non autorisé` failure.
@@ -87,7 +101,7 @@
 - The user-facing quote acknowledgement email was replaced on 2026-06-27; the contact-page acknowledgement was added to the same branded treatment later that day.
 - The fix lives outside the oversized child-theme file as a Must-Use plugin:
   - WordPress name: `ADR Site Fixes`
-  - version: `125.2`
+  - version: `134.0`
   - local source: `wp-live-plugin/adr-site-fixes/`
 - It applies to MetForm form `2073` for quote requests and form `7487` for the contact page.
 - It replaces the old centered/plain confirmations with branded left-aligned emails, plural `Assurances de Rueil`, cleaner legal copy, and a privacy-policy link.
@@ -132,7 +146,7 @@
   - footer marker `v125.2`.
 - The GH.io `v119.4` local preview was verified across `particuliers.html`, `professionnels.html`, and `index.html`: the day/night checkbox state and computed theme colors persist across page navigation in both directions.
 - The GH.io `v119.7` local preview was verified on `courtier.html`: the new `Téléphone *` field renders as `type="text"`, entering `+34 636 63 03 38` preserves the full value, and empty static submits show a preview message instead of `Something went wrong. Envoi non autorisé.`
-- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `125.2`.
+- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `134.0`.
 - `ADR Site Fixes` was deployed as version `125.2` through replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V125_2`, pinned to GitHub commit `83892fa`.
 - `instive-child/functions.php` no longer contains any split/replacement bootstrap marker and is now `91` lines / `2,936` editor characters.
 - Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v120-0`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body.
@@ -177,6 +191,10 @@
 - Public live verification after the `125.2` deploy confirms Home, Assurance de prêt, Particuliers, Professionnels, Courtier/contact, and Demande de devis are HTTP 200, show `v125.2`, include the expected `v125-2` markers, normalize page titles to `Assurances de Rueil`, and contain no replacement-bootstrap marker.
 - Browser measurement on live Assurance de prêt confirms `.adr-mini-nav` is sticky on desktop and the `Accompagnement` card heading has `overflow-wrap: anywhere` with no measured overflow.
 - Browser measurement on live Professionnels confirms `Assurance emprunteur professionnelle` is present and does not overflow.
+- Public live verification after the `134.0` deploy confirms Home and policy pages show `v134.0`, include `adr-live-visual-refresh-v134-0` and `adr-theme-persistence-v134-0`, and contain no temporary bootstrap marker.
+- Privacy-page verification after the `134.0` deploy confirms the diagnostic/maintenance/security-only IP/geolocation caveat, the no-commercial-profiling caveat, and the 30-day technical retention statement are present.
+- Contacts TSV verification after the `134.0` deploy confirms `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` headers are present. A later same-day refresh produced `43` data rows and no populated requester IP rows yet.
+- Official-site PDF automation verification after the `134.0` deploy confirms `assurances-de-rueil-official-v134.0-2026-07-12.pdf` has `21` pages and `11026033` bytes; the versioned/latest PDF and manifest matched byte-for-byte.
 
 ## Open Work
 
