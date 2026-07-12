@@ -699,12 +699,13 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
   - public privacy-policy verification found the diagnostics/maintenance/security-only caveat, no-commercial-profiling caveat, 30-day technical retention statement, and footer marker `v134.0`;
   - private TSV export headers include `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID`;
   - post-deployment official PDF automation generated `assurances-de-rueil-official-v134.0-2026-07-12.pdf`, `21` pages, `11026033` bytes, with latest PDF and manifest matching the versioned artifacts;
-  - post-deployment contacts TSV refresh generated `assurances-de-rueil-contacts-last-7-days-2026-07-12.tsv`, `3787` bytes, `43` data rows, with latest TSV matching the versioned artifact.
+  - post-deployment contacts TSV refresh generated `assurances-de-rueil-contacts-last-7-days-2026-07-12.tsv`, initially `3787` bytes, with latest TSV matching the versioned artifact.
 - Geolocation decision:
   - current live DNS/headers show the site resolving through Infomaniak/Apache rather than Cloudflare, so Cloudflare visitor-location headers are not available on current requests;
   - no third-party IP geolocation API or microservice will be added for now;
   - manual after-the-fact lookups can use IPinfo, the MaxMind GeoIP demo, or RIPEstat when an individual IP address needs inspection;
-  - if lookup convenience becomes useful later, prefer formatting the TSV IP cell as `https://ipinfo.io/<IP address>` instead of adding automatic API enrichment.
+  - the local TSV downloader now formats populated requester-IP cells as `https://ipinfo.io/<IP address>` instead of adding automatic API enrichment;
+  - the same-day regenerated TSV is `3805` bytes, has `21` parsed data rows, includes one IPinfo URL row, and has no raw IP cells.
 - Rollback notes:
   - to roll back only the requester-IP/privacy reporting change, restore the `ADR Site Fixes` MU-plugin files from the previous `125.2` deployment and flush page cache;
   - if privacy-policy copy is rolled back independently, make sure it still matches any remaining technical logging behavior.

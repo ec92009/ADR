@@ -16,7 +16,7 @@
 - GH.io and live WordPress both use the higher-resolution JPEG photography in `assets/adr-photo-*-v119-5.jpg`.
 - Public page titles are normalized to `Assurances de Rueil`.
 - The live quote page remains backed by MetForm form `2073`; the live contact page remains backed by MetForm form `7487`. Both feed storage, private CSV export, admin delivery, and branded visitor acknowledgements through `ADR Site Fixes`.
-- New quote/contact requests now store the requester IP when available and expose `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` columns in TSV exports. Geolocation is populated only if the origin receives Cloudflare visitor-location headers; the current operational decision is not to add an external IP-geolocation microservice.
+- New quote/contact requests now store the requester IP when available and expose `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` columns in TSV exports. The local TSV downloader formats populated requester-IP cells as `https://ipinfo.io/<IP address>`. Geolocation is populated only if the origin receives Cloudflare visitor-location headers; the current operational decision is not to add an external IP-geolocation microservice.
 
 ## Conversation Summary, 2026-06-27
 
@@ -65,9 +65,9 @@
 - Corrected the visible version according to the canonical versioning SOP: 2026-07-12 is `v134.0`, not a same-day `v125.x` bump.
 - Deployed the live WordPress update through a replacement bootstrap marked `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V134_0`, after user-assisted Safari paste into the WordPress theme editor.
 - Verified the live site after deployment: official pages show `v134.0`, privacy copy includes the technical-data caveat, and the TSV headers include the new IP/geolocation/Ray columns.
-- Reran the official automation after deployment. The post-fix official PDF was `assurances-de-rueil-official-v134.0-2026-07-12.pdf`, `21` pages, `11026033` bytes. The refreshed contacts TSV was `3787` bytes with `43` data rows.
+- Reran the official automation after deployment. The post-fix official PDF was `assurances-de-rueil-official-v134.0-2026-07-12.pdf`, `21` pages, `11026033` bytes. The refreshed contacts TSV was initially `3787` bytes; after adding IPinfo URL formatting, the regenerated TSV is `3805` bytes with `21` parsed data rows.
 - Confirmed that current TSV rows may have blank IP/geolocation values until post-deployment submissions are captured; existing historical rows cannot be backfilled from data that was not stored.
-- Decided not to add an external IP-geolocation API or microservice. If an individual IP address needs a one-off lookup, use IPinfo, MaxMind GeoIP demo, or RIPEstat manually after the fact. If lookup convenience is later desired in the TSV itself, prefer replacing the raw IP cell with `https://ipinfo.io/<IP address>` rather than adding automatic API enrichment.
+- Decided not to add an external IP-geolocation API or microservice. If an individual IP address needs a one-off lookup, use IPinfo, MaxMind GeoIP demo, or RIPEstat manually after the fact. Implemented the low-friction TSV convenience path by formatting populated requester-IP cells as `https://ipinfo.io/<IP address>` without making any API calls.
 
 ## Source Of Truth
 
@@ -193,7 +193,7 @@
 - Browser measurement on live Professionnels confirms `Assurance emprunteur professionnelle` is present and does not overflow.
 - Public live verification after the `134.0` deploy confirms Home and policy pages show `v134.0`, include `adr-live-visual-refresh-v134-0` and `adr-theme-persistence-v134-0`, and contain no temporary bootstrap marker.
 - Privacy-page verification after the `134.0` deploy confirms the diagnostic/maintenance/security-only IP/geolocation caveat, the no-commercial-profiling caveat, and the 30-day technical retention statement are present.
-- Contacts TSV verification after the `134.0` deploy confirms `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` headers are present. A later same-day refresh produced `43` data rows and no populated requester IP rows yet.
+- Contacts TSV verification after the `134.0` deploy confirms `IP demandeur`, `Géolocalisation IP`, and `Cloudflare Ray ID` headers are present. A later same-day refresh with IPinfo URL formatting produced `21` parsed data rows, one populated IPinfo URL row, and no raw IP cells.
 - Official-site PDF automation verification after the `134.0` deploy confirms `assurances-de-rueil-official-v134.0-2026-07-12.pdf` has `21` pages and `11026033` bytes; the versioned/latest PDF and manifest matched byte-for-byte.
 
 ## Open Work

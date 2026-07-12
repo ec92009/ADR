@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require("node:fs");
+const net = require("node:net");
 const path = require("node:path");
 
 const repoRoot = path.resolve(__dirname, "..");
@@ -118,6 +119,33 @@ function parseFrenchExportDate(value) {
   );
 }
 
+function requesterIpInfoUrl(value) {
+  const ip = String(value || "").trim();
+  if (ip === "" || ip.startsWith("https://ipinfo.io/")) {
+    return ip;
+  }
+
+  return net.isIP(ip) ? `https://ipinfo.io/${ip}` : ip;
+}
+
+function addRequesterIpInfoUrls(rows) {
+  const headers = rows[0] || [];
+  const ipIndex = headers.findIndex((header) => String(header).trim() === "IP demandeur");
+  if (ipIndex === -1) {
+    return rows;
+  }
+
+  return rows.map((row, index) => {
+    if (index === 0) {
+      return row;
+    }
+
+    const nextRow = [...row];
+    nextRow[ipIndex] = requesterIpInfoUrl(nextRow[ipIndex]);
+    return nextRow;
+  });
+}
+
 function normalizeLastDaysTsv(body, daysBack) {
   const text = body.toString("utf8").replace(/^\uFEFF/, "");
   const firstLine = text.split(/\r?\n/, 1)[0] || "";
@@ -138,8 +166,9 @@ function normalizeLastDaysTsv(body, daysBack) {
         const parsed = parseFrenchExportDate(row[dateIndex]);
         return parsed ? parsed >= cutoff : true;
       })];
+  const linked = addRequesterIpInfoUrls(filtered);
 
-  return Buffer.from(`\uFEFF${filtered.map((row) => formatDelimitedRow(row, "\t")).join("\n")}\n`, "utf8");
+  return Buffer.from(`\uFEFF${linked.map((row) => formatDelimitedRow(row, "\t")).join("\n")}\n`, "utf8");
 }
 
 async function main() {
