@@ -13,8 +13,11 @@ define( 'ADR_QUOTE_REQUESTS_PATH', 'demandes-de-devis' );
 define( 'ADR_QUOTE_REQUESTS_ACCESS_KEY', '57e957f2bb42963c872a28f1e061dbf6bc06757514bf97173ab571b3a31ee8c3' );
 define( 'ADR_QUOTE_REQUESTS_ACCESS_KEY_HASH', '9fc8c2c9e7e00dae0fa807614cbbaa8953239c1454295b2dab7e88e3bedc2876' );
 define( 'ADR_QUOTE_REQUESTS_ADMIN_RECIPIENT', 'contact@assurancesderueil.fr' );
+define( 'ADR_SITE_REQUEST_TECHNICAL_DATA_RETENTION_DAYS', 30 );
 
 add_action( 'template_redirect', 'adr_maybe_render_quote_requests_page', 0 );
+add_action( 'init', 'adr_site_request_schedule_technical_data_cleanup' );
+add_action( 'adr_site_request_cleanup_technical_data', 'adr_site_request_cleanup_technical_data' );
 add_filter( 'wp_mail', 'adr_update_quote_admin_email', 20 );
 add_action( 'added_post_meta', 'adr_site_request_preserve_live_payload_fields', 20, 4 );
 add_action( 'updated_post_meta', 'adr_site_request_preserve_live_payload_fields', 20, 4 );
@@ -82,6 +85,111 @@ function adr_site_request_request_value( $key ) {
     }
 
     return sanitize_text_field( (string) $value );
+}
+
+function adr_site_request_server_value( $key ) {
+    if ( ! isset( $_SERVER[ $key ] ) ) {
+        return '';
+    }
+
+    return sanitize_text_field( wp_unslash( (string) $_SERVER[ $key ] ) );
+}
+
+function adr_site_request_first_valid_ip( $value ) {
+    foreach ( explode( ',', (string) $value ) as $candidate ) {
+        $candidate = trim( $candidate );
+        if ( filter_var( $candidate, FILTER_VALIDATE_IP ) ) {
+            return $candidate;
+        }
+    }
+
+    return '';
+}
+
+function adr_site_request_requester_ip() {
+    foreach ( array( 'HTTP_CF_CONNECTING_IP', 'HTTP_TRUE_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'REMOTE_ADDR' ) as $key ) {
+        $ip = adr_site_request_first_valid_ip( adr_site_request_server_value( $key ) );
+        if ( $ip !== '' ) {
+            return $ip;
+        }
+    }
+
+    return '';
+}
+
+function adr_site_request_request_metadata() {
+    $metadata = array(
+        'requester_ip'               => adr_site_request_requester_ip(),
+        'requester_geo_country'      => adr_site_request_server_value( 'HTTP_CF_IPCOUNTRY' ),
+        'requester_geo_city'         => adr_site_request_server_value( 'HTTP_CF_IPCITY' ),
+        'requester_geo_region'       => adr_site_request_server_value( 'HTTP_CF_REGION' ),
+        'requester_geo_region_code'  => adr_site_request_server_value( 'HTTP_CF_REGION_CODE' ),
+        'requester_geo_postal_code'  => adr_site_request_server_value( 'HTTP_CF_POSTAL_CODE' ),
+        'requester_geo_timezone'     => adr_site_request_server_value( 'HTTP_CF_TIMEZONE' ),
+        'requester_geo_latitude'     => adr_site_request_server_value( 'HTTP_CF_IPLATITUDE' ),
+        'requester_geo_longitude'    => adr_site_request_server_value( 'HTTP_CF_IPLONGITUDE' ),
+        'requester_cf_ray'           => adr_site_request_server_value( 'HTTP_CF_RAY' ),
+    );
+
+    return array_filter(
+        $metadata,
+        function ( $value ) {
+            return $value !== '';
+        }
+    );
+}
+
+function adr_site_request_technical_metadata_keys() {
+    return array(
+        'requester_ip',
+        'requester_geo_country',
+        'requester_geo_city',
+        'requester_geo_region',
+        'requester_geo_region_code',
+        'requester_geo_postal_code',
+        'requester_geo_timezone',
+        'requester_geo_latitude',
+        'requester_geo_longitude',
+        'requester_cf_ray',
+    );
+}
+
+function adr_site_request_schedule_technical_data_cleanup() {
+    if ( wp_next_scheduled( 'adr_site_request_cleanup_technical_data' ) ) {
+        return;
+    }
+
+    wp_schedule_event( time() + HOUR_IN_SECONDS, 'daily', 'adr_site_request_cleanup_technical_data' );
+}
+
+function adr_site_request_cleanup_technical_data() {
+    $cutoff = date(
+        'Y-m-d H:i:s',
+        current_time( 'timestamp' ) - ADR_SITE_REQUEST_TECHNICAL_DATA_RETENTION_DAYS * DAY_IN_SECONDS
+    );
+
+    foreach ( adr_quote_requests_entries( ADR_QUOTE_REQUESTS_MIN_DATE ) as $entry ) {
+        if ( strtotime( $entry->post_date ) >= strtotime( $cutoff ) ) {
+            continue;
+        }
+
+        $data = adr_quote_request_data_for_post( $entry->ID );
+        if ( empty( $data ) ) {
+            continue;
+        }
+
+        $changed = false;
+        foreach ( adr_site_request_technical_metadata_keys() as $key ) {
+            if ( array_key_exists( $key, $data ) ) {
+                unset( $data[ $key ] );
+                $changed = true;
+            }
+        }
+
+        if ( $changed ) {
+            update_post_meta( (int) $entry->ID, 'metform_entries__form_data', $data );
+        }
+    }
 }
 
 function adr_site_request_live_payload_field_keys( $form_id ) {
@@ -158,6 +266,14 @@ function adr_site_request_merge_live_payload_fields( $data, $form_id = '' ) {
             continue;
         }
 
+        if ( isset( $data[ $key ] ) && adr_quote_request_flatten_value( $data[ $key ] ) !== '' ) {
+            continue;
+        }
+
+        $data[ $key ] = $value;
+    }
+
+    foreach ( adr_site_request_request_metadata() as $key => $value ) {
         if ( isset( $data[ $key ] ) && adr_quote_request_flatten_value( $data[ $key ] ) !== '' ) {
             continue;
         }
@@ -605,6 +721,44 @@ function adr_quote_request_consent( $data ) {
     return implode( "\n", $lines );
 }
 
+function adr_quote_request_geolocation( $data ) {
+    $parts = array();
+
+    foreach ( array(
+        'requester_geo_city',
+        'requester_geo_region',
+        'requester_geo_postal_code',
+        'requester_geo_country',
+    ) as $key ) {
+        $value = adr_quote_request_value( $data, array( $key ) );
+        if ( $value !== '' ) {
+            $parts[] = $value;
+        }
+    }
+
+    $location = implode( ', ', array_unique( $parts ) );
+    $coordinates = trim(
+        adr_quote_request_value( $data, array( 'requester_geo_latitude' ) )
+        . ', '
+        . adr_quote_request_value( $data, array( 'requester_geo_longitude' ) ),
+        " \t\n\r\0\x0B,"
+    );
+    $timezone = adr_quote_request_value( $data, array( 'requester_geo_timezone' ) );
+
+    $lines = array();
+    if ( $location !== '' ) {
+        $lines[] = $location;
+    }
+    if ( $coordinates !== '' ) {
+        $lines[] = 'Coordonnées: ' . $coordinates;
+    }
+    if ( $timezone !== '' ) {
+        $lines[] = 'Fuseau: ' . $timezone;
+    }
+
+    return implode( "\n", $lines );
+}
+
 function adr_quote_request_normalized( $data, $post = null ) {
     $type_devis = adr_quote_request_value( $data, array( 'type_devis' ) );
     $date = '';
@@ -633,6 +787,9 @@ function adr_quote_request_normalized( $data, $post = null ) {
         'adresse'             => adr_quote_request_address( $data ),
         'message'             => adr_quote_request_value( $data, array( 'message', 'mf-textarea' ) ),
         'consentement'        => adr_quote_request_consent( $data ),
+        'requester_ip'        => adr_quote_request_value( $data, array( 'requester_ip' ) ),
+        'requester_geolocation' => adr_quote_request_geolocation( $data ),
+        'requester_cf_ray'    => adr_quote_request_value( $data, array( 'requester_cf_ray' ) ),
     );
 }
 
@@ -666,6 +823,9 @@ function adr_quote_requests_headers() {
         'adresse'            => 'Adresse',
         'message'            => 'Message',
         'consentement'       => 'Consentement',
+        'requester_ip'       => 'IP demandeur',
+        'requester_geolocation' => 'Géolocalisation IP',
+        'requester_cf_ray'   => 'Cloudflare Ray ID',
     );
 }
 
@@ -764,7 +924,7 @@ function adr_quote_admin_email_has_admin_recipient( $args ) {
 
 function adr_quote_admin_email_submission_data( $form_id ) {
     if ( ! empty( $_POST ) && is_array( $_POST ) ) {
-        return wp_unslash( $_POST );
+        return adr_site_request_merge_live_payload_fields( wp_unslash( $_POST ), $form_id );
     }
 
     return adr_quote_admin_email_latest_entry_data( $form_id );
@@ -826,6 +986,14 @@ function adr_quote_admin_email_rows( $data, $form_id = ADR_QUOTE_REQUESTS_FORM_I
 
     if ( $request['telephone'] !== '' ) {
         $rows[] = array( 'Téléphone', $request['telephone'] );
+    }
+
+    if ( $request['requester_ip'] !== '' ) {
+        $rows[] = array( 'IP demandeur', $request['requester_ip'] );
+    }
+
+    if ( $request['requester_geolocation'] !== '' ) {
+        $rows[] = array( 'Géolocalisation IP', $request['requester_geolocation'] );
     }
 
     if ( adr_site_request_kind_for_form_id( $form_id ) === 'contact' ) {
