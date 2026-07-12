@@ -17,6 +17,12 @@ Static GitHub Pages build and live-site support code for the current Assurances 
 - Live support plugin: `wp-live-plugin/adr-site-fixes/` holds the MU-plugin modules for page-shell normalization, live form adapters, private request export, and branded acknowledgement emails.
 - Daily reporting automation: `Render ADR site and DB` renders the official site PDF with `ADR_PDF_PROFILE=official`, downloads the last 7 days of quote/contact requests as TSV, and sends Manu a French signed Friday email with both attachments.
 
+## 2026-07-12 live deployment note
+
+- Deployed requester IP reporting for quote/contact requests, including Cloudflare-derived geolocation context and Ray ID in admin emails and TSV exports.
+- Updated the privacy-policy copy to state that IP/geolocation data is collected only for diagnostics, maintenance, security, and abuse prevention, not for commercial profiling, with a 30-day technical retention window unless an incident or legal obligation requires longer retention.
+- Corrected the visible site version per the canonical versioning SOP to `v134.0` and verified the official live site, privacy page, and TSV headers after the WordPress update.
+
 Live site after Pages deploys:
 
 https://ec92009.github.io/ADR/
