@@ -2,7 +2,7 @@
 
 Static GitHub Pages build and live-site support code for the current Assurances de Rueil redesign/source of truth.
 
-- Current visible version: `v125.2`
+- Current visible version: `v134.0`
 - Canonical source of truth: `https://ec92009.github.io/ADR/`
 - Official live site: `https://assurancesderueil.fr/`
 - Downstream target: WordPress/live-site work should follow this GitHub Pages build unless explicitly superseded
