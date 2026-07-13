@@ -709,3 +709,26 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - to roll back only the requester-IP/privacy reporting change, restore the `ADR Site Fixes` MU-plugin files from the previous `125.2` deployment and flush page cache;
   - if privacy-policy copy is rolled back independently, make sure it still matches any remaining technical logging behavior.
+
+### Invisible request spam guard MU-plugin `135.0`, 2026-07-13
+
+- Goal: add a first, low-friction anti-spam layer to quote/contact submissions without showing visitors an image CAPTCHA or other challenge.
+- Method:
+  - protects MetForm quote form `2073` and contact form `7487` with a signed form-age token and an off-screen honeypot;
+  - accepts signed tokens from `3` seconds through `36` hours old, allowing normal reading time and cached pages while rejecting immediate automation, expired tokens, tampering, and cross-form reuse;
+  - validates the guard before MetForm stores an entry or sends email, using one generic French retry message for rejected requests;
+  - removes the guard-only fields before accepted entries are stored or emailed;
+  - bridges MetForm's React submitter by attaching the token and honeypot at the form's REST `fetch` boundary.
+- Deployment note:
+  - installed through a linted one-shot replacement bootstrap pinned to source commit `005a2c97efa4ba82b70082819dfa6c9fa610ab19`;
+  - the bootstrap verified each plugin file's SHA-256 digest, replaced the MU-plugin, restored the slim child-theme `functions.php`, and removed itself after the next request.
+- Verification result:
+  - all MU-plugin PHP files lint on MAMP PHP `8.4.1` and `7.4.33`;
+  - the local guard harness accepts valid/clean requests and rejects too-fast, tampered, cross-form, honeypot-filled, and missing-token requests while leaving unrelated MetForms unchanged;
+  - rendered JavaScript parsing and a simulated contact REST request confirm both protected form IDs receive the signed token and honeypot;
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `135.0`, and the child-theme `functions.php` contains no bootstrap marker;
+  - cache-busted public quote and contact pages show `v135.0` and load the request-guard module;
+  - Safari verification confirms both form submit areas render normally with no visible honeypot or CAPTCHA; no live form submission was made during deployment verification.
+- Rollback notes:
+  - restore the previous `134.0` `ADR Site Fixes` files and flush page cache;
+  - keep the slim child-theme `functions.php`; it does not contain this guard implementation.

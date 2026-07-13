@@ -6,8 +6,8 @@
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
 - GitHub Pages source-truth version marker: `v135.0`.
-- Live WordPress version marker: `v134.0` pending the `v135.0` anti-spam deployment.
-- Live WordPress support plugin candidate: `ADR Site Fixes` `135.0`.
+- Live WordPress version marker: `v135.0`.
+- Live WordPress support plugin: `ADR Site Fixes` `135.0`.
 - The live WordPress pages now use the approved GH.io-style page shells through `ADR Site Fixes` MU-plugin modules, with WordPress kept only where it must remain dynamic.
 - The live child-theme `functions.php` has been reduced from roughly `5,938` lines / `351,567` editor characters to `91` lines / `2,936` editor characters.
 - The live WordPress pages have been reconciled against the GH.io source-of-truth mock for high-resolution photography, day/night persistence, the contact/phone form pass, contact message storage/export, and quote payload preservation.
@@ -68,6 +68,14 @@
 - Reran the official automation after deployment. The post-fix official PDF was `assurances-de-rueil-official-v134.0-2026-07-12.pdf`, `21` pages, `11026033` bytes. The refreshed contacts TSV was initially `3787` bytes; after adding IPinfo URL formatting, the regenerated TSV is `3805` bytes with `21` parsed data rows.
 - Confirmed that current TSV rows may have blank IP/geolocation values until post-deployment submissions are captured; existing historical rows cannot be backfilled from data that was not stored.
 - Decided not to add an external IP-geolocation API or microservice. If an individual IP address needs a one-off lookup, use IPinfo, MaxMind GeoIP demo, or RIPEstat manually after the fact. Implemented the low-friction TSV convenience path by formatting populated requester-IP cells as `https://ipinfo.io/<IP address>` without making any API calls.
+
+## Conversation Summary, 2026-07-13
+
+- Added the first low-friction anti-spam phase to live MetForm quote form `2073` and contact form `7487` without adding a visible CAPTCHA.
+- Each protected request now carries a signed form-age token and an off-screen honeypot; invalid, missing, too-fast, expired, or honeypot-filled requests are rejected before MetForm storage and email delivery.
+- Guard-only fields are removed before accepted submissions are stored or emailed, and the contact form's React request path attaches the guard fields at the MetForm REST boundary.
+- Deployed `ADR Site Fixes` `135.0` from source commit `005a2c97efa4ba82b70082819dfa6c9fa610ab19` through the one-shot replacement bootstrap, then confirmed the bootstrap removed itself and the slim child-theme `functions.php` remained intact.
+- Verified both public form and submit areas in Safari: each page shows `v135.0`, the ordinary fields and consent controls render normally, and neither the honeypot nor a CAPTCHA is visible. No live test lead was submitted.
 
 ## Source Of Truth
 
