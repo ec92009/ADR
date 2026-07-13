@@ -5,9 +5,9 @@
 - Repository: `ec92009/ADR`.
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
-- GitHub Pages source-truth version marker: `v134.0`.
-- Live WordPress version marker: `v134.0`.
-- Live WordPress support plugin: `ADR Site Fixes` `134.0`.
+- GitHub Pages source-truth version marker: `v135.0`.
+- Live WordPress version marker: `v134.0` pending the `v135.0` anti-spam deployment.
+- Live WordPress support plugin candidate: `ADR Site Fixes` `135.0`.
 - The live WordPress pages now use the approved GH.io-style page shells through `ADR Site Fixes` MU-plugin modules, with WordPress kept only where it must remain dynamic.
 - The live child-theme `functions.php` has been reduced from roughly `5,938` lines / `351,567` editor characters to `91` lines / `2,936` editor characters.
 - The live WordPress pages have been reconciled against the GH.io source-of-truth mock for high-resolution photography, day/night persistence, the contact/phone form pass, contact message storage/export, and quote payload preservation.

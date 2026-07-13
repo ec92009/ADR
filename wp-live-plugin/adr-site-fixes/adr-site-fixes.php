@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ADR Site Fixes
  * Description: Small live-site modules for Assurances de Rueil while the child theme is split out of functions.php.
- * Version: 134.0
+ * Version: 135.0
  * Author: Web-By-Elie
  */
 
@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'ADR_SITE_FIXES_VERSION', '134.0' );
+define( 'ADR_SITE_FIXES_VERSION', '135.0' );
 define( 'ADR_SITE_FIXES_DIR', plugin_dir_path( __FILE__ ) );
 
 function adr_site_fixes_require( $relative_path ) {
@@ -24,6 +24,7 @@ function adr_site_fixes_require( $relative_path ) {
 }
 
 adr_site_fixes_require( 'includes/quote-requests-export.php' );
+adr_site_fixes_require( 'includes/request-spam-guard.php' );
 adr_site_fixes_require( 'includes/page-shell-normalizer.php' );
 adr_site_fixes_require( 'includes/form-adapters.php' );
 adr_site_fixes_require( 'includes/public-user-email.php' );
