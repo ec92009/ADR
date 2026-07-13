@@ -732,3 +732,27 @@ This file tracks live WordPress/database changes made on assurancesderueil.fr th
 - Rollback notes:
   - restore the previous `134.0` `ADR Site Fixes` files and flush page cache;
   - keep the slim child-theme `functions.php`; it does not contain this guard implementation.
+
+### Invisible hourly request rate limit MU-plugin `135.1`, 2026-07-13
+
+- Goal: add a second invisible anti-spam layer that slows repeated guard-valid submissions without adding a visitor challenge or page-load dependency.
+- Method:
+  - quote form `2073` and contact form `7487` share a fixed one-hour quota of `3` accepted requests per requester IP;
+  - the fourth guard-valid request is rejected with a French retry message until the window expires;
+  - invalid signed-token and honeypot traffic is rejected before the limiter and does not consume the quota;
+  - the limiter prioritizes `REMOTE_ADDR` on the current Infomaniak hosting and stores only a salted HMAC-SHA-256 IP key in a WordPress transient, not the raw IP;
+  - requests with no detectable IP fail open instead of sharing one global anonymous quota.
+- Deployment note:
+  - source commit `22ded052cc7e070dc6034276fd73308929a1d928` was installed through replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V135_1`;
+  - the bootstrap was linted on PHP `8.4.1` and `7.4.33`, pinned to the full source commit, and verified every fetched plugin file by SHA-256 before writing;
+  - the complete editor payload was pasted in Safari and its checksum was verified before the user performed the final WordPress update action.
+- Verification result:
+  - all seven MU-plugin PHP files lint on MAMP PHP `8.4.1` and `7.4.33`;
+  - the local limiter harness verifies requests one through three are accepted, request four is blocked, quote/contact share the quota, different IPs are independent, the window resets, honeypot traffic does not consume quota, `REMOTE_ADDR` wins over spoofable forwarded headers, transient keys hide the raw IP, and missing IPs fail open;
+  - WordPress Must-Use plugins lists `ADR Site Fixes` as version `135.1`;
+  - the live child-theme `functions.php` copied back as `2,940` bytes / `90` newline characters with SHA-256 `e5173f1b70ae58231a0e8e5df98c3fb31fc678deddd8392787184d4c09651ef3`, and contains no replacement-bootstrap marker;
+  - cache-busted public quote and contact pages return HTTP 200, show `v135.1`, include `adr-site-request-guard-v135-1`, and contain no `v135.0` or bootstrap marker;
+  - no live form submission was made during deployment verification.
+- Rollback notes:
+  - restore the previous `135.0` `ADR Site Fixes` files from source commit `005a2c97efa4ba82b70082819dfa6c9fa610ab19` and flush page cache;
+  - keep the slim child-theme `functions.php`; it does not contain the limiter implementation.

@@ -6,8 +6,8 @@
 - GitHub Pages source of truth: `https://ec92009.github.io/ADR/`.
 - Live WordPress site: `https://assurancesderueil.fr/`.
 - GitHub Pages source-truth version marker: `v135.1`.
-- Live WordPress version marker: `v135.0` pending the `v135.1` rate-limit deployment.
-- Live WordPress support plugin candidate: `ADR Site Fixes` `135.1`.
+- Live WordPress version marker: `v135.1`.
+- Live WordPress support plugin: `ADR Site Fixes` `135.1`.
 - The live WordPress pages now use the approved GH.io-style page shells through `ADR Site Fixes` MU-plugin modules, with WordPress kept only where it must remain dynamic.
 - The live child-theme `functions.php` has been reduced from roughly `5,938` lines / `351,567` editor characters to `91` lines / `2,936` editor characters.
 - The live WordPress pages have been reconciled against the GH.io source-of-truth mock for high-resolution photography, day/night persistence, the contact/phone form pass, contact message storage/export, and quote payload preservation.
@@ -76,6 +76,10 @@
 - Guard-only fields are removed before accepted submissions are stored or emailed, and the contact form's React request path attaches the guard fields at the MetForm REST boundary.
 - Deployed `ADR Site Fixes` `135.0` from source commit `005a2c97efa4ba82b70082819dfa6c9fa610ab19` through the one-shot replacement bootstrap, then confirmed the bootstrap removed itself and the slim child-theme `functions.php` remained intact.
 - Verified both public form and submit areas in Safari: each page shows `v135.0`, the ordinary fields and consent controls render normally, and neither the honeypot nor a CAPTCHA is visible. No live test lead was submitted.
+- Added the second anti-spam phase in `ADR Site Fixes` `135.1`: quote and contact now share a limit of `3` guard-valid submissions per requester IP in a fixed one-hour window.
+- The limiter stores only a salted HMAC-SHA-256 IP key in a WordPress transient, prioritizes the origin's `REMOTE_ADDR` over spoofable forwarded headers on the current Infomaniak hosting, and fails open when no IP is available.
+- Deployed source commit `22ded052cc7e070dc6034276fd73308929a1d928` through the SHA-256-verified replacement bootstrap. Safari lists the Must-Use plugin as `135.1`, and the editor copied back the exact slim `functions.php` checksum with no bootstrap marker.
+- Cache-busted public quote and contact checks returned HTTP 200 with `v135.1` and `adr-site-request-guard-v135-1`. No live submission was made; the next 7-day TSV should be reviewed before considering managed Turnstile.
 
 ## Source Of Truth
 
@@ -109,7 +113,7 @@
 - The user-facing quote acknowledgement email was replaced on 2026-06-27; the contact-page acknowledgement was added to the same branded treatment later that day.
 - The fix lives outside the oversized child-theme file as a Must-Use plugin:
   - WordPress name: `ADR Site Fixes`
-  - version: `134.0`
+  - version: `135.1`
   - local source: `wp-live-plugin/adr-site-fixes/`
 - It applies to MetForm form `2073` for quote requests and form `7487` for the contact page.
 - It replaces the old centered/plain confirmations with branded left-aligned emails, plural `Assurances de Rueil`, cleaner legal copy, and a privacy-policy link.
@@ -154,7 +158,7 @@
   - footer marker `v125.2`.
 - The GH.io `v119.4` local preview was verified across `particuliers.html`, `professionnels.html`, and `index.html`: the day/night checkbox state and computed theme colors persist across page navigation in both directions.
 - The GH.io `v119.7` local preview was verified on `courtier.html`: the new `Téléphone *` field renders as `type="text"`, entering `+34 636 63 03 38` preserves the full value, and empty static submits show a preview message instead of `Something went wrong. Envoi non autorisé.`
-- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `134.0`.
+- `ADR Site Fixes` appears in WordPress Must-Use plugins as version `135.1`.
 - `ADR Site Fixes` was deployed as version `125.2` through replacement bootstrap `ADR_MU_PLUGIN_REPLACE_BOOTSTRAP_V125_2`, pinned to GitHub commit `83892fa`.
 - `instive-child/functions.php` no longer contains any split/replacement bootstrap marker and is now `91` lines / `2,936` editor characters.
 - Synthetic email verification confirms MetForm contact form `7487` now produces marker `adr-contact-user-email-v120-0`, subject `Votre message - Assurances de Rueil`, and preserves `+34 636 63 03 38` in the acknowledgement body.
