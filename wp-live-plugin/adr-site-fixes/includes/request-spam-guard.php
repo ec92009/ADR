@@ -4,11 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'ADR_SITE_REQUEST_GUARD_VERSION', '135.0' );
+define( 'ADR_SITE_REQUEST_GUARD_VERSION', '135.1' );
 define( 'ADR_SITE_REQUEST_GUARD_TOKEN_FIELD', 'adr_form_guard' );
 define( 'ADR_SITE_REQUEST_GUARD_HONEYPOT_FIELD', 'adr_website' );
 define( 'ADR_SITE_REQUEST_GUARD_MIN_AGE_SECONDS', 3 );
 define( 'ADR_SITE_REQUEST_GUARD_MAX_AGE_SECONDS', 36 * HOUR_IN_SECONDS );
+define( 'ADR_SITE_REQUEST_RATE_LIMIT_MAX_REQUESTS', 3 );
+define( 'ADR_SITE_REQUEST_RATE_LIMIT_WINDOW_SECONDS', HOUR_IN_SECONDS );
 
 add_filter( 'mf_after_validation_check', 'adr_site_request_validate_spam_guard', 20 );
 add_filter( 'metform_filter_before_store_form_data', 'adr_site_request_strip_spam_guard_fields', 1, 4 );
@@ -52,6 +54,56 @@ function adr_site_request_guard_form_value( $form_data, $key ) {
     return sanitize_text_field( (string) $form_data[ $key ] );
 }
 
+function adr_site_request_rate_limit_ip() {
+    $remote_ip = adr_site_request_first_valid_ip( adr_site_request_server_value( 'REMOTE_ADDR' ) );
+    if ( $remote_ip !== '' ) {
+        return $remote_ip;
+    }
+
+    return adr_site_request_requester_ip();
+}
+
+function adr_site_request_rate_limit_key( $ip ) {
+    $digest = hash_hmac( 'sha256', (string) $ip, wp_salt( 'auth' ) );
+
+    return 'adr_req_rate_' . $digest;
+}
+
+function adr_site_request_rate_limit_allows( $ip, $now = null ) {
+    if ( $ip === '' ) {
+        return true;
+    }
+
+    $now = $now === null ? time() : (int) $now;
+    $key = adr_site_request_rate_limit_key( $ip );
+    $state = get_transient( $key );
+    $started_at = is_array( $state ) && isset( $state['started_at'] ) ? (int) $state['started_at'] : 0;
+    $count = is_array( $state ) && isset( $state['count'] ) ? (int) $state['count'] : 0;
+    $elapsed = $now - $started_at;
+
+    if ( $started_at <= 0 || $elapsed < 0 || $elapsed >= ADR_SITE_REQUEST_RATE_LIMIT_WINDOW_SECONDS ) {
+        $started_at = $now;
+        $count = 0;
+        $elapsed = 0;
+    }
+
+    if ( $count >= ADR_SITE_REQUEST_RATE_LIMIT_MAX_REQUESTS ) {
+        return false;
+    }
+
+    $remaining = max( 1, ADR_SITE_REQUEST_RATE_LIMIT_WINDOW_SECONDS - $elapsed );
+    set_transient(
+        $key,
+        array(
+            'started_at' => $started_at,
+            'count'      => $count + 1,
+        ),
+        $remaining
+    );
+
+    return true;
+}
+
 function adr_site_request_validate_spam_guard( $validation ) {
     if ( ! is_array( $validation ) || empty( $validation['is_valid'] ) ) {
         return $validation;
@@ -71,6 +123,13 @@ function adr_site_request_validate_spam_guard( $validation ) {
     if ( $honeypot !== '' || ! adr_site_request_verify_guard_token( $token, $form_id ) ) {
         $validation['is_valid'] = false;
         $validation['message'] = __( 'Votre envoi n\'a pas pu être vérifié. Rechargez la page puis réessayez.', 'adr-site-fixes' );
+
+        return $validation;
+    }
+
+    if ( ! adr_site_request_rate_limit_allows( adr_site_request_rate_limit_ip() ) ) {
+        $validation['is_valid'] = false;
+        $validation['message'] = __( 'Trop de demandes ont été envoyées récemment. Réessayez dans une heure ou contactez le cabinet par téléphone.', 'adr-site-fixes' );
     }
 
     return $validation;
@@ -97,7 +156,7 @@ function adr_site_request_render_spam_guard_fields() {
         $tokens[ (string) $form_id ] = adr_site_request_guard_token( $form_id );
     }
     ?>
-    <style id="adr-site-request-guard-v135-0">
+    <style id="adr-site-request-guard-v135-1">
         .adr-form-guard-trap {
             position: absolute !important;
             left: -10000px !important;
@@ -106,7 +165,7 @@ function adr_site_request_render_spam_guard_fields() {
             overflow: hidden !important;
         }
     </style>
-    <script id="adr-site-request-guard-v135-0">
+    <script id="adr-site-request-guard-v135-1">
     (function () {
         var nativeFetch = window.fetch;
         var tokens = <?php echo wp_json_encode( $tokens ); ?>;

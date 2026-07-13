@@ -4799,7 +4799,7 @@ function adr_render_version_footer() {
             }
         }
     </style>
-    <div class="adr-version-footer" aria-label="Version du site">v135.0</div>
+    <div class="adr-version-footer" aria-label="Version du site">v135.1</div>
     <script id="adr-version-footer-placement-v1">
     (function () {
         function placeVersionMarker() {

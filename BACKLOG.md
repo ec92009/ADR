@@ -6,7 +6,7 @@
 4. Review the live site with Manuel on desktop and mobile, covering home, cabinet, assurance de prêt, particuliers, professionnels, contact, quote, and footer/version details.
 5. Do a full SEO/AIO pass after visual sign-off: titles, meta descriptions, schema image URLs/dimensions, internal links, sitemap, `llms.txt`, and stale `Rueil-Malmaison` wording where it no longer helps.
 6. Finalize legal and consent wording across the forms, acknowledgement emails, privacy policy, cookie policy, and any GDPR data-rights copy.
-7. Observe the first invisible anti-spam phase after deployment: MetForm server-side signed form-age validation plus a dedicated honeypot on quote/contact requests. Review the next 7-day TSV before adding rate limits or a managed challenge.
+7. Observe the invisible anti-spam stack after deployment: signed form-age validation, dedicated honeypot, and a shared three-submissions-per-IP hourly limit across quote/contact requests. Review the next 7-day TSV before considering a managed Turnstile challenge.
 8. Eventually restore the EN/FR switch with real bilingual content, hreflang/canonical handling, and a separate bilingual SEO/AIO pass.
 
 ## Completed
